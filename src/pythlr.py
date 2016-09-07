@@ -58,7 +58,6 @@ outputzip=r"F:\GitHub\Build\Pythlr\Beta\data\LRdata.zip"
 
 
 # Complete list of artifacts (MFT must be last for some reason or it doesn't work)
-#LR_artifacts = [os.path.expandvars(r"%SystemRoot%")+r"\System32\config",r"C:0"]
 LR_artifacts = [r"%SystemRoot%\System32\config",
                 r"%SystemRoot%\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
                 r"%SystemRoot%\Prefetch",
