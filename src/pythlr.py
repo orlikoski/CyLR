@@ -58,10 +58,7 @@ outputzip=r"F:\GitHub\Build\Pythlr\Beta\data\LRdata.zip"
 
 
 # Complete list of artifacts (MFT must be last for some reason or it doesn't work)
-LR_artifacts = [r"C:\mtmp\test.txt",r"C:\mtmp\test2.txt",r"C:\mtmp\test - Copy.txt",r"C:0"]
-LR_artifacts = [r"C:\mtmp",r"C:0"]
-#LR_artifacts = [r"C:\mtmp\test.txt",r"C:\mtmp\test2.txt"]
-LR_artifacts = [os.path.expandvars(r"%SystemRoot%")+r"\System32\config"]
+LR_artifacts = [os.path.expandvars(r"%SystemRoot%")+r"\System32\config",r"C:0"]
 
 
 # Function to copy file to a directory
