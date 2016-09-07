@@ -58,7 +58,15 @@ outputzip=r"F:\GitHub\Build\Pythlr\Beta\data\LRdata.zip"
 
 
 # Complete list of artifacts (MFT must be last for some reason or it doesn't work)
-LR_artifacts = [os.path.expandvars(r"%SystemRoot%")+r"\System32\config",r"C:0"]
+#LR_artifacts = [os.path.expandvars(r"%SystemRoot%")+r"\System32\config",r"C:0"]
+LR_artifacts = [r"%SystemRoot%\System32\config",
+                r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+                r"%SystemRoot%\Prefetch",
+                r"%SystemRoot%\Windows\Tasks",
+                r"%SystemRoot%\Windows\SchedLgU.Txt",
+                r"%SystemRoot%\System32\winevt\logs",
+                r"%SystemRoot%\System32\drivers\etc\hosts",
+                r"C:0"]
 
 
 # Function to copy file to a directory
@@ -92,10 +100,11 @@ def get_dir(dirnamepath):
 
 with tempfile.TemporaryDirectory(prefix="LRDATADIR_") as outputpath:
     for artifact in LR_artifacts:
-        if os.path.isdir(artifact):
-            get_dir(artifact)
+        exp_artifact = os.path.expandvars(artifact)
+        if os.path.isdir(exp_artifact):
+            get_dir(exp_artifact)
         else:
-            get_file(artifact)
+            get_file(exp_artifact)
     print("All artifacts collected")
     if os.path.isfile(outputzip):
         print("deleting existing file:", outputzip)
