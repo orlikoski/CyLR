@@ -27,8 +27,8 @@ modes = { zipfile.ZIP_DEFLATED: 'deflated',
 MFTREF_pattern = re.compile('^MFT Ref: (\d.{1,20})')
 MFTFileName_pattern = re.compile('FileName: (\S.{1,200})')
 
-rawcopy=r"rawcopy.exe"
-rawcopy64=r"rawcopy64.exe"
+rawcopy=r"dependencies/RawCopy/RawCopy.exe"
+rawcopy64=r"dependencies/RawCopy/RawCopy64.exe"
 
 outputpath="LRData"
 outputzip=r"LRdata.zip"
