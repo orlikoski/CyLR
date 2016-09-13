@@ -20,15 +20,17 @@ namespace PythLR
                 @"\Windows\Tasks",
                 @"\Windows\SchedLgU.Txt",
                 @"\Windows\System32\winevt\logs",
-                @"\Windows\System32\drivers\etc\hosts"
+                @"\Windows\System32\drivers\etc\hosts",
+                @"$MFT"
             };
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
             var system = GetFileSystem('C');
 
-            var zipfilename = Environment.MachineName + ".zip";
-            CollectFilesToArchive(paths, system, zipfilename);
+            var outputPath = args.HasArgument("-o") ? args.GetArgumentParameter("-o") : ".";
+            var zipPath = $"{outputPath}\\{Environment.MachineName}.zip";
+            CollectFilesToArchive(paths, system, zipPath);
 
             stopwatch.Stop();
             Console.WriteLine("{0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
@@ -36,6 +38,8 @@ namespace PythLR
 
         private static void CollectFilesToArchive(IEnumerable<string> paths, NtfsFileSystem system, string archivePath)
         {
+            var archiveFile = new FileInfo(archivePath);
+            Directory.CreateDirectory(archiveFile.Directory.FullName);
             using (var outStream = File.OpenWrite(archivePath))
             using (var zipStream = new ZipArchive(outStream, ZipArchiveMode.Create))
             {
@@ -60,7 +64,7 @@ namespace PythLR
                         Console.WriteLine("Directory '{0}' does not exist and has been skipped.", path);
                     }
                 }
-                WriteFileToArchive(system, zipStream, @"$MFT");
+                WriteFileToArchive(system, zipStream,);
             }
         }
 
