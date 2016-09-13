@@ -42,7 +42,14 @@ namespace PythLR
                 foreach (var path in paths)
                 {
                     var directory = system.GetDirectoryInfo(path);
-                    if (directory.Exists)
+                    if (system.FileExists(path))
+                    {
+                        using (var stream = system.OpenFile(path, FileMode.Open, FileAccess.Read))
+                        {
+                            WriteStreamToArchive(zipStream, path, stream);
+                        }
+                    }
+                    else if (directory.Exists)
                     {
                         var files = directory.GetFiles();
 
