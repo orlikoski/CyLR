@@ -5,10 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PythLR", "PythLR\PythLR.csproj", "{87AD38A9-7D56-45E5-B131-64534FAE0435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawDiskLib", "..\RawDiskLib\RawDiskLib\RawDiskLib.csproj", "{5E9AA56E-6428-4DED-97A2-C51C51A6EA89}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceIOControlLib", "..\RawDiskLib\DeviceIOControlLib\DeviceIOControlLib\DeviceIOControlLib.csproj", "{303F50C6-4EBB-45C5-BFEA-F5F39CAF0410}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{87AD38A9-7D56-45E5-B131-64534FAE0435}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87AD38A9-7D56-45E5-B131-64534FAE0435}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87AD38A9-7D56-45E5-B131-64534FAE0435}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E9AA56E-6428-4DED-97A2-C51C51A6EA89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E9AA56E-6428-4DED-97A2-C51C51A6EA89}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E9AA56E-6428-4DED-97A2-C51C51A6EA89}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E9AA56E-6428-4DED-97A2-C51C51A6EA89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{303F50C6-4EBB-45C5-BFEA-F5F39CAF0410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{303F50C6-4EBB-45C5-BFEA-F5F39CAF0410}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{303F50C6-4EBB-45C5-BFEA-F5F39CAF0410}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{303F50C6-4EBB-45C5-BFEA-F5F39CAF0410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
