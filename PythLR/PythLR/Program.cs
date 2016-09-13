@@ -8,9 +8,9 @@ using RawDiskLib;
 
 namespace PythLR
 {
-    static class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             string[] paths =
             {
@@ -27,7 +27,7 @@ namespace PythLR
 
             var system = GetFileSystem('C');
 
-            var zipfilename = Environment.MachineName+".zip";
+            var zipfilename = Environment.MachineName + ".zip";
             CollectFilesToArchive(paths, system, zipfilename);
 
             stopwatch.Stop();
@@ -36,7 +36,6 @@ namespace PythLR
 
         private static void CollectFilesToArchive(IEnumerable<string> paths, NtfsFileSystem system, string archivePath)
         {
-
             using (var outStream = File.OpenWrite(archivePath))
             using (var zipStream = new ZipArchive(outStream, ZipArchiveMode.Create))
             {
@@ -45,7 +44,7 @@ namespace PythLR
                     var directory = system.GetDirectoryInfo(path);
                     if (system.FileExists(path))
                     {
-                        writefile(system, zipStream, path.Substring(1));
+                        WriteFileToArchive(system, zipStream, path.Substring(1));
                     }
                     else if (directory.Exists)
                     {
@@ -53,7 +52,7 @@ namespace PythLR
 
                         foreach (var file in files)
                         {
-                            writefile(system, zipStream, file.FullName);
+                            WriteFileToArchive(system, zipStream, file.FullName);
                         }
                     }
                     else
@@ -61,11 +60,11 @@ namespace PythLR
                         Console.WriteLine("Directory '{0}' does not exist and has been skipped.", path);
                     }
                 }
-                writefile(system, zipStream, @"$MFT");
+                WriteFileToArchive(system, zipStream, @"$MFT");
             }
         }
 
-        private static void writefile(NtfsFileSystem system, ZipArchive zipStream, String file)
+        private static void WriteFileToArchive(NtfsFileSystem system, ZipArchive zipStream, string file)
         {
             Console.WriteLine("Collecting File: {0}", file);
             using (var stream = system.OpenFile(file, FileMode.Open, FileAccess.Read))
