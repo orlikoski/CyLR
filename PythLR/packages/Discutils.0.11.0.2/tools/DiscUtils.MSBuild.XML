@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DiscUtils.MSBuild</name>
+    </assembly>
+    <members>
+        <member name="P:MSBuildTask.CreateIso.FileName">
+            <summary>
+            The name of the ISO file to create.
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.UseJoliet">
+            <summary>
+            Whether to use Joliet encoding for the ISO (default true).
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.VolumeLabel">
+            <summary>
+            The label for the ISO (may be truncated if too long)
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.SourceFiles">
+            <summary>
+            The files to add to the ISO.
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.BootImage">
+            <summary>
+            The boot image to add to the ISO.
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.UpdateIsolinuxBootTable">
+            <summary>
+            Whether to patch to boot image (per ISOLINUX requireents).
+            </summary>
+            <remarks>
+            Unless patched, ISOLINUX will indicate a checksum error upon boot.
+            </remarks>
+        </member>
+        <member name="P:MSBuildTask.CreateIso.RemoveRoots">
+            <summary>
+            Sets the root to remove from the source files.
+            </summary>
+            <remarks>
+            If the source file is C:\MyDir\MySubDir\file.txt, and RemoveRoot is C:\MyDir, the ISO will
+            contain \MySubDir\file.txt.  If not specified, the file would be named \MyDir\MySubDir\file.txt.
+            </remarks>
+        </member>
+        <member name="P:MSBuildTask.CreateSquashFileSystem.FileName">
+            <summary>
+            The name of the file to create, containing the filesystem image.
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateSquashFileSystem.SourceFiles">
+            <summary>
+            The files to add to the filesystem image.
+            </summary>
+        </member>
+        <member name="P:MSBuildTask.CreateSquashFileSystem.RemoveRoot">
+            <summary>
+            Sets the root to remove from the source files.
+            </summary>
+            <remarks>
+            If the source file is C:\MyDir\MySubDir\file.txt, and RemoveRoot is C:\MyDir, the filesystem will
+            contain \MySubDir\file.txt.  If not specified, the file would be named \MyDir\MySubDir\file.txt.
+            </remarks>
+        </member>
+    </members>
+</doc>

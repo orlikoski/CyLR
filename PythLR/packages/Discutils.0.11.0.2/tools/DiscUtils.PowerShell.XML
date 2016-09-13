@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DiscUtils.PowerShell</name>
+    </assembly>
+    <members>
+        <member name="M:DiscUtils.PowerShell.Utilities.NormalizePath(System.String)">
+            <summary>
+            Replace all ':' characters with '#'.
+            </summary>
+            <param name="path">The path to normalize</param>
+            <returns>The normalized path</returns>
+            <remarks>
+            PowerShell has a bug that prevents tab-completion if the paths contain ':'
+            characters, so in the external path for this provider we encode ':' as '#'.
+            </remarks>
+        </member>
+        <member name="M:DiscUtils.PowerShell.Utilities.DenormalizePath(System.String)">
+            <summary>
+            Replace all '#' characters with ':'.
+            </summary>
+            <param name="path">The path to normalize</param>
+            <returns>The normalized path</returns>
+            <remarks>
+            PowerShell has a bug that prevents tab-completion if the paths contain ':'
+            characters, so in the external path for this provider we encode ':' as '#'.
+            </remarks>
+        </member>
+    </members>
+</doc>
