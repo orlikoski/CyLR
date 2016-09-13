@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using DiscUtils.Ntfs;
-using RawDiskLib;
+using System.Linq;
+using DiscUtils;
 
 namespace PythLR
 {
@@ -26,72 +24,16 @@ namespace PythLR
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var system = GetFileSystem('C');
+            var system = FileSystem.GetFileSystem('C');
 
             var outputPath = args.HasArgument("-o") ? args.GetArgumentParameter("-o") : ".";
             var zipPath = $"{outputPath}\\{Environment.MachineName}.zip";
-            CollectFilesToArchive(paths, system, zipPath);
+
+            var files = paths.SelectMany(path => system.GetFilesFromPath(path));
+            files.CollectFilesToArchive(zipPath);
 
             stopwatch.Stop();
-            Console.WriteLine("{0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
-        }
-
-        private static void CollectFilesToArchive(IEnumerable<string> paths, NtfsFileSystem system, string archivePath)
-        {
-            var archiveFile = new FileInfo(archivePath);
-            Directory.CreateDirectory(archiveFile.Directory.FullName);
-            using (var outStream = File.OpenWrite(archivePath))
-            using (var zipStream = new ZipArchive(outStream, ZipArchiveMode.Create))
-            {
-                foreach (var path in paths)
-                {
-                    var directory = system.GetDirectoryInfo(path);
-                    if (system.FileExists(path))
-                    {
-                        var newPath = path.StartsWith("\\") ? path.Substring(1) : path;
-                        WriteFileToArchive(system, zipStream, newPath);
-                    }
-                    else if (directory.Exists)
-                    {
-                        var files = directory.GetFiles();
-
-                        foreach (var file in files)
-                        {
-                            WriteFileToArchive(system, zipStream, file.FullName);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Directory '{0}' does not exist and has been skipped.", path);
-                    }
-                }
-            }
-        }
-
-        private static void WriteFileToArchive(NtfsFileSystem system, ZipArchive zipStream, string file)
-        {
-            Console.WriteLine("Collecting File: {0}", file);
-            using (var stream = system.OpenFile(file, FileMode.Open, FileAccess.Read))
-            {
-                WriteStreamToArchive(zipStream, file, stream);
-            }
-        }
-
-        private static NtfsFileSystem GetFileSystem(char driveLetter)
-        {
-            var disk = new RawDisk(driveLetter);
-            var rawDiskStream = disk.CreateDiskStream();
-            var system = new NtfsFileSystem(rawDiskStream);
-            return system;
-        }
-
-        private static void WriteStreamToArchive(ZipArchive zipStream, string entryName, Stream stream)
-        {
-            var entry = zipStream.CreateEntry(entryName, CompressionLevel.Fastest);
-            using (var writer = entry.Open())
-            {
-                stream.CopyTo(writer);
-            }
+            Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
         }
     }
 }
