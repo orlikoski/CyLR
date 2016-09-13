@@ -64,7 +64,6 @@ namespace PythLR
                         Console.WriteLine("Directory '{0}' does not exist and has been skipped.", path);
                     }
                 }
-                WriteFileToArchive(system, zipStream,);
             }
         }
 
