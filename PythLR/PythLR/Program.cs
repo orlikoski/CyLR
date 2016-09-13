@@ -27,7 +27,7 @@ namespace PythLR
             var system = FileSystem.GetFileSystem('C');
 
             var outputPath = args.HasArgument("-o") ? args.GetArgumentParameter("-o") : ".";
-            var zipPath = $"{outputPath}\\{Environment.MachineName}.zip";
+            var zipPath = $@"{outputPath}\{Environment.MachineName}.zip";
 
             var files = paths.SelectMany(path => system.GetFilesFromPath(path));
             files.CollectFilesToArchive(zipPath);
