@@ -48,7 +48,8 @@ namespace PythLR
                     var directory = system.GetDirectoryInfo(path);
                     if (system.FileExists(path))
                     {
-                        WriteFileToArchive(system, zipStream, path.Substring(1));
+                        var newPath = path.StartsWith("\\") ? path.Substring(1) : path;
+                        WriteFileToArchive(system, zipStream, newPath);
                     }
                     else if (directory.Exists)
                     {
