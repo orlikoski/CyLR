@@ -27,7 +27,8 @@ namespace PythLR
 
             var system = GetFileSystem('C');
 
-            CollectFilesToArchive(paths, system, "output.zip");
+            var zipfilename = Environment.MachineName+".zip";
+            CollectFilesToArchive(paths, system, zipfilename);
 
             stopwatch.Stop();
             Console.WriteLine("{0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
@@ -44,10 +45,7 @@ namespace PythLR
                     var directory = system.GetDirectoryInfo(path);
                     if (system.FileExists(path))
                     {
-                        using (var stream = system.OpenFile(path, FileMode.Open, FileAccess.Read))
-                        {
-                            WriteStreamToArchive(zipStream, path, stream);
-                        }
+                        writefile(system, zipStream, path.Substring(1));
                     }
                     else if (directory.Exists)
                     {
@@ -55,10 +53,7 @@ namespace PythLR
 
                         foreach (var file in files)
                         {
-                            using (var stream = system.OpenFile(file.FullName, FileMode.Open, FileAccess.Read))
-                            {
-                                WriteStreamToArchive(zipStream, file.FullName, stream);
-                            }
+                            writefile(system, zipStream, file.FullName);
                         }
                     }
                     else
@@ -66,6 +61,16 @@ namespace PythLR
                         Console.WriteLine("Directory '{0}' does not exist and has been skipped.", path);
                     }
                 }
+                writefile(system, zipStream, @"$MFT");
+            }
+        }
+
+        private static void writefile(NtfsFileSystem system, ZipArchive zipStream, String file)
+        {
+            Console.WriteLine("Collecting File: {0}", file);
+            using (var stream = system.OpenFile(file, FileMode.Open, FileAccess.Read))
+            {
+                WriteStreamToArchive(zipStream, file, stream);
             }
         }
 
