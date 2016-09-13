@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DiscUtils, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.dll</HintPath>
@@ -57,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
