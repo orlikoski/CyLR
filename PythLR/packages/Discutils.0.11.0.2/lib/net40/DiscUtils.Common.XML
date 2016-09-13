@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DiscUtils.Common</name>
+    </assembly>
+    <members>
+        <member name="T:DiscUtils.Common.HexDump">
+            <summary>
+            Provides utility methods to produce hex dumps of binary data.
+            </summary>
+        </member>
+        <member name="M:DiscUtils.Common.HexDump.Generate(System.Byte[],System.IO.TextWriter)">
+            <summary>
+            Creates a hex dump from a byte array.
+            </summary>
+            <param name="data">The buffer to generate the hex dump from.</param>
+            <param name="output">The destination for the hex dump.</param>
+        </member>
+        <member name="M:DiscUtils.Common.HexDump.Generate(System.Byte[],System.Int32,System.Int32,System.IO.TextWriter)">
+            <summary>
+            Creates a hex dump from a byte array.
+            </summary>
+            <param name="data">The buffer to generate the hex dump from.</param>
+            <param name="offset">Offset of the first byte to hex dump.</param>
+            <param name="count">The number of bytes to hex dump</param>
+            <param name="output">The destination for the hex dump.</param>
+        </member>
+        <member name="M:DiscUtils.Common.HexDump.Generate(System.IO.Stream,System.IO.TextWriter)">
+            <summary>
+            Creates a hex dump from a stream.
+            </summary>
+            <param name="stream">The stream to generate the hex dump from.</param>
+            <param name="output">The destination for the hex dump.</param>
+        </member>
+        <member name="M:DiscUtils.Common.HexDump.Generate(DiscUtils.SparseStream,System.IO.TextWriter)">
+            <summary>
+            Creates a hex dump from a stream.
+            </summary>
+            <param name="stream">The stream to generate the hex dump from.</param>
+            <param name="output">The destination for the hex dump.</param>
+        </member>
+    </members>
+</doc>
