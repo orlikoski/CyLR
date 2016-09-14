@@ -32,9 +32,19 @@ namespace PythLR
 
             var system = FileSystem.GetFileSystem('C');
             var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
-
             var files = paths.SelectMany(path => system.GetFilesFromPath(path));
-            files.CollectFilesToArchive(zipPath);
+
+
+
+            if (arguments.SFTPCheck)
+            {
+                callsftpfunc();
+            }
+            else
+            {
+                files.CollectFilesToArchive(zipPath);
+            }
+
 
             stopwatch.Stop();
             Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
