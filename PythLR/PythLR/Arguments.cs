@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PythLR
 {
@@ -8,7 +9,6 @@ namespace PythLR
     {
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
-            {string.Empty, "HELP"},
             {
                 "-o",
                 "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -o <directory path>"
@@ -32,10 +32,10 @@ namespace PythLR
         public readonly string HelpTopic;
 
         public readonly string OutputPath = ".";
-        public readonly bool SFTPCheck = false;
-        public readonly string UserName = ".";
-        public readonly string UserPassword = ".";
-        public readonly string SFTPServer = ".";
+        public readonly bool SFTPCheck;
+        public readonly string UserName = string.Empty;
+        public readonly string UserPassword = string.Empty;
+        public readonly string SFTPServer = string.Empty;
 
         public Arguments(string[] args)
         {
@@ -75,9 +75,18 @@ namespace PythLR
         public string GetHelp(string topic)
         {
             string help;
-            if (!HelpTopics.TryGetValue(topic, out help))
+            if (string.IsNullOrEmpty(topic))
             {
-                help = @"{topic} is not a valid argument.";
+                var helpText = new StringBuilder("Tool used to collect various artifacts. Avalable options:").AppendLine();
+                foreach (var command in HelpTopics)
+                {
+                    helpText.AppendLine(command.Key).AppendLine("\t"+command.Value).AppendLine();
+                }
+                help = helpText.ToString();
+            }
+            else if (!HelpTopics.TryGetValue(topic, out help))
+            {
+                help = $@"{topic} is not a valid argument.";
             }
             return help;
         }
