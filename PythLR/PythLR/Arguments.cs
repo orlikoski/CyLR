@@ -8,10 +8,22 @@ namespace PythLR
     {
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
-            {string.Empty, "HALP"},
+            {string.Empty, "HELP"},
             {
                 "-o",
                 "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -o <directory path>"
+            },
+            {
+                "-u",
+                "The username required to SCP the data to the remote SFTP server"
+            },
+            {
+                "-p",
+                "The password required to SCP the data to the remote SFTP server"
+            },
+            {
+                "-s",
+                "The server resolvable FQDN or IP address of the remote SFTP server"
             }
         };
 
@@ -20,6 +32,10 @@ namespace PythLR
         public readonly string HelpTopic;
 
         public readonly string OutputPath = ".";
+        public readonly bool SFTPCheck = false;
+        public readonly string UserName = ".";
+        public readonly string UserPassword = ".";
+        public readonly string SFTPServer = ".";
 
         public Arguments(string[] args)
         {
@@ -32,6 +48,26 @@ namespace PythLR
                 if (args.HasArgument("-o"))
                 {
                     OutputPath = args.GetArgumentParameter(true, "-o");
+                }
+                SFTPCheck = args.HasArgument("-u") && args.HasArgument("-p") && args.HasArgument("-s");
+                if (SFTPCheck)
+                {
+                    if (args.HasArgument("-u"))
+                    {
+                        UserName = args.GetArgumentParameter(true, "-u");
+                    }
+                    if (args.HasArgument("-p"))
+                    {
+                        UserPassword = args.GetArgumentParameter(true, "-p");
+                    }
+                    if (args.HasArgument("-s"))
+                    {
+                        SFTPServer = args.GetArgumentParameter(true, "-s");
+                    }
+                }
+                else if (args.HasArgument("-u") || args.HasArgument("-p") || args.HasArgument("-s"))
+                {
+                    throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
                 }
             }
         }
