@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using PythLR.write;
+using Renci.SshNet;
 
 namespace PythLR
 {
@@ -31,17 +34,21 @@ namespace PythLR
             stopwatch.Start();
 
             var system = FileSystem.GetFileSystem('C');
-            var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
+
             var files = paths.SelectMany(path => system.GetFilesFromPath(path));
 
 
 
             if (arguments.SFTPCheck)
             {
-                callsftpfunc();
+                var zipPath = $@".\{Environment.MachineName}.zip";
+                files.CollectFilesToArchive(zipPath);
+                var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
+                client.BeginUploadFile(system.OpenFile(zipPath, FileMode.Open, FileAccess.Read), arguments.OutputPath);
             }
             else
             {
+                var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
                 files.CollectFilesToArchive(zipPath);
             }
 
