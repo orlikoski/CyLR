@@ -8,6 +8,14 @@ namespace PythLR
     {
         private static void Main(string[] args)
         {
+            var arguments = new Arguments(args);
+
+            if (arguments.HelpRequested)
+            {
+                Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
+                return;
+            }
+
             string[] paths =
             {
                 @"\Windows\System32\config",
@@ -23,9 +31,7 @@ namespace PythLR
             stopwatch.Start();
 
             var system = FileSystem.GetFileSystem('C');
-
-            var outputPath = args.HasArgument("-o") ? args.GetArgumentParameter("-o") : ".";
-            var zipPath = $@"{outputPath}\{Environment.MachineName}.zip";
+            var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
 
             var files = paths.SelectMany(path => system.GetFilesFromPath(path));
             files.CollectFilesToArchive(zipPath);
