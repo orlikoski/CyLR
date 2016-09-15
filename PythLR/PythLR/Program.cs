@@ -42,10 +42,10 @@ namespace PythLR
             if (arguments.SFTPCheck)
             {
                 var zipPath = $@".\{Environment.MachineName}.zip";
-                files.CollectFilesToArchive(zipPath);
+                var archiveStream = files.CollectFilesToArchive(zipPath);
                 var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
                 client.Connect();
-                client.UploadFile(new FileStream(zipPath, FileMode.Open, FileAccess.Read), $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                client.UploadFile(archiveStream, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                 client.Disconnect();
             }
             else
