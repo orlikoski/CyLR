@@ -8,20 +8,15 @@ namespace PythLR
 {
     internal static class Archive
     {
-        public static Stream CollectFilesToArchive(this IEnumerable<DiscFileInfo> files,
-            string archivePath)
+        public static void CollectFilesToArchive(this IEnumerable<DiscFileInfo> files, Stream outStream)
         {
-            var archiveFile = new FileInfo(archivePath);
-            Directory.CreateDirectory(archiveFile.Directory.FullName);
-            var outStream = File.Open(archivePath, FileMode.Create, FileAccess.ReadWrite);
-            using (var archive = new ZipArchive(outStream, ZipArchiveMode.Create))
+            using (var archive = new ZipArchive(outStream, ZipArchiveMode.Create, true))
             {
                 foreach (var file in files)
                 {
                     WriteFileToArchive(archive, file);
                 }
             }
-            return outStream;
         }
 
         private static void WriteFileToArchive(ZipArchive archive, DiscFileInfo file)

@@ -42,16 +42,31 @@ namespace PythLR
             if (arguments.SFTPCheck)
             {
                 var zipPath = $@".\{Environment.MachineName}.zip";
-                var archiveStream = files.CollectFilesToArchive(zipPath);
-                var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
-                client.Connect();
-                client.UploadFile(archiveStream, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
-                client.Disconnect();
+                var archiveFile = new FileInfo(zipPath);
+                Directory.CreateDirectory(archiveFile.Directory.FullName);
+                using (var archiveStream = new MemoryStream())
+                {
+                    files.CollectFilesToArchive(archiveStream);
+                    var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
+                    client.Connect();
+                    client.UploadFile(archiveStream, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                    client.Disconnect();
+                }
             }
             else
             {
                 var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
-                files.CollectFilesToArchive(zipPath);
+                var archiveFile = new FileInfo(zipPath);
+                Directory.CreateDirectory(archiveFile.Directory.FullName);
+                //using (var archiveStream = File.Open(zipPath, FileMode.Create, FileAccess.ReadWrite))
+                using (var archiveStream = new MemoryStream())
+                {
+                    Console.WriteLine(archiveStream.CanRead);
+                    archiveStream.Capacity = 1024*512;
+                    files.CollectFilesToArchive(archiveStream);
+                    Console.WriteLine(archiveStream.CanRead);
+                    archiveStream.CopyTo(File.OpenWrite(zipPath));
+                }
             }
 
 
