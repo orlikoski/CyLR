@@ -11,7 +11,21 @@ namespace PythLR
     {
         private static void Main(string[] args)
         {
-            var arguments = new Arguments(args);
+            Arguments arguments;
+            try
+            {
+                arguments = new Arguments(args);
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unknown error while parsing arguments: {e.Message}");
+                return;
+            }
 
             if (arguments.HelpRequested)
             {
@@ -33,25 +47,33 @@ namespace PythLR
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            var system = FileSystem.GetFileSystem('C');
-
-            var files = paths.SelectMany(path => system.GetFilesFromPath(path));
-
-
-
-            if (arguments.SFTPCheck)
+            try
             {
-                var zipPath = $@".\{Environment.MachineName}.zip";
-                files.CollectFilesToArchive(zipPath);
-                var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
-                client.Connect();
-                client.UploadFile(new FileStream(zipPath, FileMode.Open, FileAccess.Read), $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
-                client.Disconnect();
+                var system = FileSystem.GetFileSystem('C');
+
+                var files = paths.SelectMany(path => system.GetFilesFromPath(path));
+
+
+
+                if (arguments.SFTPCheck)
+                {
+                    var zipPath = $@".\{Environment.MachineName}.zip";
+                    files.CollectFilesToArchive(zipPath);
+                    var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
+                    client.Connect();
+                    client.UploadFile(new FileStream(zipPath, FileMode.Open, FileAccess.Read),
+                        $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                    client.Disconnect();
+                }
+                else
+                {
+                    var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
+                    files.CollectFilesToArchive(zipPath);
+                }
             }
-            else
+            catch (Exception e)
             {
-                var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
-                files.CollectFilesToArchive(zipPath);
+                Console.WriteLine($"Error occured while collecting files:\n{e}");
             }
 
 
