@@ -75,7 +75,7 @@
     <Compile Include="read\FileSystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="write\SFTP.cs" />
+    <Compile Include="write\Sftp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -126,9 +126,9 @@ foreach (var item in filesToCleanup)
 ]]></Code>
     </Task>
   </UsingTask>
-  <Target Name="CleanReferenceCopyLocalPaths" AfterTargets="AfterBuild;NonWinFodyTarget">
+  <!--Target Name="CleanReferenceCopyLocalPaths" AfterTargets="AfterBuild;NonWinFodyTarget">
     <CosturaCleanup Config="FodyWeavers.xml" Files="@(ReferenceCopyLocalPaths->'$(OutDir)%(DestinationSubDirectory)%(Filename)%(Extension)')" />
-  </Target>
+  </Target-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

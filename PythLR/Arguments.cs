@@ -25,6 +25,10 @@ namespace PythLR
             {
                 "-s",
                 "The server resolvable FQDN or IP address of the remote SFTP server"
+            },
+            {
+                "-m",
+                "Attempt to perform the collection entirely in-memory before sending via SFTP. May use a lot of memory depending on the size of files collected."
             }
         };
 
@@ -34,6 +38,7 @@ namespace PythLR
 
         public readonly string OutputPath = ".";
         public readonly bool SFTPCheck;
+        public readonly bool SFTPInMemory;
         public readonly string UserName = string.Empty;
         public readonly string UserPassword = string.Empty;
         public readonly string SFTPServer = string.Empty;
@@ -50,25 +55,30 @@ namespace PythLR
                 {
                     OutputPath = args.GetArgumentParameter(true, "-o");
                 }
-                SFTPCheck = args.HasArgument("-u") && args.HasArgument("-p") && args.HasArgument("-s");
-                if (SFTPCheck)
+
+                if (args.HasArgument("-u"))
                 {
-                    if (args.HasArgument("-u"))
-                    {
-                        UserName = args.GetArgumentParameter(true, "-u");
-                    }
-                    if (args.HasArgument("-p"))
-                    {
-                        UserPassword = args.GetArgumentParameter(true, "-p");
-                    }
-                    if (args.HasArgument("-s"))
-                    {
-                        SFTPServer = args.GetArgumentParameter(true, "-s");
-                    }
+                    UserName = args.GetArgumentParameter(true, "-u");
                 }
-                else if (args.HasArgument("-u") || args.HasArgument("-p") || args.HasArgument("-s"))
+                if (args.HasArgument("-p"))
+                {
+                    UserPassword = args.GetArgumentParameter(true, "-p");
+                }
+                if (args.HasArgument("-s"))
+                {
+                    SFTPServer = args.GetArgumentParameter(true, "-s");
+                }
+                var sftpArgs = new[] { UserName, UserPassword, SFTPServer };
+                SFTPCheck = sftpArgs.Any(arg=>!string.IsNullOrEmpty(arg));
+                if (SFTPCheck && sftpArgs.Any(string.IsNullOrEmpty))
                 {
                     throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
+                }
+
+                SFTPInMemory = args.HasArgument("-m");
+                if (SFTPInMemory && !SFTPCheck)
+                {
+                    throw new ArgumentException("-m may only be used with SFTP.");
                 }
             }
         }
@@ -81,7 +91,7 @@ namespace PythLR
                 var helpText = new StringBuilder(basehelpmessage).AppendLine();
                 foreach (var command in HelpTopics)
                 {
-                    helpText.AppendLine(command.Key).AppendLine("\t"+command.Value).AppendLine();
+                    helpText.AppendLine(command.Key).AppendLine("\t" + command.Value).AppendLine();
                 }
                 help = helpText.ToString();
             }
