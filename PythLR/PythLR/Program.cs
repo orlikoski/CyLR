@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using PythLR.write;
-using Renci.SshNet;
 
 namespace PythLR
 {
@@ -63,10 +62,7 @@ namespace PythLR
                     using (var archiveStream = new MemoryStream())
                     {
                         files.CollectFilesToArchive(archiveStream);
-                        var client = new SftpClient(arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword);
-                        client.Connect();
-                        client.UploadFile(archiveStream, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
-                        client.Disconnect();
+                        Sftp.SendUsingSftp(archiveStream, arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
                 }
                 else
@@ -74,14 +70,10 @@ namespace PythLR
                     var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
                     var archiveFile = new FileInfo(zipPath);
                     Directory.CreateDirectory(archiveFile.Directory.FullName);
-                    //using (var archiveStream = File.Open(zipPath, FileMode.Create, FileAccess.ReadWrite))
-                    using (var archiveStream = new MemoryStream())
+                    using (var archiveStream = File.Open(zipPath, FileMode.Create, FileAccess.ReadWrite))
                     {
-                        Console.WriteLine(archiveStream.CanRead);
-                        archiveStream.Capacity = 1024*512;
                         files.CollectFilesToArchive(archiveStream);
-                        Console.WriteLine(archiveStream.CanRead);
-                        archiveStream.CopyTo(File.OpenWrite(zipPath));
+                        archiveStream.CopyTo(system.OpenFile(zipPath, FileMode.Create, FileAccess.Write));
                     }
                 }
             }
