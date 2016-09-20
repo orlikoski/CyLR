@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using DiscUtils;
+using DiscUtils.Ntfs;
 using PythLR.write;
 
 namespace PythLR
@@ -48,18 +50,14 @@ namespace PythLR
 
             try
             {
-                var system = FileSystem.GetFileSystem('C');
+                var system = FileSystem.GetFileSystem('C', FileAccess.Read);
 
                 var files = paths.SelectMany(path => system.GetFilesFromPath(path));
 
-
-
                 if (arguments.SFTPCheck)
                 {
-                    var zipPath = $@".\{Environment.MachineName}.zip";
-                    var archiveFile = new FileInfo(zipPath);
-                    Directory.CreateDirectory(archiveFile.Directory.FullName);
-                    using (var archiveStream = new MemoryStream())
+                    var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream(system, $@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                    using (archiveStream)
                     {
                         files.CollectFilesToArchive(archiveStream);
                         Sftp.SendUsingSftp(archiveStream, arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
@@ -68,12 +66,10 @@ namespace PythLR
                 else
                 {
                     var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
-                    var archiveFile = new FileInfo(zipPath);
-                    Directory.CreateDirectory(archiveFile.Directory.FullName);
-                    using (var archiveStream = File.Open(zipPath, FileMode.Create, FileAccess.ReadWrite))
+                    var archiveStream = OpenFileStream(system, zipPath);
+                    using (archiveStream)
                     {
                         files.CollectFilesToArchive(archiveStream);
-                        archiveStream.CopyTo(system.OpenFile(zipPath, FileMode.Create, FileAccess.Write));
                     }
                 }
             }
@@ -84,6 +80,16 @@ namespace PythLR
 
             stopwatch.Stop();
             Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
+        }
+
+        private static Stream OpenFileStream(IFileSystem system, string path)
+        {
+            var archiveFile = system.GetFileInfo(path);
+            if (!system.DirectoryExists(archiveFile.DirectoryName))
+            {
+                system.CreateDirectory(archiveFile.DirectoryName);
+            }
+            return File.Create(archiveFile.FullName); //TODO: Replace with non-api call
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using DiscUtils;
 using DiscUtils.Ntfs;
 using RawDiskLib;
@@ -8,9 +9,9 @@ namespace PythLR
 {
     internal static class FileSystem
     {
-        public static IFileSystem GetFileSystem(char driveLetter)
+        public static IFileSystem GetFileSystem(char driveLetter, FileAccess fileAccess)
         {
-            var disk = new RawDisk(driveLetter);
+            var disk = new RawDisk(driveLetter, fileAccess);
             var rawDiskStream = disk.CreateDiskStream();
             var system = new NtfsFileSystem(rawDiskStream);
             return system;
