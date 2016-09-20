@@ -101,7 +101,7 @@ namespace CyLR
             {
                 archiveFile.Directory.Create();
             }
-            return File.Create(archiveFile.FullName); //TODO: Replace with non-api call
+            return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite); //TODO: Replace with non-api call
         }
     }
 }
