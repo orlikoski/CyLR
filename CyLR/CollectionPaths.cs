@@ -18,8 +18,8 @@ namespace CyLR
                 @"\Windows\System32\drivers\etc\hosts",
                 @"$MFT"
             };
-
-            if (arguments.CollectionFilePath != null)
+ 
+            if (arguments.CollectionFilePath != ".")
             {
                 if (File.Exists(arguments.CollectionFilePath))
                 {
@@ -33,6 +33,7 @@ namespace CyLR
                 }
 
             }
+
             return paths;
         }
     }

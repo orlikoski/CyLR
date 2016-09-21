@@ -39,11 +39,12 @@ namespace CyLR
             {
                 paths = CollectionPaths.GetPaths(arguments);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine($"Error occured while collecting files:\n{e}");
                 return;
             }
-            
+
             
             var stopwatch = new Stopwatch();
             stopwatch.Start();
