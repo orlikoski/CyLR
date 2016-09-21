@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Renci.SshNet;
 
-namespace PythLR.write
+namespace CyLR.write
 {
     internal static class Sftp
     {
