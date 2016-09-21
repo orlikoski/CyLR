@@ -34,17 +34,17 @@ namespace CyLR
                 return;
             }
 
-            string[] paths =
+            string[] paths;
+            try
             {
-                @"\Windows\System32\config",
-                @"\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
-                @"\Windows\Prefetch",
-                @"\Windows\Tasks",
-                @"\Windows\SchedLgU.Txt",
-                @"\Windows\System32\winevt\logs",
-                @"\Windows\System32\drivers\etc\hosts",
-                @"$MFT"
-            };
+                paths = CollectionPaths.GetPaths(arguments);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            
+            
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
