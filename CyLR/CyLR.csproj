@@ -88,6 +88,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionPaths.cs" />
     <Compile Include="write\Archive.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="read\FileSystem.cs" />
