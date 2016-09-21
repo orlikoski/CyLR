@@ -28,7 +28,7 @@ namespace CyLR
             },
             {
                 "-s",
-                "The server resolvable FQDN or IP address of the remote SFTP server"
+                "The server resolvable FQDN or IP address and port of the remote SFTP server. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
             },
             {
                 "-m",

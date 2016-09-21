@@ -60,8 +60,19 @@ namespace CyLR
                     var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream(system, $@"{arguments.OutputPath}\{Environment.MachineName}.zip");
                     using (archiveStream)
                     {
+                        int port;
+                        string[] server = arguments.SFTPServer.Split(':');
+                        try
+                        {
+                            port = Int32.Parse(server[1]);
+                        }
+                        catch (Exception)
+                        {
+                            port = 22;
+                        }
+
                         files.CollectFilesToArchive(archiveStream);
-                        Sftp.SendUsingSftp(archiveStream, arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
                 }
                 else
