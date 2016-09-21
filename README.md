@@ -6,6 +6,7 @@ CyLR — Live Response Collection tool by Alan Orlikoski and Jason Yegge
 The CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.
 
 The main features are:
+*  Quick collection
 *  Collection process does not use Windows API
 *  Optimized to store the collected artifacts in memory (minimizing or removing entirely the need to write additional artifacts on the host disk)
 *  Built in SFTP capability
