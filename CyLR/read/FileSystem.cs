@@ -5,7 +5,7 @@ using DiscUtils;
 using DiscUtils.Ntfs;
 using RawDiskLib;
 
-namespace PythLR
+namespace CyLR.read
 {
     internal static class FileSystem
     {

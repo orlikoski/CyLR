@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using CyLR.read;
+using CyLR.write;
 using DiscUtils;
-using DiscUtils.Ntfs;
-using PythLR.write;
+using PythLR;
 
-namespace PythLR
+namespace CyLR
 {
     internal static class Program
     {

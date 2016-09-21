@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using DiscUtils;
 
-namespace PythLR
+namespace CyLR.write
 {
     internal static class Archive
     {

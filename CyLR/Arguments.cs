@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PythLR
+namespace CyLR
 {
     public class Arguments
     {
-        const string basehelpmessage = "Tool used to collect various artifacts. Avalable options:";
+        const string BaseHelpMessage = "Tool used to collect various artifacts. Avalable options:";
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
@@ -97,7 +97,7 @@ namespace PythLR
             string help;
             if (string.IsNullOrEmpty(topic))
             {
-                var helpText = new StringBuilder(basehelpmessage).AppendLine();
+                var helpText = new StringBuilder(BaseHelpMessage).AppendLine();
                 foreach (var command in HelpTopics)
                 {
                     helpText.AppendLine(command.Key).AppendLine("\t" + command.Value).AppendLine();
