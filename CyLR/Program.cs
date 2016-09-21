@@ -5,6 +5,7 @@ using System.Linq;
 using DiscUtils;
 using DiscUtils.Ntfs;
 using PythLR.write;
+using CyLR;
 
 namespace PythLR
 {
@@ -33,18 +34,16 @@ namespace PythLR
                 Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
                 return;
             }
-
-            string[] paths =
+            string[] paths;
+            try
             {
-                @"\Windows\System32\config",
-                @"\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
-                @"\Windows\Prefetch",
-                @"\Windows\Tasks",
-                @"\Windows\SchedLgU.Txt",
-                @"\Windows\System32\winevt\logs",
-                @"\Windows\System32\drivers\etc\hosts",
-                @"$MFT"
-            };
+                paths = CollectionPaths.GetPaths(arguments);
+            }
+            catch(ArgumentException)
+            {
+                return;
+            }
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
