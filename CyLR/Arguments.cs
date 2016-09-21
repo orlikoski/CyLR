@@ -16,7 +16,7 @@ namespace CyLR
             },
             {
                 "-c",
-                "Optional arguement to provide custom list of artifact files and directories (one entry per line).\nUsage: -c <path to config file>"
+                "Optional argument to provide custom list of artifact files and directories (one entry per line).\nUsage: -c <path to config file>"
             },
             {
                 "-u",

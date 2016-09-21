@@ -5,7 +5,6 @@ using System.Linq;
 using CyLR.read;
 using CyLR.write;
 using DiscUtils;
-using PythLR;
 
 namespace CyLR
 {
