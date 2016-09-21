@@ -41,7 +41,7 @@ The standard list of collected artifacts are:
 ## ARGUMENTS
 
 ## OPTIONS
-* `--help` — Show help message and exit.
+* '-\-help' — Show help message and exit.
 * '-o' — Defines the directory that the zip archive will be created in. Defaults to current working directory. (applies to SFTP and local storage options)
 * SFTP Options
     * '-u' — SFTP username
