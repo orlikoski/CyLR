@@ -72,7 +72,10 @@ namespace CyLR
                         }
 
                         files.CollectFilesToArchive(archiveStream);
-                        Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+
+                        archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
+
+                        Sftp.SendUsingSftp(archiveStream, arguments.SFTPServer, 22, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
                 }
                 else
