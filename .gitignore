@@ -1,6 +1,6 @@
-LRdata.zip
-PythLR/bin/
-PythLR/obj/
+
+CyLR/bin/
+CyLR/obj/
 .vs/
 packages/
 *.vspx
