@@ -84,10 +84,10 @@ namespace PythLR
 
         private static Stream OpenFileStream(IFileSystem system, string path)
         {
-            var archiveFile = system.GetFileInfo(path);
-            if (!system.DirectoryExists(archiveFile.DirectoryName))
+            var archiveFile = new FileInfo(path);
+            if (archiveFile.Directory != null && !archiveFile.Directory.Exists)
             {
-                system.CreateDirectory(archiveFile.DirectoryName);
+                archiveFile.Directory.Create();
             }
             return File.Create(archiveFile.FullName); //TODO: Replace with non-api call
         }
