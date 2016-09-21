@@ -15,6 +15,10 @@ namespace PythLR
                 "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -o <directory path>"
             },
             {
+                "-c",
+                "Optional arguement to provide custom list of artifact files and directories (one entry per line).\nUsage: -c <path to config file>"
+            },
+            {
                 "-u",
                 "The username required to SCP the data to the remote SFTP server"
             },
@@ -36,6 +40,7 @@ namespace PythLR
 
         public readonly string HelpTopic;
 
+        public readonly string CollectionFilePath = ".";
         public readonly string OutputPath = ".";
         public readonly bool SFTPCheck;
         public readonly bool SFTPInMemory;
@@ -79,6 +84,10 @@ namespace PythLR
                 if (SFTPInMemory && !SFTPCheck)
                 {
                     throw new ArgumentException("-m may only be used with SFTP.");
+                }
+                if (args.HasArgument("-c"))
+                {
+                    CollectionFilePath = args.GetArgumentParameter(true, "-c");
                 }
             }
         }
