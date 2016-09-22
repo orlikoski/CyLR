@@ -50,53 +50,49 @@ namespace CyLR
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            try
+          try
+          {
+            using (var archiveStream = arguments.SFTPInMemory
+                ? new MemoryStream()
+                : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
             {
+              foreach (var drive in paths)
+              {
+                var driveName = drive.Key;
+                var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
 
-                var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
-                foreach (var drive in paths)
+                var files = drive.Value
+                  .SelectMany(path => system.GetFilesFromPath(path))
+                  .Select(file => new Tuple<char, DiscFileInfo>(driveName, file));
+
+                  files.CollectFilesToArchive(archiveStream);
+              }
+              
+              if (arguments.SFTPCheck)
+              {
+                int port;
+                var server = arguments.SFTPServer.Split(':');
+                try
                 {
-                    var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
-
-                    var files = drive.Value
-                        .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(file => new Tuple<char, DiscFileInfo>(drive.Key, file));
-
-                    if (arguments.SFTPCheck)
-                    {
-                        using (archiveStream)
-                        {
-                            int port;
-                            var server = arguments.SFTPServer.Split(':');
-                            try
-                            {
-                                port = int.Parse(server[1]);
-                            }
-                            catch (Exception)
-                            {
-                                port = 22;
-                            }
-
-                            files.CollectFilesToArchive(archiveStream);
-
-                            archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
-
-                            Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
-                        }
-                    }
-                    else
-                    {
-                        using (archiveStream)
-                        {
-                            files.CollectFilesToArchive(archiveStream);
-                        }
-                    }
+                  port = int.Parse(server[1]);
                 }
+                catch (Exception)
+                {
+                  port = 22;
+                }
+
+
+                archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
+
+                Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
+                  $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+              }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error occured while collecting files:\n{e}");
-            }
+          }
+          catch (Exception e)
+          {
+              Console.WriteLine($"Error occured while collecting files:\n{e}");
+          }
 
             stopwatch.Stop();
             Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
