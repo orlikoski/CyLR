@@ -32,7 +32,7 @@ namespace CyLR.read
             }
             else
             {
-                Console.WriteLine($"File or folder '{path}' does not exists.");
+                Console.WriteLine($"File or folder '{path}' does not exist.");
             }
         }
     }
