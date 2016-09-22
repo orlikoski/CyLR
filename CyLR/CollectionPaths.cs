@@ -11,7 +11,7 @@ namespace CyLR
             var paths = new Dictionary<char, List<string>>
             {
                 {'C',
-                    new List<string>()
+                    new List<string>
                     {
                         @"\Windows\System32\config",
                         @"\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",

@@ -53,22 +53,24 @@ namespace CyLR
             try
             {
 
+                var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
                 foreach (var drive in paths)
                 {
                     var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
 
-                    var files = drive.Value.SelectMany(path => system.GetFilesFromPath(path));
+                    var files = drive.Value
+                        .SelectMany(path => system.GetFilesFromPath(path))
+                        .Select(file => new Tuple<char, DiscFileInfo>(drive.Key, file));
 
                     if (arguments.SFTPCheck)
                     {
-                        var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream(system, $@"{arguments.OutputPath}\{Environment.MachineName}.zip");
                         using (archiveStream)
                         {
                             int port;
-                            string[] server = arguments.SFTPServer.Split(':');
+                            var server = arguments.SFTPServer.Split(':');
                             try
                             {
-                                port = Int32.Parse(server[1]);
+                                port = int.Parse(server[1]);
                             }
                             catch (Exception)
                             {
@@ -84,8 +86,6 @@ namespace CyLR
                     }
                     else
                     {
-                        var zipPath = $@"{drive.Key}\{arguments.OutputPath}\{Environment.MachineName}.zip";
-                        var archiveStream = OpenFileStream(system, zipPath);
                         using (archiveStream)
                         {
                             files.CollectFilesToArchive(archiveStream);
@@ -102,7 +102,7 @@ namespace CyLR
             Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
         }
 
-        private static Stream OpenFileStream(IFileSystem system, string path)
+        private static Stream OpenFileStream(string path)
         {
             var archiveFile = new FileInfo(path);
             if (archiveFile.Directory != null && !archiveFile.Directory.Exists)
