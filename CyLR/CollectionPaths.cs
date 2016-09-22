@@ -20,7 +20,7 @@ namespace CyLR
                         @"\Windows\SchedLgU.Txt",
                         @"\Windows\System32\winevt\logs",
                         @"\Windows\System32\drivers\etc\hosts",
-                        @"$MFT"
+                        @"C:$MFT"
                     }
                 }
             };
