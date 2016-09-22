@@ -55,6 +55,7 @@ namespace CyLR
             using (var archiveStream = arguments.SFTPInMemory
                 ? new MemoryStream()
                 : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+            using (var archive = Archive.GetArchive(archiveStream))
             {
               foreach (var drive in paths)
               {
@@ -65,7 +66,7 @@ namespace CyLR
                   .SelectMany(path => system.GetFilesFromPath(path))
                   .Select(file => new Tuple<char, DiscFileInfo>(driveName, file));
 
-                  files.CollectFilesToArchive(archiveStream);
+                  files.CollectFilesToArchive(archive);
               }
               
               if (arguments.SFTPCheck)
