@@ -8,15 +8,17 @@ namespace CyLR.write
 {
     internal static class Archive
     {
-        public static void CollectFilesToArchive(this IEnumerable<Tuple<char, DiscFileInfo>> files, Stream outStream)
+      public static ZipArchive GetArchive(Stream destinationStream)
+      {
+        return new ZipArchive(destinationStream, ZipArchiveMode.Create, true);
+      }
+
+        public static void CollectFilesToArchive(this IEnumerable<Tuple<char, DiscFileInfo>> files, ZipArchive archive)
         {
-            using (var archive = new ZipArchive(outStream, ZipArchiveMode.Create, true))
-            {
                 foreach (var file in files)
                 {
                     WriteFileToArchive(archive, $@"{file.Item1}\{file.Item2.FullName}", file.Item2);
                 }
-            }
         }
 
         private static void WriteFileToArchive(ZipArchive archive, string entryName, DiscFileInfo file)
