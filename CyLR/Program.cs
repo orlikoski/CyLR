@@ -5,6 +5,7 @@ using System.Linq;
 using CyLR.read;
 using CyLR.write;
 using DiscUtils;
+using System.Collections.Generic;
 
 namespace CyLR
 {
@@ -34,7 +35,7 @@ namespace CyLR
                 return;
             }
 
-            string[] paths;
+            Dictionary<char, List<string>> paths;
             try
             {
                 paths = CollectionPaths.GetPaths(arguments);
@@ -51,40 +52,44 @@ namespace CyLR
 
             try
             {
-                var system = FileSystem.GetFileSystem('C', FileAccess.Read);
 
-                var files = paths.SelectMany(path => system.GetFilesFromPath(path));
-
-                if (arguments.SFTPCheck)
+                foreach (var drive in paths)
                 {
-                    var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream(system, $@"{arguments.OutputPath}\{Environment.MachineName}.zip");
-                    using (archiveStream)
+                    var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
+
+                    var files = drive.Value.SelectMany(path => system.GetFilesFromPath(path));
+
+                    if (arguments.SFTPCheck)
                     {
-                        int port;
-                        string[] server = arguments.SFTPServer.Split(':');
-                        try
+                        var archiveStream = arguments.SFTPInMemory ? new MemoryStream() : OpenFileStream(system, $@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                        using (archiveStream)
                         {
-                            port = Int32.Parse(server[1]);
+                            int port;
+                            string[] server = arguments.SFTPServer.Split(':');
+                            try
+                            {
+                                port = Int32.Parse(server[1]);
+                            }
+                            catch (Exception)
+                            {
+                                port = 22;
+                            }
+
+                            files.CollectFilesToArchive(archiveStream);
+
+                            archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
+
+                            Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                         }
-                        catch (Exception)
-                        {
-                            port = 22;
-                        }
-
-                        files.CollectFilesToArchive(archiveStream);
-
-                        archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
-
-                        Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword, $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
-                }
-                else
-                {
-                    var zipPath = $@"{arguments.OutputPath}\{Environment.MachineName}.zip";
-                    var archiveStream = OpenFileStream(system, zipPath);
-                    using (archiveStream)
+                    else
                     {
-                        files.CollectFilesToArchive(archiveStream);
+                        var zipPath = $@"{drive.Key}\{arguments.OutputPath}\{Environment.MachineName}.zip";
+                        var archiveStream = OpenFileStream(system, zipPath);
+                        using (archiveStream)
+                        {
+                            files.CollectFilesToArchive(archiveStream);
+                        }
                     }
                 }
             }
