@@ -23,7 +23,8 @@ namespace CyLR.write
 
         private static void WriteFileToArchive(ZipArchive archive, string entryName, DiscFileInfo file)
         {
-            Console.WriteLine("Collecting File: {0}", file.FullName);
+            string tmptext = entryName.Substring(0, 1) + ":" + entryName.Substring(1);
+            Console.WriteLine("Collecting File: {0}", tmptext);
             using (var stream = file.Open(FileMode.Open, FileAccess.Read))
             {
                 WriteStreamToArchive(archive, entryName, stream);
