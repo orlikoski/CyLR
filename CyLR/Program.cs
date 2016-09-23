@@ -88,7 +88,12 @@ namespace CyLR
 
                         Sftp.Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
                           $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+
                     }
+                }
+                if (File.Exists($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+                {
+                    File.Delete($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
                 }
             }
             catch (Exception e)
