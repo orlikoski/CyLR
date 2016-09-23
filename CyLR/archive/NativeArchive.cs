@@ -8,6 +8,7 @@ namespace CyLR.archive
     {
         private readonly ZipArchive archive;
         public NativeArchive(Stream destination)
+            : base(destination)
         {
             archive = new ZipArchive(destination, ZipArchiveMode.Create, true);
         }
@@ -23,7 +24,10 @@ namespace CyLR.archive
 
         protected override void Dispose(bool disposing)
         {
-            archive.Dispose();
+            if (disposing)
+            {
+                archive.Dispose();
+            }
         }
     }
 }

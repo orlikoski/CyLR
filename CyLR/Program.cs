@@ -56,6 +56,7 @@ namespace CyLR
                     ? new MemoryStream()
                     : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
 #if DOT_NET_4_0
+                using (var archive = new SharpZipArchive(archiveStream))
 #else
                 using (var archive = new NativeArchive(archiveStream))
 #endif
@@ -84,9 +85,6 @@ namespace CyLR
                         {
                             port = 22;
                         }
-
-
-                        archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
 
                         Sftp.Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
                           $@"{arguments.OutputPath}/{Environment.MachineName}.zip");

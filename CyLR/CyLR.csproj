@@ -72,6 +72,9 @@
       <HintPath>..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Library\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="RawDiskLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\RawDiskLib.dll</HintPath>
@@ -92,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="archive\NativeArchive.cs" />
+    <Compile Include="archive\SharpZipArchive.cs" />
     <Compile Include="CollectionPaths.cs" />
     <Compile Include="archive\Archive.cs" />
     <Compile Include="Arguments.cs" />

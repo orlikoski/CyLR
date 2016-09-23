@@ -7,12 +7,18 @@ namespace CyLR.archive
 {
     internal abstract class Archive : IDisposable
     {
+        private readonly Stream destination;
+        protected Archive(Stream destination)
+        {
+            this.destination = destination;
+        }
         public void CollectFilesToArchive(IEnumerable<Tuple<string, DiscFileInfo>> files)
         {
             foreach (var file in files)
             {
                 WriteFileToArchive($@"{file.Item1}", file.Item2);
             }
+            destination.Seek(0, SeekOrigin.Begin); //rewind the stream
         }
 
         private void WriteFileToArchive(string entryName, DiscFileInfo file)
