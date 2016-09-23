@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Renci.SshNet;
 
-namespace CyLR.write
+namespace CyLR.Sftp
 {
     internal static class Sftp
     {
