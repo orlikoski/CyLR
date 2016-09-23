@@ -7,7 +7,7 @@ namespace CyLR
 {
     public class Arguments
     {
-        const string BaseHelpMessage = "Tool used to collect various artifacts. Avalable options:";
+        const string BaseHelpMessage = "CyLR Version 1.0\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
@@ -16,27 +16,28 @@ namespace CyLR
             },
             {
                 "-c",
-                "Optional argument to provide custom list of artifact files and directories (one entry per line).\nUsage: -c <path to config file>"
+                "Optional argument to provide custom list of artifact files and directories (one entry per line).\nNOTE: Must use full path including drive letter on each line.  MFT can be collected by \"C:$MFT\" or \"D:$MFT\" and so on.\nUsage: -c <path to config file>"
             },
             {
                 "-u",
-                "The username required to SCP the data to the remote SFTP server"
+                "SFTP username"
             },
             {
                 "-p",
-                "The password required to SCP the data to the remote SFTP server"
+                "SFTP password"
             },
             {
                 "-s",
-                "The server resolvable FQDN or IP address and port of the remote SFTP server. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
+                "SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
             },
             {
                 "-m",
-                "Attempt to perform the collection entirely in-memory before sending via SFTP. May use a lot of memory depending on the size of files collected."
+                "ONLY availabe in SFTP mode. Performs the collection entirely in-memory before sending via SFTP. May use a lot of memory depending on the size of files collected."
             }
         };
 
-        public readonly bool HelpRequested;
+        public readonly bool HelpRequested01;
+        public readonly bool HelpRequested02;
 
         public readonly string HelpTopic;
 
@@ -50,11 +51,14 @@ namespace CyLR
 
         public Arguments(string[] args)
         {
-            HelpRequested = args.HasArgument("--help");
-            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help") : string.Empty;
+            HelpRequested01 = args.HasArgument("--help");
+            HelpTopic = HelpRequested01 ? args.GetArgumentParameter(false, "--help") : string.Empty;
+
+            HelpRequested02 = args.HasArgument("-h");
+            HelpTopic = HelpRequested02 ? args.GetArgumentParameter(false, "-h") : string.Empty;
 
             //If help has been requested, parse no more arguments
-            if (!HelpRequested)
+            if (!HelpRequested01 && !HelpRequested02)
             {
                 if (args.HasArgument("-o"))
                 {
@@ -83,7 +87,7 @@ namespace CyLR
                 SFTPInMemory = args.HasArgument("-m");
                 if (SFTPInMemory && !SFTPCheck)
                 {
-                    throw new ArgumentException("-m may only be used with SFTP.");
+                    throw new ArgumentException("-m may only be used with the SFTP option.");
                 }
                 if (args.HasArgument("-c"))
                 {
