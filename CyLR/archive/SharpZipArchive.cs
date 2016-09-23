@@ -13,6 +13,7 @@ namespace CyLR.archive
             : base(destination)
         {
             archive = new ZipOutputStream(destination);
+            archive.IsStreamOwner = false;
         }
 
         protected override void WriteStreamToArchive(string entryName, Stream stream)
