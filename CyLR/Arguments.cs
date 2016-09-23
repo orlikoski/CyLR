@@ -7,7 +7,7 @@ namespace CyLR
 {
     public class Arguments
     {
-        const string BaseHelpMessage = "CyLR Version 1.0\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
+        const string BaseHelpMessage = "CyLR Version 1.1\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
