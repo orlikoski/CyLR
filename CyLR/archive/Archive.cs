@@ -18,7 +18,6 @@ namespace CyLR.archive
             {
                 WriteFileToArchive($@"{file.Item1}", file.Item2);
             }
-            destination.Seek(0, SeekOrigin.Begin); //rewind the stream
         }
 
         private void WriteFileToArchive(string entryName, DiscFileInfo file)
@@ -40,6 +39,7 @@ namespace CyLR.archive
         public void Dispose()
         {
             Dispose(true);
+            destination.Seek(0, SeekOrigin.Begin); //rewind the stream
         }
         #endregion
     }
