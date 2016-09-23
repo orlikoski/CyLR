@@ -47,7 +47,7 @@ The standard list of collected artifacts are:
 * SFTP Options
     * '-u' — SFTP username
     * '-p' — SFTP password
-    * '-s' — S"SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
+    * '-s' — SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
     * '-m' — Attempt to collect artifacts 100% in memory. WARNING: This may use a lot of memory depending on the size of artifacts
     # '-c' — Optional argument to provide custom list of artifact files and directories (one entry per line). NOTE: Must use full path including drive letter on each line.  MFT can be collected by "C:\$MFT" or "D:\$MFT" and so on.\nUsage: -c <path to config file>
 
