@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using CyLR.read;
-using CyLR.write;
 using DiscUtils;
 using System.Collections.Generic;
+using CyLR.archive;
 
 namespace CyLR
 {
@@ -46,54 +46,57 @@ namespace CyLR
                 return;
             }
 
-            
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-          try
-          {
-            using (var archiveStream = arguments.SFTPInMemory
-                ? new MemoryStream()
-                : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
-            using (var archive = Archive.GetArchive(archiveStream))
+            try
             {
-              foreach (var drive in paths)
-              {
-                var driveName = drive.Key;
-                var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
-
-                var files = drive.Value
-                  .SelectMany(path => system.GetFilesFromPath(path))
-                  .Select(file => new Tuple<char, DiscFileInfo>(driveName, file));
-
-                  files.CollectFilesToArchive(archive);
-              }
-              
-              if (arguments.SFTPCheck)
-              {
-                int port;
-                var server = arguments.SFTPServer.Split(':');
-                try
+                using (var archiveStream = arguments.SFTPInMemory
+                    ? new MemoryStream()
+                    : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+#if DOT_NET_4_0
+#else
+                using (var archive = new NativeArchive(archiveStream))
+#endif
                 {
-                  port = int.Parse(server[1]);
+                    foreach (var drive in paths)
+                    {
+                        var driveName = drive.Key;
+                        var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
+
+                        var files = drive.Value
+                          .SelectMany(path => system.GetFilesFromPath(path))
+                          .Select(file => new Tuple<string, DiscFileInfo>($"{driveName}\\{file.FullName}", file));
+
+                        archive.CollectFilesToArchive(files);
+                    }
+
+                    if (arguments.SFTPCheck)
+                    {
+                        int port;
+                        var server = arguments.SFTPServer.Split(':');
+                        try
+                        {
+                            port = int.Parse(server[1]);
+                        }
+                        catch (Exception)
+                        {
+                            port = 22;
+                        }
+
+
+                        archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
+
+                        Sftp.Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
+                          $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                    }
                 }
-                catch (Exception)
-                {
-                  port = 22;
-                }
-
-
-                archiveStream.Seek(0, SeekOrigin.Begin); //rewind the stream
-
-                Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
-                  $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
-              }
             }
-          }
-          catch (Exception e)
-          {
-              Console.WriteLine($"Error occured while collecting files:\n{e}");
-          }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error occured while collecting files:\n{e}");
+            }
 
             stopwatch.Stop();
             Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
