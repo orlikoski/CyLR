@@ -91,9 +91,12 @@ namespace CyLR
 
                     }
                 }
-                if (File.Exists($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+                if (arguments.SFTPCheck)
                 {
-                    File.Delete($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                    if (File.Exists($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+                    {
+                        File.Delete($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                    }
                 }
             }
             catch (Exception e)
