@@ -6,8 +6,8 @@ CyLR — Live Response Collection tool by Alan Orlikoski and Jason Yegge
 The CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.
 
 The main features are:
-*  Quick collection
-*  Collection process does not use Windows API
+*  Quick collection (it's really fast)
+*  Raw file collection process does not use Windows API 
 *  Optimized to store the collected artifacts in memory (minimizing or removing entirely the need to write additional artifacts on the host disk)
 *  Built in SFTP capability
 
@@ -30,14 +30,14 @@ CyLR.exe [--help] [-o] [-u] [-p] [-s] [-m]
 CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.
 
 The standard list of collected artifacts are:
-* "\Windows\System32\config"
-* "\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
-* "\Windows\Prefetch"
-* "\Windows\Tasks"
-* "\Windows\SchedLgU.Txt"
-* "\Windows\System32\winevt\logs"
-* "\Windows\System32\drivers\etc\hosts"
-* "$MFT"
+* "C:\Windows\System32\config"
+* "C:\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+* "C:\Windows\Prefetch"
+* "C:\Windows\Tasks"
+* "C:\Windows\SchedLgU.Txt"
+* "C:\Windows\System32\winevt\logs"
+* "C:\Windows\System32\drivers\etc\hosts"
+* "C:$MFT"
 
 ## ARGUMENTS
 
@@ -47,8 +47,9 @@ The standard list of collected artifacts are:
 * SFTP Options
     * '-u' — SFTP username
     * '-p' — SFTP password
-    * '-s' — SFTP Server resolvable hostname or IP address
+    * '-s' — S"SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
     * '-m' — Attempt to collect artifacts 100% in memory. WARNING: This may use a lot of memory depending on the size of artifacts
+    # '-c' — Optional argument to provide custom list of artifact files and directories (one entry per line). NOTE: Must use full path including drive letter on each line.  MFT can be collected by "C:\$MFT" or "D:\$MFT" and so on.\nUsage: -c <path to config file>
 
 ## DEPENDENCIES
 
