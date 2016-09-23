@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using DiscUtils;
+
+namespace CyLR.archive
+{
+    internal abstract class Archive : IDisposable
+    {
+        public void CollectFilesToArchive(IEnumerable<Tuple<string, DiscFileInfo>> files)
+        {
+            foreach (var file in files)
+            {
+                WriteFileToArchive($@"{file.Item1}", file.Item2);
+            }
+        }
+
+        private void WriteFileToArchive(string entryName, DiscFileInfo file)
+        {
+            var tmptext = entryName.Substring(0, 1) + ":" + entryName.Substring(1);
+            Console.WriteLine("Collecting File: {0}", tmptext);
+            using (var stream = file.Open(FileMode.Open, FileAccess.Read))
+            {
+                WriteStreamToArchive(entryName, stream);
+            }
+        }
+
+        protected abstract void WriteStreamToArchive(string entryName, Stream stream);
+
+        #region IDisposable Support
+        protected abstract void Dispose(bool disposing);
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
+    }
+}

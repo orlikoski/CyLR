@@ -56,6 +56,9 @@
   <PropertyGroup>
     <ApplicationIcon>Martin-Berube-Character-Knight.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">DOT_NET_4_0</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DeviceIOControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,13 +91,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="archive\NativeArchive.cs" />
     <Compile Include="CollectionPaths.cs" />
-    <Compile Include="write\Archive.cs" />
+    <Compile Include="archive\Archive.cs" />
     <Compile Include="Arguments.cs" />
     <Compile Include="read\FileSystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="write\Sftp.cs" />
+    <Compile Include="Sftp\Sftp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
