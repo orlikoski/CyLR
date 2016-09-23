@@ -19,6 +19,7 @@ namespace CyLR.archive
         {
             var entry = new ZipEntry(entryName);
             archive.PutNextEntry(entry);
+            archive.SetLevel(3);
             StreamUtils.Copy(stream, archive, new byte[4096]);
             archive.CloseEntry();
         }
