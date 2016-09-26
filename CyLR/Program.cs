@@ -52,9 +52,14 @@ namespace CyLR
 
             try
             {
-                using (var archiveStream = arguments.SFTPInMemory
-                    ? new MemoryStream()
-                    : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
+                var archiveStream = Stream.Null;
+                if(!arguments.DryRun)
+                {
+                    archiveStream = arguments.SFTPInMemory
+                        ? new MemoryStream()
+                        : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                }
+                using (archiveStream)
                 {
 #if DOT_NET_4_0
                 using (var archive = new SharpZipArchive(archiveStream))
