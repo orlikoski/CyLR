@@ -29,7 +29,7 @@ namespace CyLR
                 return;
             }
 
-            if (arguments.HelpRequested01 | arguments.HelpRequested02)
+            if (arguments.HelpRequested)
             {
                 Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
                 return;
