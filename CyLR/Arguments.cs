@@ -36,8 +36,7 @@ namespace CyLR
             }
         };
 
-        public readonly bool HelpRequested01;
-        public readonly bool HelpRequested02;
+        public readonly bool HelpRequested;
 
         public readonly string HelpTopic;
 
@@ -51,14 +50,11 @@ namespace CyLR
 
         public Arguments(string[] args)
         {
-            HelpRequested01 = args.HasArgument("--help");
-            HelpTopic = HelpRequested01 ? args.GetArgumentParameter(false, "--help") : string.Empty;
-
-            HelpRequested02 = args.HasArgument("-h");
-            HelpTopic = HelpRequested02 ? args.GetArgumentParameter(false, "-h") : string.Empty;
+            HelpRequested = args.HasArgument("--help", "-h");
+            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h") : string.Empty;
 
             //If help has been requested, parse no more arguments
-            if (!HelpRequested01 && !HelpRequested02)
+            if (!HelpRequested)
             {
                 if (args.HasArgument("-o"))
                 {
@@ -124,14 +120,14 @@ namespace CyLR
         }
 
         public static string GetArgumentParameter(this IEnumerable<string> arguments, bool requireArgument,
-            string argumentAlias)
+            params string[] argumentAliases)
         {
             var argEnumerator = arguments.GetEnumerator();
             while (argEnumerator.MoveNext())
             {
                 var currentArg = argEnumerator.Current;
 
-                if (currentArg.Equals(argumentAlias))
+                if (argumentAliases.Contains(currentArg))
                 {
                     if (argEnumerator.MoveNext())
                     {
@@ -140,19 +136,19 @@ namespace CyLR
                     if (requireArgument)
                     {
                         throw new ArgumentException(
-                            $"Argument '{argumentAlias}' had no parameters. Use '--help {argumentAlias}' for usage details.");
+                            $"Argument '{currentArg}' had no parameters. Use '--help {currentArg}' for usage details.");
                     }
                     return string.Empty;
                 }
 
-
-                if (currentArg.StartsWith(argumentAlias))
+                var match = argumentAliases.FirstOrDefault(alias => currentArg.StartsWith(alias));
+                if (match != null)
                 {
-                    return currentArg.Substring(argumentAlias.Length);
+                    return currentArg.Substring(match.Length);
                 }
             }
 
-            throw new ArgumentException($"Argument '{argumentAlias}' was not found.");
+            throw new ArgumentException($"Argument '{argumentAliases.First()}' was not found.");
         }
     }
 }
