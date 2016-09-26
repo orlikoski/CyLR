@@ -53,7 +53,7 @@ namespace CyLR
             try
             {
                 var archiveStream = Stream.Null;
-                if(!arguments.DryRun)
+                if (!arguments.DryRun)
                 {
                     archiveStream = arguments.SFTPInMemory
                         ? new MemoryStream()
@@ -64,37 +64,37 @@ namespace CyLR
 #if DOT_NET_4_0
                 using (var archive = new SharpZipArchive(archiveStream))
 #else
-                using (var archive = new NativeArchive(archiveStream))
+                    using (var archive = new NativeArchive(archiveStream))
 #endif
-                {
-                    foreach (var drive in paths)
                     {
-                      var driveName = drive.Key;
-                      var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
+                        foreach (var drive in paths)
+                        {
+                            var driveName = drive.Key;
+                            var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
 
-                      var files = drive.Value
-                        .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(file => new Tuple<string, DiscFileInfo>($"{driveName}\\{file.FullName}", file));
+                            var files = drive.Value
+                              .SelectMany(path => system.GetFilesFromPath(path))
+                              .Select(file => new Tuple<string, DiscFileInfo>($"{driveName}\\{file.FullName}", file));
 
-                      archive.CollectFilesToArchive(files);
+                            archive.CollectFilesToArchive(files);
+                        }
                     }
-                }
 
                     if (arguments.SFTPCheck)
                     {
-                      int port;
-                      var server = arguments.SFTPServer.Split(':');
-                      try
-                      {
-                        port = int.Parse(server[1]);
-                      }
-                      catch (Exception)
-                      {
-                        port = 22;
-                      }
+                        int port;
+                        var server = arguments.SFTPServer.Split(':');
+                        try
+                        {
+                            port = int.Parse(server[1]);
+                        }
+                        catch (Exception)
+                        {
+                            port = 22;
+                        }
 
-                      Sftp.Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
-                        $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        Sftp.Sftp.SendUsingSftp(archiveStream, server[0], port, arguments.UserName, arguments.UserPassword,
+                          $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
 
                     }
                 }
