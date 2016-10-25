@@ -33,6 +33,10 @@ namespace CyLR
             {
                 "-m",
                 "ONLY availabe in SFTP mode. Performs the collection entirely in-memory before sending via SFTP. May use a lot of memory depending on the size of files collected."
+            },
+            {
+                "--dry-run",
+                "Collect artifacts to a virtual zip archive, but does not send or write to disk."
             }
         };
 
@@ -47,11 +51,12 @@ namespace CyLR
         public readonly string UserName = string.Empty;
         public readonly string UserPassword = string.Empty;
         public readonly string SFTPServer = string.Empty;
+        public readonly bool DryRun;
 
         public Arguments(string[] args)
         {
-            HelpRequested = args.HasArgument("--help", "-h");
-            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h") : string.Empty;
+            HelpRequested = args.HasArgument("--help", "-h", "/?");
+            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h", "/?") : string.Empty;
 
             //If help has been requested, parse no more arguments
             if (!HelpRequested)
@@ -74,7 +79,7 @@ namespace CyLR
                     SFTPServer = args.GetArgumentParameter(true, "-s");
                 }
                 var sftpArgs = new[] { UserName, UserPassword, SFTPServer };
-                SFTPCheck = sftpArgs.Any(arg=>!string.IsNullOrEmpty(arg));
+                SFTPCheck = sftpArgs.Any(arg => !string.IsNullOrEmpty(arg));
                 if (SFTPCheck && sftpArgs.Any(string.IsNullOrEmpty))
                 {
                     throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
@@ -88,6 +93,12 @@ namespace CyLR
                 if (args.HasArgument("-c"))
                 {
                     CollectionFilePath = args.GetArgumentParameter(true, "-c");
+                }
+                DryRun = args.HasArgument("--dry-run");
+                if (DryRun)
+                {
+                    //Disable SFTP in a dry run.
+                    SFTPCheck = false;
                 }
             }
         }
