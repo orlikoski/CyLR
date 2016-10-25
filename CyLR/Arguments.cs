@@ -55,8 +55,8 @@ namespace CyLR
 
         public Arguments(string[] args)
         {
-            HelpRequested = args.HasArgument("--help", "-h");
-            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h") : string.Empty;
+            HelpRequested = args.HasArgument("--help", "-h", "/?");
+            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h", "/?") : string.Empty;
 
             //If help has been requested, parse no more arguments
             if (!HelpRequested)
