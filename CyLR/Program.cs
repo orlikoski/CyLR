@@ -70,14 +70,14 @@ namespace CyLR
                 {
                     CreateArchive(archiveStream, paths);
                 }
+
+                stopwatch.Stop();
+                Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
             }
-
-            stopwatch.Stop();
-            Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
         }
         
         /// <summary>
