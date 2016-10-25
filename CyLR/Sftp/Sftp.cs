@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Renci.SshNet;
+using Renci.SshNet.Sftp;
 
 namespace CyLR.Sftp
 {

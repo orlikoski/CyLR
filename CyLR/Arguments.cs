@@ -31,10 +31,6 @@ namespace CyLR
                 "SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  Format is <server name>:<port>\n Usage: -s 8.8.8.8:22"
             },
             {
-                "-m",
-                "ONLY availabe in SFTP mode. Performs the collection entirely in-memory before sending via SFTP. May use a lot of memory depending on the size of files collected."
-            },
-            {
                 "--dry-run",
                 "Collect artifacts to a virtual zip archive, but does not send or write to disk."
             }
@@ -46,8 +42,7 @@ namespace CyLR
 
         public readonly string CollectionFilePath = ".";
         public readonly string OutputPath = ".";
-        public readonly bool SFTPCheck;
-        public readonly bool SFTPInMemory;
+        public readonly bool UseSftp;
         public readonly string UserName = string.Empty;
         public readonly string UserPassword = string.Empty;
         public readonly string SFTPServer = string.Empty;
@@ -79,17 +74,12 @@ namespace CyLR
                     SFTPServer = args.GetArgumentParameter(true, "-s");
                 }
                 var sftpArgs = new[] { UserName, UserPassword, SFTPServer };
-                SFTPCheck = sftpArgs.Any(arg => !string.IsNullOrEmpty(arg));
-                if (SFTPCheck && sftpArgs.Any(string.IsNullOrEmpty))
+                UseSftp = sftpArgs.Any(arg => !string.IsNullOrEmpty(arg));
+                if (UseSftp && sftpArgs.Any(string.IsNullOrEmpty))
                 {
                     throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
                 }
 
-                SFTPInMemory = args.HasArgument("-m");
-                if (SFTPInMemory && !SFTPCheck)
-                {
-                    throw new ArgumentException("-m may only be used with the SFTP option.");
-                }
                 if (args.HasArgument("-c"))
                 {
                     CollectionFilePath = args.GetArgumentParameter(true, "-c");
@@ -98,7 +88,7 @@ namespace CyLR
                 if (DryRun)
                 {
                     //Disable SFTP in a dry run.
-                    SFTPCheck = false;
+                    UseSftp = false;
                 }
             }
         }
