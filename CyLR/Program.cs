@@ -100,7 +100,7 @@ namespace CyLR
 
                     var files = drive.Value
                         .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(file => new Tuple<string, DiscFileInfo>($"{driveName}\\{file.FullName}", file));
+                        .Select(file => new Tuple<string, Stream>($"{driveName}\\{file.FullName}", file.Open(FileMode.Open, FileAccess.Read)));
 
                     archive.CollectFilesToArchive(files);
                 }
