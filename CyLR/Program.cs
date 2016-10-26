@@ -7,6 +7,7 @@ using DiscUtils;
 using System.Collections.Generic;
 using System.Reflection;
 using CyLR.archive;
+using Renci.SshNet;
 
 namespace CyLR
 {
@@ -56,34 +57,28 @@ namespace CyLR
                 var archiveStream = Stream.Null;
                 if (!arguments.DryRun)
                 {
-                    archiveStream = arguments.SFTPInMemory
-                        ? new MemoryStream()
-                        : OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                    if (arguments.UseSftp)
+                    {
+                        var client = CreateSftpClient(arguments);
+                        archiveStream = client.Create($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                    }
+                    else
+                    {
+                        archiveStream = OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                    }
                 }
                 using (archiveStream)
                 {
                     CreateArchive(archiveStream, paths);
+                }
 
-                    if (arguments.SFTPCheck)
-                    {
-                        SendViaSftp(arguments, archiveStream);
-                    }
-                }
-                if (arguments.SFTPCheck)
-                {
-                    if (File.Exists($@"{arguments.OutputPath}\{Environment.MachineName}.zip"))
-                    {
-                        File.Delete($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
-                    }
-                }
+                stopwatch.Stop();
+                Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
             }
-
-            stopwatch.Stop();
-            Console.WriteLine("Extraction complete. {0} elapsed", new TimeSpan(stopwatch.ElapsedTicks).ToString("g"));
         }
         
         /// <summary>
@@ -114,11 +109,10 @@ namespace CyLR
         }
 
         /// <summary>
-        /// Sends a stream via SFTP, using configuration from the arguments.
+        /// Create an SFTP client and connect to a server using configuration from the arguments.
         /// </summary>
         /// <param name="arguments">The arguments to use to connect to the SFTP server.</param>
-        /// <param name="stream">The stream of data to send.</param>
-        private static void SendViaSftp(Arguments arguments, Stream stream)
+        private static SftpClient CreateSftpClient(Arguments arguments)
         {
             int port;
             var server = arguments.SFTPServer.Split(':');
@@ -131,8 +125,9 @@ namespace CyLR
                 port = 22;
             }
 
-            Sftp.Sftp.SendUsingSftp(stream, server[0], port, arguments.UserName, arguments.UserPassword,
-                $@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+            var client = new SftpClient(server[0], port, arguments.UserName, arguments.UserPassword);
+            client.Connect();
+            return client;
         }
 
         /// <summary>
