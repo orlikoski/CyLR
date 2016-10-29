@@ -93,10 +93,10 @@ namespace CyLR
             using (var archive = new NativeArchive(archiveStream))
 #endif
             {
-                var system = arguments.ForceNative ? (IFileSystem)new NativeFileSystem() : new RawFileSystem();
+                var system = arguments.ForceNative ? (IFileSystem) new NativeFileSystem() : new RawFileSystem();
 
                 var filePaths = paths.SelectMany(path => system.GetFilesFromPath(path)).ToList();
-                foreach (var filePath in filePaths.Where(path=>!system.FileExists(path)))
+                foreach (var filePath in filePaths.Where(path => !system.FileExists(path)))
                 {
                     Console.WriteLine($"Warning: file or folder '{filePath}' does not exist.");
                 }
@@ -117,9 +117,9 @@ namespace CyLR
                     {
                         stream = system.OpenFile(file);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                       Console.WriteLine($"Error: {e.Message}"); 
+                        Console.WriteLine($"Error: {e.Message}");
                     }
                     if (stream != null)
                     {
