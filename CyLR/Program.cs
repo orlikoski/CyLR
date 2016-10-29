@@ -5,6 +5,7 @@ using System.Linq;
 using CyLR.read;
 using DiscUtils;
 using System.Collections.Generic;
+using System.Reflection;
 using CyLR.archive;
 using Renci.SshNet;
 
