@@ -158,7 +158,6 @@ namespace CyLR
         /// <returns>The file Stream.</returns>
         private static Stream OpenFileStream(string path)
         {
-            Console.WriteLine("output path: " + path);
             var archiveFile = new FileInfo(path);
             if (archiveFile.Directory != null && !archiveFile.Directory.Exists)
             {
