@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using CyLR.read;
-using DiscUtils;
-using System.Collections.Generic;
 using CyLR.archive;
+using CyLR.read;
 using Renci.SshNet;
 
 namespace CyLR
@@ -96,11 +95,14 @@ namespace CyLR
                 foreach (var drive in paths)
                 {
                     var driveName = drive.Key;
-                    var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
+                    var system = new RawFileSystem(drive.Key);
 
                     var files = drive.Value
                         .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(file => new Tuple<string, Stream>($"{driveName}\\{file.FullName}", file.Open(FileMode.Open, FileAccess.Read)));
+                        .Select(
+                            file =>
+                                new Tuple<string, Stream>($"{driveName}\\{file}",
+                                    system.OpenFile(file)));
 
                     archive.CollectFilesToArchive(files);
                 }
@@ -108,7 +110,7 @@ namespace CyLR
         }
 
         /// <summary>
-        /// Create an SFTP client and connect to a server using configuration from the arguments.
+        ///     Create an SFTP client and connect to a server using configuration from the arguments.
         /// </summary>
         /// <param name="arguments">The arguments to use to connect to the SFTP server.</param>
         private static SftpClient CreateSftpClient(Arguments arguments)
@@ -130,7 +132,7 @@ namespace CyLR
         }
 
         /// <summary>
-        /// Opens a file for reading and writing, creating any missing directories in the path.
+        ///     Opens a file for reading and writing, creating any missing directories in the path.
         /// </summary>
         /// <param name="path">The path to the file.</param>
         /// <returns>The file Stream.</returns>
@@ -141,7 +143,8 @@ namespace CyLR
             {
                 archiveFile.Directory.Create();
             }
-            return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite); //TODO: Replace with non-api call
+            return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite);
+                //TODO: Replace with non-api call
         }
     }
 }

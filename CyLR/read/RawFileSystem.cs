@@ -1,39 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DiscUtils;
 using DiscUtils.Ntfs;
 using RawDiskLib;
 
+using IRawFileSystem = DiscUtils.IFileSystem;
+
 namespace CyLR.read
 {
-    internal static class FileSystem
+    internal class RawFileSystem : IFileSystem
     {
-        public static IFileSystem GetFileSystem(char driveLetter, FileAccess fileAccess)
+        private readonly IRawFileSystem system;
+
+        public RawFileSystem(char driveLetter)
         {
-            var disk = new RawDisk(driveLetter, fileAccess);
+            var disk = new RawDisk(driveLetter);
             var rawDiskStream = disk.CreateDiskStream();
-            var system = new NtfsFileSystem(rawDiskStream);
-            return system;
+            system = new NtfsFileSystem(rawDiskStream);
         }
 
-        public static IEnumerable<DiscFileInfo> GetFilesFromPath(this IFileSystem system, string path)
+        public IEnumerable<string> GetFilesFromPath(string path)
         {
             if (system.FileExists(path))
             {
-                yield return system.GetFileInfo(path);
+                yield return system.GetFileInfo(path).FullName;
             }
             else if (system.DirectoryExists(path))
             {
                 foreach (var fileInfo in system.GetDirectoryInfo(path).GetFiles())
                 {
-                    yield return fileInfo;
+                    yield return fileInfo.FullName;
                 }
             }
             else
             {
                 Console.WriteLine($"File or folder '{path}' does not exist.");
             }
+        }
+
+
+        public Stream OpenFile(string path)
+        {
+            return system.OpenFile(path, FileMode.Open, FileAccess.Read);
         }
     }
 }
