@@ -7,7 +7,7 @@ namespace CyLR
 {
     public class Arguments
     {
-        const string BaseHelpMessage = "CyLR Version 1.1\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
+        private const string BaseHelpMessage = "CyLR Version {0}\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
@@ -98,7 +98,7 @@ namespace CyLR
             string help;
             if (string.IsNullOrEmpty(topic))
             {
-                var helpText = new StringBuilder(BaseHelpMessage).AppendLine();
+                var helpText = new StringBuilder(string.Format(BaseHelpMessage, Version.GetVersion())).AppendLine();
                 foreach (var command in HelpTopics)
                 {
                     helpText.AppendLine(command.Key).AppendLine("\t" + command.Value).AppendLine();
