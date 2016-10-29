@@ -16,17 +16,16 @@ namespace CyLR.archive
         {
             foreach (var file in files)
             {
-                WriteFileToArchive($@"{file.Item1}", file.Item2);
+                WriteFileToArchive(file.Item1, file.Item2);
             }
         }
 
         private void WriteFileToArchive(string entryName, Stream file)
         {
-            var tmptext = entryName.Substring(0, 1) + ":" + entryName.Substring(1);
-            Console.WriteLine("Collecting File: {0}", tmptext);
+            Console.WriteLine($"Collecting File: {entryName}");
             using (file)
             {
-                WriteStreamToArchive(entryName, file);
+                WriteStreamToArchive(entryName.Replace(":", ""), file);
             }
         }
 
