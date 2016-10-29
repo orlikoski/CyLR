@@ -79,16 +79,16 @@ namespace CyLR
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
             }
         }
-        
+
         /// <summary>
-        /// Creates a zip archive containing all files from provided paths.
+        ///     Creates a zip archive containing all files from provided paths.
         /// </summary>
         /// <param name="archiveStream">The Stream the archive will be written to.</param>
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
         private static void CreateArchive(Stream archiveStream, Dictionary<char, List<string>> paths)
         {
 #if DOT_NET_4_0
-            using (var archive = new SharpZipArchive(stream))
+            using (var archive = new SharpZipArchive(archiveStream))
 #else
             using (var archive = new NativeArchive(archiveStream))
 #endif
