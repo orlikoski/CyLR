@@ -162,7 +162,7 @@
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Sftp\Sftp.cs" />
-    <Compile Include="Version.cs" />
+    <Compile Include="src\Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
