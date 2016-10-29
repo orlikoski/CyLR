@@ -150,16 +150,18 @@
     </When>
   </Choose>
   <ItemGroup>
-    <Compile Include="archive\NativeArchive.cs" />
-    <Compile Include="archive\SharpZipArchive.cs" />
-    <Compile Include="CollectionPaths.cs" />
-    <Compile Include="archive\Archive.cs" />
-    <Compile Include="Arguments.cs" />
-    <Compile Include="read\IFileSystem.cs" />
-    <Compile Include="read\RawFileSystem.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="src\archive\NativeArchive.cs" />
+    <Compile Include="src\archive\SharpZipArchive.cs" />
+    <Compile Include="src\CollectionPaths.cs" />
+    <Compile Include="src\archive\Archive.cs" />
+    <Compile Include="src\Arguments.cs" />
+    <Compile Include="src\Platform.cs" />
+    <Compile Include="src\read\IFileSystem.cs" />
+    <Compile Include="src\read\NativeFileSystem.cs" />
+    <Compile Include="src\read\RawFileSystem.cs" />
+    <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sftp\Sftp.cs" />
+    <Compile Include="src\Sftp\Sftp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

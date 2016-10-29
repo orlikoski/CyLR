@@ -35,7 +35,7 @@ namespace CyLR
                 return;
             }
 
-            Dictionary<char, List<string>> paths;
+            List<string> paths;
             try
             {
                 paths = CollectionPaths.GetPaths(arguments);
@@ -62,12 +62,12 @@ namespace CyLR
                     }
                     else
                     {
-                        archiveStream = OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                        archiveStream = OpenFileStream($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
                 }
                 using (archiveStream)
                 {
-                    CreateArchive(archiveStream, paths);
+                    CreateArchive(arguments, archiveStream, paths);
                 }
 
                 stopwatch.Stop();
@@ -82,9 +82,10 @@ namespace CyLR
         /// <summary>
         ///     Creates a zip archive containing all files from provided paths.
         /// </summary>
+        /// <param name="arguments">Program arguments.</param>
         /// <param name="archiveStream">The Stream the archive will be written to.</param>
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
-        private static void CreateArchive(Stream archiveStream, Dictionary<char, List<string>> paths)
+        private static void CreateArchive(Arguments arguments, Stream archiveStream, List<string> paths)
         {
 #if DOT_NET_4_0
             using (var archive = new SharpZipArchive(archiveStream))
@@ -92,19 +93,38 @@ namespace CyLR
             using (var archive = new NativeArchive(archiveStream))
 #endif
             {
-                foreach (var drive in paths)
+                var system = arguments.ForceNative ? (IFileSystem)new NativeFileSystem() : new RawFileSystem();
+
+                var filePaths = paths.SelectMany(path => system.GetFilesFromPath(path)).ToList();
+                foreach (var filePath in filePaths.Where(path=>!system.FileExists(path)))
                 {
-                    var driveName = drive.Key;
-                    var system = new RawFileSystem(drive.Key);
+                    Console.WriteLine($"Warning: file or folder '{filePath}' does not exist.");
+                }
+                var fileHandles = OpenFiles(system, filePaths);
 
-                    var files = drive.Value
-                        .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(
-                            file =>
-                                new Tuple<string, Stream>($"{driveName}\\{file}",
-                                    system.OpenFile(file)));
+                archive.CollectFilesToArchive(fileHandles);
+            }
+        }
 
-                    archive.CollectFilesToArchive(files);
+        private static IEnumerable<Tuple<string, Stream>> OpenFiles(IFileSystem system, IEnumerable<string> files)
+        {
+            foreach (var file in files)
+            {
+                if (system.FileExists(file))
+                {
+                    Stream stream = null;
+                    try
+                    {
+                        stream = system.OpenFile(file);
+                    }
+                    catch(Exception e)
+                    {
+                       Console.WriteLine($"Error: {e.Message}"); 
+                    }
+                    if (stream != null)
+                    {
+                        yield return new Tuple<string, Stream>(file, stream);
+                    }
                 }
             }
         }
@@ -138,13 +158,13 @@ namespace CyLR
         /// <returns>The file Stream.</returns>
         private static Stream OpenFileStream(string path)
         {
+            Console.WriteLine("output path: " + path);
             var archiveFile = new FileInfo(path);
             if (archiveFile.Directory != null && !archiveFile.Directory.Exists)
             {
                 archiveFile.Directory.Create();
             }
             return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite);
-                //TODO: Replace with non-api call
         }
     }
 }

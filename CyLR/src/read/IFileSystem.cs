@@ -10,5 +10,6 @@ namespace CyLR.read
     {
         IEnumerable<string> GetFilesFromPath(string path);
         Stream OpenFile(string path);
+        bool FileExists(string path);
     }
 }
