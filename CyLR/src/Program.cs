@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using CyLR.read;
-using DiscUtils;
-using System.Collections.Generic;
-using System.Reflection;
 using CyLR.archive;
+using CyLR.read;
 using Renci.SshNet;
 
 namespace CyLR
@@ -37,7 +35,7 @@ namespace CyLR
                 return;
             }
 
-            Dictionary<char, List<string>> paths;
+            List<string> paths;
             try
             {
                 paths = CollectionPaths.GetPaths(arguments);
@@ -64,12 +62,12 @@ namespace CyLR
                     }
                     else
                     {
-                        archiveStream = OpenFileStream($@"{arguments.OutputPath}\{Environment.MachineName}.zip");
+                        archiveStream = OpenFileStream($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
                     }
                 }
                 using (archiveStream)
                 {
-                    CreateArchive(archiveStream, paths);
+                    CreateArchive(arguments, archiveStream, paths);
                 }
 
                 stopwatch.Stop();
@@ -80,36 +78,59 @@ namespace CyLR
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
             }
         }
-        
+
         /// <summary>
-        /// Creates a zip archive containing all files from provided paths.
+        ///     Creates a zip archive containing all files from provided paths.
         /// </summary>
+        /// <param name="arguments">Program arguments.</param>
         /// <param name="archiveStream">The Stream the archive will be written to.</param>
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
-        private static void CreateArchive(Stream archiveStream, Dictionary<char, List<string>> paths)
+        private static void CreateArchive(Arguments arguments, Stream archiveStream, List<string> paths)
         {
 #if DOT_NET_4_0
-            using (var archive = new SharpZipArchive(stream))
+            using (var archive = new SharpZipArchive(archiveStream))
 #else
             using (var archive = new NativeArchive(archiveStream))
 #endif
             {
-                foreach (var drive in paths)
+                var system = arguments.ForceNative ? (IFileSystem) new NativeFileSystem() : new RawFileSystem();
+
+                var filePaths = paths.SelectMany(path => system.GetFilesFromPath(path)).ToList();
+                foreach (var filePath in filePaths.Where(path => !system.FileExists(path)))
                 {
-                    var driveName = drive.Key;
-                    var system = FileSystem.GetFileSystem(drive.Key, FileAccess.Read);
+                    Console.WriteLine($"Warning: file or folder '{filePath}' does not exist.");
+                }
+                var fileHandles = OpenFiles(system, filePaths);
 
-                    var files = drive.Value
-                        .SelectMany(path => system.GetFilesFromPath(path))
-                        .Select(file => new Tuple<string, DiscFileInfo>($"{driveName}\\{file.FullName}", file));
+                archive.CollectFilesToArchive(fileHandles);
+            }
+        }
 
-                    archive.CollectFilesToArchive(files);
+        private static IEnumerable<Tuple<string, Stream>> OpenFiles(IFileSystem system, IEnumerable<string> files)
+        {
+            foreach (var file in files)
+            {
+                if (system.FileExists(file))
+                {
+                    Stream stream = null;
+                    try
+                    {
+                        stream = system.OpenFile(file);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Error: {e.Message}");
+                    }
+                    if (stream != null)
+                    {
+                        yield return new Tuple<string, Stream>(file, stream);
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Create an SFTP client and connect to a server using configuration from the arguments.
+        ///     Create an SFTP client and connect to a server using configuration from the arguments.
         /// </summary>
         /// <param name="arguments">The arguments to use to connect to the SFTP server.</param>
         private static SftpClient CreateSftpClient(Arguments arguments)
@@ -131,7 +152,7 @@ namespace CyLR
         }
 
         /// <summary>
-        /// Opens a file for reading and writing, creating any missing directories in the path.
+        ///     Opens a file for reading and writing, creating any missing directories in the path.
         /// </summary>
         /// <param name="path">The path to the file.</param>
         /// <returns>The file Stream.</returns>
@@ -142,7 +163,7 @@ namespace CyLR
             {
                 archiveFile.Directory.Create();
             }
-            return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite); //TODO: Replace with non-api call
+            return File.Open(archiveFile.FullName, FileMode.Create, FileAccess.ReadWrite);
         }
     }
 }

@@ -12,21 +12,20 @@ namespace CyLR.archive
         {
             this.destination = destination;
         }
-        public void CollectFilesToArchive(IEnumerable<Tuple<string, DiscFileInfo>> files)
+        public void CollectFilesToArchive(IEnumerable<Tuple<string, Stream>> files)
         {
             foreach (var file in files)
             {
-                WriteFileToArchive($@"{file.Item1}", file.Item2);
+                WriteFileToArchive(file.Item1, file.Item2);
             }
         }
 
-        private void WriteFileToArchive(string entryName, DiscFileInfo file)
+        private void WriteFileToArchive(string entryName, Stream file)
         {
-            var tmptext = entryName.Substring(0, 1) + ":" + entryName.Substring(1);
-            Console.WriteLine("Collecting File: {0}", tmptext);
-            using (var stream = file.Open(FileMode.Open, FileAccess.Read))
+            Console.WriteLine($"Collecting File: {entryName}");
+            using (file)
             {
-                WriteStreamToArchive(entryName, stream);
+                WriteStreamToArchive(entryName.Replace(":", ""), file);
             }
         }
 
