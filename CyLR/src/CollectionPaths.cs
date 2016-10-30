@@ -23,7 +23,7 @@ namespace CyLR
             {
                 paths = new List<string>
                 {
-                    "/etc/hosts"
+                    "/var/logs"
                 };
             }
  
