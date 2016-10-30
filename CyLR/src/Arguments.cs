@@ -33,6 +33,10 @@ namespace CyLR
             {
                 "--dry-run",
                 "Collect artifacts to a virtual zip archive, but does not send or write to disk."
+            },
+            {
+                "--force-native",
+                "Uses the native file system instead of a raw NTFS read. Unix-like environments always use this option."
             }
         };
 
@@ -47,6 +51,7 @@ namespace CyLR
         public readonly string UserPassword = string.Empty;
         public readonly string SFTPServer = string.Empty;
         public readonly bool DryRun;
+        public readonly bool ForceNative;
 
         public Arguments(string[] args)
         {
@@ -90,6 +95,7 @@ namespace CyLR
                     //Disable SFTP in a dry run.
                     UseSftp = false;
                 }
+                ForceNative = args.HasArgument("--force-native") || Platform.IsUnixLike();
             }
         }
 
