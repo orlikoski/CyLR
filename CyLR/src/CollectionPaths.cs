@@ -23,6 +23,7 @@ namespace CyLR
             {
                 paths = new List<string>
                 {
+                    "/root/.bash_history",
                     "/var/logs"
                 };
             }
