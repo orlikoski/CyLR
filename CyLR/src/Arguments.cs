@@ -7,12 +7,12 @@ namespace CyLR
 {
     public class Arguments
     {
-        private const string BaseHelpMessage = "CyLR Version {0}\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
+        private const string BaseHelpMessage = "CyLR Version {0}\n\nUsage: {1} [Options]... [Files]...\n\nThe CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.\n\nThe avalable options are:";
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
                 "-od",
-                "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -o <directory path>"
+                "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -od <directory path>"
             },
             {
                 "-of",
@@ -49,6 +49,7 @@ namespace CyLR
         public readonly string HelpTopic;
 
         public readonly string CollectionFilePath = ".";
+        public readonly List<string> CollectionFiles = null; 
         public readonly string OutputPath = ".";
         public readonly string OutputFileName = $"{Environment.MachineName}.zip";
         public readonly bool UseSftp;
@@ -58,54 +59,77 @@ namespace CyLR
         public readonly bool DryRun;
         public readonly bool ForceNative;
 
-        public Arguments(string[] args)
+        public Arguments(IEnumerable<string> args)
         {
-            HelpRequested = args.HasArgument("--help", "-h", "/?");
-            HelpTopic = HelpRequested ? args.GetArgumentParameter(false, "--help", "-h", "/?") : string.Empty;
+            ForceNative = !Platform.SupportsRawAccess(); //default this to whether or not the platform supports raw access
 
-            //If help has been requested, parse no more arguments
+            var argEnum = args.GetEnumerator();
+            while (!HelpRequested && argEnum.MoveNext())
+            {
+                switch (argEnum.Current)
+                {
+                    case "--help":
+                    case "-h":
+                    case "/?":
+                        HelpRequested = true;
+                        argEnum.GetArgumentParameter(ref HelpTopic);
+                        break;
+
+                    case "-od":
+                        OutputPath = argEnum.GetArgumentParameter();
+                        break;
+                    case "-of":
+                        OutputFileName = argEnum.GetArgumentParameter();
+                        break;
+                    case "-u":
+                        UserName = argEnum.GetArgumentParameter();
+                        break;
+                    case "-p":
+                        UserPassword = argEnum.GetArgumentParameter();
+                        break;
+                    case "-s":
+                        SFTPServer = argEnum.GetArgumentParameter();
+                        break;
+
+                    case "-c":
+                        CollectionFilePath = argEnum.GetArgumentParameter();
+                        break;
+
+                    case "--force-native":
+                        if (ForceNative)
+                        {
+                            Console.WriteLine("Warning: This platform only supports native reads, --force-native has no effect.");
+                        }
+                        ForceNative = true;
+                        break;
+                    case "--dry-run":
+                        DryRun = true;
+                        break;
+
+                    case "-o":
+                        throw new ArgumentException("-o is no longer supported, please use -od instead.");
+
+                    default:
+                        CollectionFiles = CollectionFiles ?? new List<string>();
+                        CollectionFiles.Add(argEnum.Current);
+                        break;
+                }
+            }
+
             if (!HelpRequested)
             {
-                if (args.HasArgument("-od"))
-                {
-                    OutputPath = args.GetArgumentParameter(true, "-od");
-                }
-
-                if (args.HasArgument("-of"))
-                {
-                    OutputFileName = args.GetArgumentParameter(true, "-of");
-                }
-
-                if (args.HasArgument("-u"))
-                {
-                    UserName = args.GetArgumentParameter(true, "-u");
-                }
-                if (args.HasArgument("-p"))
-                {
-                    UserPassword = args.GetArgumentParameter(true, "-p");
-                }
-                if (args.HasArgument("-s"))
-                {
-                    SFTPServer = args.GetArgumentParameter(true, "-s");
-                }
                 var sftpArgs = new[] { UserName, UserPassword, SFTPServer };
                 UseSftp = sftpArgs.Any(arg => !string.IsNullOrEmpty(arg));
                 if (UseSftp && sftpArgs.Any(string.IsNullOrEmpty))
                 {
                     throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
                 }
-
-                if (args.HasArgument("-c"))
-                {
-                    CollectionFilePath = args.GetArgumentParameter(true, "-c");
-                }
-                DryRun = args.HasArgument("--dry-run");
+                
                 if (DryRun)
                 {
                     //Disable SFTP in a dry run.
                     UseSftp = false;
                 }
-                ForceNative = args.HasArgument("--force-native") || Platform.IsUnixLike();
             }
         }
 
@@ -114,7 +138,7 @@ namespace CyLR
             string help;
             if (string.IsNullOrEmpty(topic))
             {
-                var helpText = new StringBuilder(string.Format(BaseHelpMessage, Version.GetVersion())).AppendLine();
+                var helpText = new StringBuilder(string.Format(BaseHelpMessage, Version.GetVersion(), AppDomain.CurrentDomain.FriendlyName)).AppendLine();
                 foreach (var command in HelpTopics)
                 {
                     helpText.AppendLine(command.Key).AppendLine("\t" + command.Value).AppendLine();
@@ -131,41 +155,29 @@ namespace CyLR
 
     internal static class ArgumentExtentions
     {
-        public static bool HasArgument(this IEnumerable<string> arguments, params string[] argumentAliases)
+        public static string GetArgumentParameter(this IEnumerator<string> arguments)
         {
-            return arguments.Any(arg => argumentAliases.Any(arg.StartsWith));
-        }
-
-        public static string GetArgumentParameter(this IEnumerable<string> arguments, bool requireArgument,
-            params string[] argumentAliases)
-        {
-            var argEnumerator = arguments.GetEnumerator();
-            while (argEnumerator.MoveNext())
+            var currentArg = arguments.Current;
+            var hasArg = arguments.MoveNext();
+            if (!hasArg)
             {
-                var currentArg = argEnumerator.Current;
-
-                if (argumentAliases.Contains(currentArg))
-                {
-                    if (argEnumerator.MoveNext())
-                    {
-                        return argEnumerator.Current;
-                    }
-                    if (requireArgument)
-                    {
-                        throw new ArgumentException(
-                            $"Argument '{currentArg}' had no parameters. Use '--help {currentArg}' for usage details.");
-                    }
-                    return string.Empty;
-                }
-
-                var match = argumentAliases.FirstOrDefault(alias => currentArg.StartsWith(alias));
-                if (match != null)
-                {
-                    return currentArg.Substring(match.Length);
-                }
+                throw new ArgumentException(
+                    $"Argument '{currentArg}' had no parameters. Use '--help {currentArg}' for usage details.");
             }
 
-            throw new ArgumentException($"Argument '{argumentAliases.First()}' was not found.");
+            return arguments.Current;
+        }
+
+        public static bool GetArgumentParameter(this IEnumerator<string> arguments, ref string parameter)
+        {
+            var hasArg = arguments.MoveNext();
+
+            if (hasArg)
+            {
+                parameter = arguments.Current;
+            }
+
+            return hasArg;
         }
     }
 }
