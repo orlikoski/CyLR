@@ -6,6 +6,8 @@ using System.Linq;
 using CyLR.archive;
 using CyLR.read;
 using Renci.SshNet;
+using ArchiveFile = CyLR.archive.File;
+using File = System.IO.File;
 
 namespace CyLR
 {
@@ -107,7 +109,7 @@ namespace CyLR
             }
         }
 
-        private static IEnumerable<Tuple<string, Stream>> OpenFiles(IFileSystem system, IEnumerable<string> files)
+        private static IEnumerable<ArchiveFile> OpenFiles(IFileSystem system, IEnumerable<string> files)
         {
             foreach (var file in files)
             {
@@ -124,7 +126,7 @@ namespace CyLR
                     }
                     if (stream != null)
                     {
-                        yield return new Tuple<string, Stream>(file, stream);
+                        yield return new ArchiveFile(file, stream, system.GetLastWriteTime(file));
                     }
                 }
             }

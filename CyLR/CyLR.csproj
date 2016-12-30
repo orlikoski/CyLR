@@ -150,6 +150,7 @@
     </When>
   </Choose>
   <ItemGroup>
+    <Compile Include="src\archive\File.cs" />
     <Compile Include="src\archive\NativeArchive.cs" />
     <Compile Include="src\archive\SharpZipArchive.cs" />
     <Compile Include="src\CollectionPaths.cs" />
