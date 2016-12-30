@@ -57,6 +57,16 @@ namespace CyLR.read
             }
         }
 
+        public DateTime GetLastWriteTimeUtc(string path)
+        {
+            return GetSystem(path).GetLastWriteTimeUtc(FullPathToRawPath(path));
+        }
+
+        public DateTime GetLastWriteTime(string path)
+        {
+            return GetSystem(path).GetLastWriteTime(FullPathToRawPath(path));
+        }
+
         public bool FileExists(string path)
         {
             return GetSystem(path).Exists(FullPathToRawPath(path));
