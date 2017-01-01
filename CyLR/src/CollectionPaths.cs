@@ -12,7 +12,7 @@ namespace CyLR
             var defaultPaths = new List<string>
             {
                         @"C:\Windows\System32\config",
-                        @"C:\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+                        @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
                         @"C:\Windows\Prefetch",
                         @"C:\Windows\Tasks",
                         @"C:\Windows\SchedLgU.Txt",
