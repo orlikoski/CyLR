@@ -38,7 +38,7 @@ namespace CyLR
             }
 
             var additionalPaths = new List<string>();
-            if (Console.IsInputRedirected)
+            if (Platform.IsInputRedirected)
             {
                 string input = null;
                 while ((input = Console.ReadLine()) != null)
