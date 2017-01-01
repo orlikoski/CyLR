@@ -11,7 +11,7 @@ namespace CyLR
 {
     internal static class Program
     {
-        private static int Main(string[] args)
+        private static void Main(string[] args)
         {
             Arguments arguments;
             try
@@ -21,18 +21,18 @@ namespace CyLR
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
-                return 1;
+                return;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Unknown error while parsing arguments: {e.Message}");
-                return 0;
+                return;
             }
 
             if (arguments.HelpRequested)
             {
                 Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
-                return 0;
+                return;
             }
 
             List<string> paths;
@@ -43,7 +43,7 @@ namespace CyLR
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
-                return 1;
+                return;
             }
 
 
@@ -76,9 +76,7 @@ namespace CyLR
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
-                return 1;
             }
-            return 0;
         }
 
         /// <summary>
