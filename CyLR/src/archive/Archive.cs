@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using DiscUtils;
 
 namespace CyLR.archive
 {
@@ -12,24 +11,24 @@ namespace CyLR.archive
         {
             this.destination = destination;
         }
-        public void CollectFilesToArchive(IEnumerable<Tuple<string, Stream>> files)
+        public void CollectFilesToArchive(IEnumerable<File> files)
         {
             foreach (var file in files)
             {
-                WriteFileToArchive(file.Item1, file.Item2);
+                WriteFileToArchive(file);
             }
         }
 
-        private void WriteFileToArchive(string entryName, Stream file)
+        private void WriteFileToArchive(File file)
         {
-            Console.WriteLine($"Collecting File: {entryName}");
-            using (file)
+            Console.WriteLine($"Collecting File: {file.Name}");
+            using (file.Stream)
             {
-                WriteStreamToArchive(entryName.Replace(":", ""), file);
+                WriteStreamToArchive(file.Name.Replace(":", ""), file.Stream, file.Timestamp);
             }
         }
 
-        protected abstract void WriteStreamToArchive(string entryName, Stream stream);
+        protected abstract void WriteStreamToArchive(string entryName, Stream stream, DateTimeOffset timestamp);
 
         #region IDisposable Support
         protected abstract void Dispose(bool disposing);
