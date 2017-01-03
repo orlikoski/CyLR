@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CyLR.read
@@ -23,6 +24,16 @@ namespace CyLR.read
         public Stream OpenFile(string path)
         {
             return File.OpenRead(path);
+        }
+
+        public DateTime GetLastWriteTimeUtc(string path)
+        {
+            return File.GetLastWriteTimeUtc(path);
+        }
+
+        public DateTime GetLastWriteTime(string path)
+        {
+            return File.GetLastWriteTime(path);
         }
 
         public bool FileExists(string path)

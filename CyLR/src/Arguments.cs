@@ -11,8 +11,12 @@ namespace CyLR
         private static readonly Dictionary<string, string> HelpTopics = new Dictionary<string, string>
         {
             {
-                "-o",
+                "-od",
                 "Defines the directory that the zip archive will be created in. Defaults to current working directory.\nUsage: -o <directory path>"
+            },
+            {
+                "-of",
+                "Defines the name of the zip archive will be created. Defaults to host machine's name.\nUsage: -of <archive name>"
             },
             {
                 "-c",
@@ -46,6 +50,7 @@ namespace CyLR
 
         public readonly string CollectionFilePath = ".";
         public readonly string OutputPath = ".";
+        public readonly string OutputFileName = $"{Environment.MachineName}.zip";
         public readonly bool UseSftp;
         public readonly string UserName = string.Empty;
         public readonly string UserPassword = string.Empty;
@@ -61,9 +66,14 @@ namespace CyLR
             //If help has been requested, parse no more arguments
             if (!HelpRequested)
             {
-                if (args.HasArgument("-o"))
+                if (args.HasArgument("-od"))
                 {
-                    OutputPath = args.GetArgumentParameter(true, "-o");
+                    OutputPath = args.GetArgumentParameter(true, "-od");
+                }
+
+                if (args.HasArgument("-of"))
+                {
+                    OutputFileName = args.GetArgumentParameter(true, "-of");
                 }
 
                 if (args.HasArgument("-u"))

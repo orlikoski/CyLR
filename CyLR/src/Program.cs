@@ -6,6 +6,8 @@ using System.Linq;
 using CyLR.archive;
 using CyLR.read;
 using Renci.SshNet;
+using ArchiveFile = CyLR.archive.File;
+using File = System.IO.File;
 
 namespace CyLR
 {
@@ -55,14 +57,15 @@ namespace CyLR
                 var archiveStream = Stream.Null;
                 if (!arguments.DryRun)
                 {
+                    var outputPath = $@"{arguments.OutputPath}/{arguments.OutputFileName}";
                     if (arguments.UseSftp)
                     {
                         var client = CreateSftpClient(arguments);
-                        archiveStream = client.Create($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        archiveStream = client.Create(outputPath);
                     }
                     else
                     {
-                        archiveStream = OpenFileStream($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        archiveStream = OpenFileStream(outputPath);
                     }
                 }
                 using (archiveStream)
@@ -87,7 +90,7 @@ namespace CyLR
         /// <param name="arguments">Program arguments.</param>
         /// <param name="archiveStream">The Stream the archive will be written to.</param>
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
-        private static void CreateArchive(Arguments arguments, Stream archiveStream, List<string> paths)
+        private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
 #if DOT_NET_4_0
             using (var archive = new SharpZipArchive(archiveStream))
@@ -108,7 +111,7 @@ namespace CyLR
             }
         }
 
-        private static IEnumerable<Tuple<string, Stream>> OpenFiles(IFileSystem system, IEnumerable<string> files)
+        private static IEnumerable<ArchiveFile> OpenFiles(IFileSystem system, IEnumerable<string> files)
         {
             foreach (var file in files)
             {
@@ -125,7 +128,7 @@ namespace CyLR
                     }
                     if (stream != null)
                     {
-                        yield return new Tuple<string, Stream>(file, stream);
+                        yield return new ArchiveFile(file, stream, system.GetLastWriteTime(file));
                     }
                 }
             }

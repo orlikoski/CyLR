@@ -1,4 +1,5 @@
 ﻿#if !DOT_NET_4_0
+using System;
 using System.IO;
 using System.IO.Compression;
 
@@ -13,9 +14,10 @@ namespace CyLR.archive
             archive = new ZipArchive(destination, ZipArchiveMode.Create, true);
         }
 
-        protected override void WriteStreamToArchive(string entryName, Stream stream)
+        protected override void WriteStreamToArchive(string entryName, Stream stream, DateTimeOffset timestamp)
         {
             var entry = archive.CreateEntry(entryName, CompressionLevel.Fastest);
+            entry.LastWriteTime = timestamp;
             using (var writer = entry.Open())
             {
                 stream.CopyTo(writer);
