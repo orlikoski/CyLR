@@ -156,6 +156,7 @@
     <Compile Include="src\CollectionPaths.cs" />
     <Compile Include="src\archive\Archive.cs" />
     <Compile Include="src\Arguments.cs" />
+    <Compile Include="src\ConsoleEX.cs" />
     <Compile Include="src\Platform.cs" />
     <Compile Include="src\read\IFileSystem.cs" />
     <Compile Include="src\read\NativeFileSystem.cs" />

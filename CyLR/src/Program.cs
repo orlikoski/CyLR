@@ -37,10 +37,21 @@ namespace CyLR
                 return 0;
             }
 
+            var additionalPaths = new List<string>();
+            if (Platform.IsInputRedirected)
+            {
+                string input = null;
+                while ((input = Console.ReadLine()) != null)
+                {
+                    additionalPaths.Add(input);
+                }
+            }
+
+
             List<string> paths;
             try
             {
-                paths = CollectionPaths.GetPaths(arguments);
+                paths = CollectionPaths.GetPaths(arguments, additionalPaths);
             }
             catch (Exception e)
             {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CyLR
 {
     internal static class CollectionPaths
     {
-        public static List<string> GetPaths(Arguments arguments)
+        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths)
         {
             var defaultPaths = new List<string>
             {
@@ -28,13 +29,12 @@ namespace CyLR
                 };
             }
 
-            List<string> paths = null;
+            var paths = new List<string>(additionalPaths);
  
             if (arguments.CollectionFilePath != ".")
             {
                 if (File.Exists(arguments.CollectionFilePath))
                 {
-                    paths = new List<string>();
                     paths.AddRange(File.ReadAllLines(arguments.CollectionFilePath));
                 }
                 else
@@ -47,11 +47,10 @@ namespace CyLR
 
             if (arguments.CollectionFiles != null)
             {
-                paths = paths ?? new List<string>();
                 paths.AddRange(arguments.CollectionFiles);
             }
 
-            return paths ?? defaultPaths;
+            return paths.Any() ? paths : defaultPaths;
         }
     }
 }
