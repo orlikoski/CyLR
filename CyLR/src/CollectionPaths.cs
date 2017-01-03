@@ -8,7 +8,7 @@ namespace CyLR
     {
         public static List<string> GetPaths(Arguments arguments)
         {
-            var paths = new List<string>
+            var defaultPaths = new List<string>
             {
                         @"C:\Windows\System32\config",
                         @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
@@ -21,18 +21,20 @@ namespace CyLR
             };
             if (Platform.IsUnixLike())
             {
-                paths = new List<string>
+                defaultPaths = new List<string>
                 {
                     "/root/.bash_history",
                     "/var/logs"
                 };
             }
+
+            List<string> paths = null;
  
             if (arguments.CollectionFilePath != ".")
             {
                 if (File.Exists(arguments.CollectionFilePath))
                 {
-                    paths.Clear();
+                    paths = new List<string>();
                     paths.AddRange(File.ReadAllLines(arguments.CollectionFilePath));
                 }
                 else
@@ -41,10 +43,15 @@ namespace CyLR
                     Console.WriteLine("Exiting");
                     throw new ArgumentException();
                 }
-
             }
 
-            return paths;
+            if (arguments.CollectionFiles != null)
+            {
+                paths = paths ?? new List<string>();
+                paths.AddRange(arguments.CollectionFiles);
+            }
+
+            return paths ?? defaultPaths;
         }
     }
 }
