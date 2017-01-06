@@ -11,13 +11,14 @@ namespace CyLR
         {
             var defaultPaths = new List<string>
             {
-                        @"C:\Windows\System32\config",
+                        @"C:\Windows\System32\drivers\etc\hosts",
+                        @"C:\Windows\SchedLgU.Txt",
                         @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+                        @"C:\Windows\System32\config",
+                        @"C:\Windows\System32\winevt\logs",
                         @"C:\Windows\Prefetch",
                         @"C:\Windows\Tasks",
-                        @"C:\Windows\SchedLgU.Txt",
-                        @"C:\Windows\System32\winevt\logs",
-                        @"C:\Windows\System32\drivers\etc\hosts",
+                        @"C:\Windows\System32\LogFiles\W3SVC1",
                         @"C:\$MFT"
             };
             if (Platform.IsUnixLike())

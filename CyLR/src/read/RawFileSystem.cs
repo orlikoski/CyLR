@@ -16,7 +16,7 @@ namespace CyLR.read
         {
             IRawFileSystem system;
             var driveLetter = path[0];
-
+            
             if (!char.IsLetter(driveLetter))
             {
                 throw new ArgumentException($"Path '{path}' did not have a drive letter!");
@@ -40,20 +40,30 @@ namespace CyLR.read
         {
             var system = GetSystem(path);
             var letterlessPath = FullPathToRawPath(path);
+            
+
             if (system.FileExists(letterlessPath))
             {
                 yield return path;
             }
             else if (system.DirectoryExists(letterlessPath))
             {
-                foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
+                if (system.GetFiles(letterlessPath).Length > 0)
                 {
-                    yield return Path.Combine(path, fileInfo.Name);
+                    foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
+                    {
+                        yield return Path.Combine(path, fileInfo.Name);
+                    }
                 }
+                else
+                {
+                    Console.WriteLine($"Folder '{path}' exists but contains no files");
+                }
+
             }
             else
             {
-                Console.WriteLine($"File or folder '{path}' does not exist.");
+                Console.WriteLine($"File or folder '{path}' does not exist");
             }
         }
 
