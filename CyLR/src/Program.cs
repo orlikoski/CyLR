@@ -6,12 +6,14 @@ using System.Linq;
 using CyLR.archive;
 using CyLR.read;
 using Renci.SshNet;
+using ArchiveFile = CyLR.archive.File;
+using File = System.IO.File;
 
 namespace CyLR
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static int Main(string[] args)
         {
             Arguments arguments;
             try
@@ -21,29 +23,40 @@ namespace CyLR
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
-                return;
+                return 1;
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Unknown error while parsing arguments: {e.Message}");
-                return;
+                return 0;
             }
 
             if (arguments.HelpRequested)
             {
                 Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
-                return;
+                return 0;
             }
+
+            var additionalPaths = new List<string>();
+            if (Platform.IsInputRedirected)
+            {
+                string input = null;
+                while ((input = Console.ReadLine()) != null)
+                {
+                    additionalPaths.Add(input);
+                }
+            }
+
 
             List<string> paths;
             try
             {
-                paths = CollectionPaths.GetPaths(arguments);
+                paths = CollectionPaths.GetPaths(arguments, additionalPaths);
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
-                return;
+                return 1;
             }
 
 
@@ -55,14 +68,15 @@ namespace CyLR
                 var archiveStream = Stream.Null;
                 if (!arguments.DryRun)
                 {
+                    var outputPath = $@"{arguments.OutputPath}/{arguments.OutputFileName}";
                     if (arguments.UseSftp)
                     {
                         var client = CreateSftpClient(arguments);
-                        archiveStream = client.Create($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        archiveStream = client.Create(outputPath);
                     }
                     else
                     {
-                        archiveStream = OpenFileStream($@"{arguments.OutputPath}/{Environment.MachineName}.zip");
+                        archiveStream = OpenFileStream(outputPath);
                     }
                 }
                 using (archiveStream)
@@ -76,7 +90,9 @@ namespace CyLR
             catch (Exception e)
             {
                 Console.WriteLine($"Error occured while collecting files:\n{e}");
+                return 1;
             }
+            return 0;
         }
 
         /// <summary>
@@ -85,7 +101,7 @@ namespace CyLR
         /// <param name="arguments">Program arguments.</param>
         /// <param name="archiveStream">The Stream the archive will be written to.</param>
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
-        private static void CreateArchive(Arguments arguments, Stream archiveStream, List<string> paths)
+        private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
 #if DOT_NET_4_0
             using (var archive = new SharpZipArchive(archiveStream))
@@ -106,7 +122,7 @@ namespace CyLR
             }
         }
 
-        private static IEnumerable<Tuple<string, Stream>> OpenFiles(IFileSystem system, IEnumerable<string> files)
+        private static IEnumerable<ArchiveFile> OpenFiles(IFileSystem system, IEnumerable<string> files)
         {
             foreach (var file in files)
             {
@@ -123,7 +139,7 @@ namespace CyLR
                     }
                     if (stream != null)
                     {
-                        yield return new Tuple<string, Stream>(file, stream);
+                        yield return new ArchiveFile(file, stream, system.GetLastWriteTime(file));
                     }
                 }
             }

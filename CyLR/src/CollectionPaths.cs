@@ -1,38 +1,41 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CyLR
 {
     internal static class CollectionPaths
     {
-        public static List<string> GetPaths(Arguments arguments)
+        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths)
         {
-            var paths = new List<string>
+            var defaultPaths = new List<string>
             {
-                        @"C:\Windows\System32\config",
+                        @"C:\Windows\System32\drivers\etc\hosts",
+                        @"C:\Windows\SchedLgU.Txt",
                         @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
+                        @"C:\Windows\System32\config",
+                        @"C:\Windows\System32\winevt\logs",
                         @"C:\Windows\Prefetch",
                         @"C:\Windows\Tasks",
-                        @"C:\Windows\SchedLgU.Txt",
-                        @"C:\Windows\System32\winevt\logs",
-                        @"C:\Windows\System32\drivers\etc\hosts",
+                        @"C:\Windows\System32\LogFiles\W3SVC1",
                         @"C:\$MFT"
             };
             if (Platform.IsUnixLike())
             {
-                paths = new List<string>
+                defaultPaths = new List<string>
                 {
                     "/root/.bash_history",
                     "/var/logs"
                 };
             }
+
+            var paths = new List<string>(additionalPaths);
  
             if (arguments.CollectionFilePath != ".")
             {
                 if (File.Exists(arguments.CollectionFilePath))
                 {
-                    paths.Clear();
                     paths.AddRange(File.ReadAllLines(arguments.CollectionFilePath));
                 }
                 else
@@ -41,10 +44,14 @@ namespace CyLR
                     Console.WriteLine("Exiting");
                     throw new ArgumentException();
                 }
-
             }
 
-            return paths;
+            if (arguments.CollectionFiles != null)
+            {
+                paths.AddRange(arguments.CollectionFiles);
+            }
+
+            return paths.Any() ? paths : defaultPaths;
         }
     }
 }
