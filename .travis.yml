@@ -1,2 +1,5 @@
 language: csharp
 solution: CyLR.sln
+script:
+  - xbuild /p:Configuration=Release /p:Platform="Framework 4.0" CyLR.sln
+  - xbuild /p:Configuration=Release /p:Platform="Framework 4.5" CyLR.sln
