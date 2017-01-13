@@ -1,10 +1,7 @@
 language: csharp
 solution: CyLR.sln
-install:
-  - nuget restore CyLR.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Release /p:Platform="Framework 4.0" CyLR.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe CyLRTests/bin/Release/CyLRTests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
   - xbuild /p:Configuration=Release /p:Platform="Framework 4.5" CyLR.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe CyLRTests/bin/Release/CyLRTests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
