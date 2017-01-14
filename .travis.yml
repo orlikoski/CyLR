@@ -1,9 +1,9 @@
 language: csharp
 solution: CyLR.sln
+env:
+  - PLATFORM=4.0
+  - PLATFORM=4.5
 script:
-  - xbuild /p:Configuration=Release /p:Platform="Framework 4.0" CyLR.sln
+  - xbuild /p:Configuration=Release /p:Platform="Framework $PLATFORM" CyLR.sln
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
-  - mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:../CyLR/bin/4.0/merged/CyLR.exe CyLR/bin/4.0/Release/CyLR.exe *.dll
-  - xbuild /p:Configuration=Release /p:Platform="Framework 4.5" CyLR.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
-  - mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:../CyLR/bin/4.5/merged/CyLR.exe CyLR/bin/4.5/Release/CyLR.exe *.dll
+  - mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:../CyLR/bin/$PLATFORM/merged/CyLR.exe CyLR/bin/$PLATFORM/Release/CyLR.exe *.dll
