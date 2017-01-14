@@ -15,5 +15,5 @@ deploy:
     - ./CyLR/bin/4.0/merged/CyLR.exe
     - ./CyLR/bin/4.5/merged/CyLR.exe
   skip_cleanup: true
-#  on:
-#    tags: true
+  on:
+    tags: true
