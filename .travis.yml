@@ -5,3 +5,4 @@ script:
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
   - xbuild /p:Configuration=Release /p:Platform="Framework 4.5" CyLR.sln
   - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
+  - mono ../../../../packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:../merged/CyLR.exe CyLR.exe *.dll
