@@ -2,15 +2,16 @@ language: csharp
 solution: CyLR.sln
 sudo: required
 env:
-- PLATFORM=4.0
-- PLATFORM=4.5
+  - PLATFORM=4.0
+  - PLATFORM=4.5
 install:
   - sudo apt-get update && sudo apt-get --assume-yes install zip
+  - nuget restore solution-name.sln
 script:
-- xbuild /p:Configuration=Release /p:Platform="Framework $PLATFORM" CyLR.sln
-- mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
-- mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:./CyLR/bin/$PLATFORM/merged/CyLR.exe CyLR/bin/$PLATFORM/Release/CyLR.exe *.dll
-- zip ./CyLR/bin/$PLATFORM/merged/CyLR$PLATFORM.zip ./CyLR/bin/$PLATFORM/merged/CyLR.exe
+  - xbuild /p:Configuration=Release /p:Platform="Framework $PLATFORM" CyLR.sln
+  - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
+  - mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:./CyLR/bin/$PLATFORM/merged/CyLR.exe CyLR/bin/$PLATFORM/Release/CyLR.exe *.dll
+  - zip ./CyLR/bin/$PLATFORM/merged/CyLR$PLATFORM.zip ./CyLR/bin/$PLATFORM/merged/CyLR.exe
 deploy:
   provider: releases
   api_key:
