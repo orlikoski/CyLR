@@ -8,7 +8,7 @@ script:
 - mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
 - mono ./packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:./CyLR/bin/$PLATFORM/merged/CyLR.exe
   CyLR/bin/$PLATFORM/Release/CyLR.exe *.dll
-- zip ./CyLR/bin/$PLATFORM/merged/CyLR$PLATFORM.zip ./CyLR/bin/$PLATFORM/merged/CyLR.exe
+- zip -j ./CyLR/bin/$PLATFORM/merged/CyLR$PLATFORM.zip ./CyLR/bin/$PLATFORM/merged/CyLR.exe
 deploy:
   provider: releases
   api_key:
