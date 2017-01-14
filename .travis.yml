@@ -13,8 +13,8 @@ deploy:
   api_key:
     secure: k+tGCAgsRlEmx9YAAaIZEXQxJio70JslAZgtuBRV/SNwnk5Sj67dzBPF1QD0umJUqBRuwnEL7Mu6eFZ0pAhCNV7Ar9Fu4krGGSYIFcYVfx/IWD2F/7JZmgFOAN2hMWoSJ7+fZ9RhpnVXEWlgwspL3yMP7dlr1tnnYBkv2ahHI6mQQAddRhqDR1lJYzBa08dPKwnyqOazDC8nwuogFMITa1B3wofFeAx6M8el0amY2yaHhgamu82XhpciTtBEENQDtsXE5I8zsZa77XZFUBfmt12wKNDnxvgFUf/UAN5kjOC29k+MoIpsPafErfYXDYRnXkJwrUMSFgzk6COQ6gq3KwteGhr84J+lJH+jiRygv4EZW8ZqpFMZYZidrJ3//AjWRP0BXIWbd3a9JBd3GkAt92tmDJDMGa0SjPdZG2978zEu6UKbmg9ZhOa/LEJ6J8QvvlqlTr4kRQdQdwtcfTVRVEVVTULew95tWepeFfN5HQ+RPDWHIvi9XhUwn5R+Wezc2Viosaq6RY0zbqxIjocCzGK8vzNK+XXLqSOsJ7+v/RFk96Pq1CFmj49tRGHa/9Vj3ch8NUOEP0fbUfe7GuVdbKuXllUiafKKqBN7f8Qq+Pcb5+UqyQ+u0Dtvb/mHmbGrPG8uJYIQ6piSoGv77quEdxpSB5z5y4cuYRYFeg65vXc=
   file:
-    - CyLR/bin/4.0/Release/merged/CyLR.exe
-    - CyLR/bin/4.5/Release/merged/CyLR.exe
+    - ./CyLR/bin/4.0/merged/CyLR.exe
+    - ./CyLR/bin/4.5/merged/CyLR.exe
   skip_cleanup: true
-  on:
-    tags: true
+#  on:
+#    tags: true
