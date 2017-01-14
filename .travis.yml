@@ -1,6 +1,5 @@
 language: csharp
 solution: CyLR.sln
-sudo: required
 env:
   - PLATFORM=4.0
   - PLATFORM=4.5
