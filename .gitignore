@@ -5,3 +5,5 @@ packages/
 *.vspx
 *.db
 *.opendb
+CyLRTests/obj/
+CyLRTests/bin/
