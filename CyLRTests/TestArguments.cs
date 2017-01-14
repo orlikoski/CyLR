@@ -1,28 +1,30 @@
 ﻿using System;
 using CyLR;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CyLRTests
 {
-    [TestClass]
+    [TestFixture]
     public class TestArguments
     {
-        [TestMethod]
-        public void TestValidSFTP()
+        [Test]
+        public void TestValidSftp()
         {
-            new Arguments(new []{"-s", "test.server.com", "-u", "username", "-p", "password"});
+            Assert.DoesNotThrow(
+                ()=>new Arguments(new []{"-s", "test.server.com", "-u", "username", "-p", "password"})
+                );
         }
 
-        [TestMethod]
-        public void TestSFTPMissingParams()
+        [Test]
+        public void TestSftpMissingParams()
         {
-            AssertUtil.ShouldThrow<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => { new Arguments(new[] {"-s", "test.server.com", "-u", "username"}); }
                 );
-            AssertUtil.ShouldThrow<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => { new Arguments(new[] { "-s", "test.server.com", "-p", "password" }); }
                 );
-            AssertUtil.ShouldThrow<ArgumentException>(
+            Assert.Throws<ArgumentException>(
                 () => { new Arguments(new[] { "-u", "username", "-p", "password" }); }
                 );
         }
