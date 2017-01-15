@@ -132,7 +132,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -188,4 +187,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
+    <PostBuildEvent>$(SolutionDir)packages\ILRepack.2.0.12\tools\ILRepack.exe /wildcards /out:$(ProjectDir)bin\merged\$(TargetFileName) $(TargetPath) $(TargetDir)*.dll</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <PostBuildEvent>mono $(SolutionDir)packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:$(ProjectDir)bin/merged/$(TargetFileName) $(TargetPath) $(TargetDir)*.dll</PostBuildEvent>
+  </PropertyGroup>
 </Project>
