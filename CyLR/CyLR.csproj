@@ -188,7 +188,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
-    <PostBuildEvent>$(SolutionDir)packages\ILRepack.2.0.12\tools\ILRepack.exe /wildcards /out:$(ProjectDir)bin\merged\$(TargetFileName) $(TargetPath) $(TargetDir)*.dll</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)packages\ILRepack.2.0.12\tools\ILRepack.exe" /wildcards /out:"$(ProjectDir)bin\merged\$(TargetFileName)" "$(TargetPath)" "$(TargetDir)*.dll"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
     <PostBuildEvent>mono $(SolutionDir)packages/ILRepack.2.0.12/tools/ILRepack.exe /wildcards /out:$(ProjectDir)bin/merged/$(TargetFileName) $(TargetPath) $(TargetDir)*.dll</PostBuildEvent>
