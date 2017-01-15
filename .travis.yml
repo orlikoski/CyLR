@@ -4,9 +4,9 @@ env:
 - PLATFORM=4.0
 - PLATFORM=4.5
 script:
-- ./scripts/build.sh $PLATFORM
-- ./scripts/test.sh $PLATFORM
-- ./scripts/deploy.sh $PLATFORM
+- xbuild /p:Configuration=Release /p:Platform="Framework $PLATFORM" CyLR.sln
+- mono ./packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
+- zip -j ./CyLR/bin/merged/CyLR$PLATFORM.zip ./CyLR/bin/merged/CyLR.exe
 deploy:
   provider: releases
   api_key:
