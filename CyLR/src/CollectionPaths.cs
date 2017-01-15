@@ -11,16 +11,18 @@ namespace CyLR
         {
             var defaultPaths = new List<string>
             {
-                        @"C:\Windows\System32\drivers\etc\hosts",
-                        @"C:\Windows\SchedLgU.Txt",
-                        @"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup",
-                        @"C:\Windows\System32\config",
-                        @"C:\Windows\System32\winevt\logs",
-                        @"C:\Windows\Prefetch",
-                        @"C:\Windows\Tasks",
-                        @"C:\Windows\System32\LogFiles\W3SVC1",
-                        @"C:\$MFT"
+                        @"%SYSTEMROOT%\System32\drivers\etc\hosts",
+                        @"%SYSTEMROOT%\SchedLgU.Txt",
+                        @"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
+                        @"%SYSTEMROOT%\System32\config",
+                        @"%SYSTEMROOT%\System32\winevt\logs",
+                        @"%SYSTEMROOT%\Prefetch",
+                        @"%SYSTEMROOT%\Tasks",
+                        @"%SYSTEMROOT%\System32\LogFiles\W3SVC1",
+                        @"%SystemDrive%\$MFT"
             };
+            defaultPaths = defaultPaths.Select(Environment.ExpandEnvironmentVariables).ToList();
+
             if (Platform.IsUnixLike())
             {
                 defaultPaths = new List<string>
@@ -31,12 +33,12 @@ namespace CyLR
             }
 
             var paths = new List<string>(additionalPaths);
- 
+
             if (arguments.CollectionFilePath != ".")
             {
                 if (File.Exists(arguments.CollectionFilePath))
                 {
-                    paths.AddRange(File.ReadAllLines(arguments.CollectionFilePath));
+                    paths.AddRange(File.ReadAllLines(arguments.CollectionFilePath).Select(Environment.ExpandEnvironmentVariables));
                 }
                 else
                 {
