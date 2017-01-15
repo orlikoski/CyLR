@@ -43,6 +43,7 @@ namespace CyLR
                 string input = null;
                 while ((input = Console.ReadLine()) != null)
                 {
+                    input = Environment.ExpandEnvironmentVariables(input);
                     additionalPaths.Add(input);
                 }
             }
