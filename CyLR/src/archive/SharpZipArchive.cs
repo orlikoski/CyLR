@@ -15,7 +15,7 @@ namespace CyLR.archive
         {
             archive = new ZipOutputStream(destination);
             archive.IsStreamOwner = false;
-            if (password != null)
+            if (string.IsNullOrEmpty(password))
             {
                 archive.Password = password;
             }

@@ -43,7 +43,7 @@ namespace CyLR
                 "Uses the native file system instead of a raw NTFS read. Unix-like environments always use this option."
             },
             {
-                "--zp",
+                "-zp",
                 "Uses a password to encrypt the archive file"
             }
         };
