@@ -76,6 +76,7 @@ namespace CyLR
                     case "--help":
                     case "-h":
                     case "/?":
+                    case "--version":
                         HelpRequested = true;
                         argEnum.GetArgumentParameter(ref HelpTopic);
                         break;
