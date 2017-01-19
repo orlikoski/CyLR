@@ -41,6 +41,10 @@ namespace CyLR
             {
                 "--force-native",
                 "Uses the native file system instead of a raw NTFS read. Unix-like environments always use this option."
+            },
+            {
+                "--zp",
+                "Uses a password to encrypt the archive file"
             }
         };
 
@@ -58,6 +62,7 @@ namespace CyLR
         public readonly string SFTPServer = string.Empty;
         public readonly bool DryRun;
         public readonly bool ForceNative;
+        public readonly string ZipPassword;
 
         public Arguments(IEnumerable<string> args)
         {
@@ -93,6 +98,10 @@ namespace CyLR
 
                     case "-c":
                         CollectionFilePath = argEnum.GetArgumentParameter();
+                        break;
+
+                    case "-zp":
+                        ZipPassword = argEnum.GetArgumentParameter();
                         break;
 
                     case "--force-native":

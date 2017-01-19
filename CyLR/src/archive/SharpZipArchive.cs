@@ -10,11 +10,16 @@ namespace CyLR.archive
     {
         private readonly ZipOutputStream archive;
 
-        public SharpZipArchive(Stream destination)
+        public SharpZipArchive(Stream destination, String password)
             : base(destination)
         {
             archive = new ZipOutputStream(destination);
             archive.IsStreamOwner = false;
+            if (password != null)
+            {
+                archive.Password = password;
+            }
+            
         }
 
         protected override void WriteStreamToArchive(string entryName, Stream stream, DateTimeOffset timestamp)
@@ -25,6 +30,7 @@ namespace CyLR.archive
             };
             archive.PutNextEntry(entry);
             archive.SetLevel(3);
+
             StreamUtils.Copy(stream, archive, new byte[4096]);
             archive.CloseEntry();
         }
