@@ -40,26 +40,31 @@ namespace CyLR.read
         {
             var system = GetSystem(path);
             var letterlessPath = FullPathToRawPath(path);
-            
+            List<string> files = new List<string>();
 
             if (system.FileExists(letterlessPath))
             {
-                yield return path;
+                files.Add(path);
             }
             else if (system.DirectoryExists(letterlessPath))
             {
-                if (system.GetFiles(letterlessPath).Length > 0)
-                {
-                    foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
-                    {
-                        yield return Path.Combine(path, fileInfo.Name);
-                    }
-                }
-                else
+                if (system.GetFiles(letterlessPath).Length == 0)
                 {
                     Console.WriteLine($"Folder '{path}' exists but contains no files");
                 }
+                // Grap all files in directory
+                foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
+                {
+                    files.Add(Path.Combine(path, fileInfo.Name));
+                }
+                // Dive into all sub-directories
+                foreach (var dirInfo in system.GetDirectories(letterlessPath))
+                {
+                    Console.WriteLine($"Made it: '{dirInfo}'");
+                    files.AddRange(GetFilesFromPath(dirInfo));
+                }
 
+                foreach (var file in files) yield return file;
             }
             else
             {
