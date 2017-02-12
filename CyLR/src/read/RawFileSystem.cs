@@ -63,13 +63,12 @@ namespace CyLR.read
                     Console.WriteLine($"Made it: '{dirInfo}'");
                     files.AddRange(GetFilesFromPath(dirInfo));
                 }
-
-                foreach (var file in files) yield return file;
             }
             else
             {
                 Console.WriteLine($"File or folder '{path}' does not exist");
             }
+            foreach (var file in files) yield return file;
         }
 
         public DateTime GetLastWriteTimeUtc(string path)
