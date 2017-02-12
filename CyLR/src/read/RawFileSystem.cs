@@ -5,6 +5,8 @@ using DiscUtils.Ntfs;
 using RawDiskLib;
 
 using IRawFileSystem = DiscUtils.IFileSystem;
+using DiscUtils;
+using System.Linq;
 
 namespace CyLR.read
 {
@@ -40,7 +42,6 @@ namespace CyLR.read
         {
             var system = GetSystem(path);
             var letterlessPath = FullPathToRawPath(path);
-            
 
             if (system.FileExists(letterlessPath))
             {
@@ -48,22 +49,37 @@ namespace CyLR.read
             }
             else if (system.DirectoryExists(letterlessPath))
             {
-                if (system.GetFiles(letterlessPath).Length > 0)
+                var dirInfo = system.GetDirectoryInfo(letterlessPath);
+                // Grap all files in directory
+                foreach (var file in GetFilesFromDir(path, dirInfo))
                 {
-                    foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
-                    {
-                        yield return Path.Combine(path, fileInfo.Name);
-                    }
+                    yield return file;
                 }
-                else
-                {
-                    Console.WriteLine($"Folder '{path}' exists but contains no files");
-                }
-
             }
             else
             {
                 Console.WriteLine($"File or folder '{path}' does not exist");
+            }
+        }
+
+        IEnumerable<string> GetFilesFromDir(string path, DiscDirectoryInfo directory)
+        {
+
+            foreach (var subDir in directory.GetDirectories())
+            {             
+                foreach (var file in GetFilesFromDir(Path.Combine(path, subDir.Name), subDir))
+                {
+                    yield return file;
+                }
+            }
+            var filelist = directory.GetFiles();
+            if (!filelist.Any())
+            {
+                Console.WriteLine($"Folder '{path}' exists but contains no files");
+            }
+            foreach (var file in filelist)
+            {
+                yield return Path.Combine(path, file.Name);
             }
         }
 
