@@ -5,6 +5,8 @@ using DiscUtils.Ntfs;
 using RawDiskLib;
 
 using IRawFileSystem = DiscUtils.IFileSystem;
+using DiscUtils;
+using System.Linq;
 
 namespace CyLR.read
 {
@@ -40,35 +42,45 @@ namespace CyLR.read
         {
             var system = GetSystem(path);
             var letterlessPath = FullPathToRawPath(path);
-            List<string> files = new List<string>();
 
             if (system.FileExists(letterlessPath))
             {
-                files.Add(path);
+                yield return path;
             }
             else if (system.DirectoryExists(letterlessPath))
             {
-                if (system.GetFiles(letterlessPath).Length == 0)
-                {
-                    Console.WriteLine($"Folder '{path}' exists but contains no files");
-                }
+                var dirInfo = system.GetDirectoryInfo(letterlessPath);
                 // Grap all files in directory
-                foreach (var fileInfo in system.GetDirectoryInfo(letterlessPath).GetFiles())
+                foreach (var file in GetFilesFromDir(path, dirInfo))
                 {
-                    files.Add(Path.Combine(path, fileInfo.Name));
-                }
-                // Dive into all sub-directories
-                foreach (var dirInfo in system.GetDirectories(letterlessPath))
-                {
-                    Console.WriteLine($"Made it: '{dirInfo}'");
-                    files.AddRange(GetFilesFromPath(dirInfo));
+                    yield return file;
                 }
             }
             else
             {
                 Console.WriteLine($"File or folder '{path}' does not exist");
             }
-            foreach (var file in files) yield return file;
+        }
+
+        IEnumerable<string> GetFilesFromDir(string path, DiscDirectoryInfo directory)
+        {
+
+            foreach (var subDir in directory.GetDirectories())
+            {             
+                foreach (var file in GetFilesFromDir(Path.Combine(path, subDir.Name), subDir))
+                {
+                    yield return file;
+                }
+            }
+            var filelist = directory.GetFiles();
+            if (!filelist.Any())
+            {
+                Console.WriteLine($"Folder '{path}' exists but contains no files");
+            }
+            foreach (var file in filelist)
+            {
+                yield return Path.Combine(path, file.Name);
+            }
         }
 
         public DateTime GetLastWriteTimeUtc(string path)
