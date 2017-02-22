@@ -27,25 +27,6 @@ namespace CyLR.read
             }
         }
 
-        public IEnumerable<string> GetFilesFromDir(string path, DirectoryInfo directory)
-        {
-            foreach (var subDir in directory.GetDirectories())
-            {
-                foreach (var file in GetFilesFromDir(Path.Combine(path, subDir.Name), subDir))
-                {
-                    yield return file;
-                }
-            }
-            var filelist = directory.GetFiles();
-            if (!filelist.Any())
-            {
-                Console.WriteLine($"Folder '{path}' exists but contains no files");
-            }
-            foreach (var file in filelist)
-            {
-                yield return Path.Combine(path, file.Name);
-            }
-        }
         public Stream OpenFile(string path)
         {
             return File.OpenRead(path);
@@ -64,6 +45,47 @@ namespace CyLR.read
         public bool FileExists(string path)
         {
             return File.Exists(path);
+        }
+
+        public IEnumerable<string> GetFilesFromDir(string path, DirectoryInfo directory)
+        {
+            IEnumerable<DirectoryInfo> directoryInfos;
+            try
+            {
+                directoryInfos = directory.GetDirectories();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("Failed to read files in '{0}' due to insufficient privilages.", path);
+                directoryInfos = Enumerable.Empty<DirectoryInfo>();
+            }
+
+            foreach (
+                var file in
+                    directoryInfos.SelectMany(subDir => GetFilesFromDir(Path.Combine(path, subDir.Name), subDir)))
+            {
+                yield return file;
+            }
+            IEnumerable<FileInfo> fileList;
+            try
+            {
+
+                fileList = directory.GetFiles();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("Failed to read files in '{0}' due to insufficient privilages.", path);
+                fileList = Enumerable.Empty<FileInfo>();
+            }
+
+            if (!fileList.Any())
+            {
+                Console.WriteLine($"Folder '{path}' exists but contains no files");
+            }
+            foreach (var file in fileList)
+            {
+                yield return Path.Combine(path, file.Name);
+            }
         }
     }
 }
