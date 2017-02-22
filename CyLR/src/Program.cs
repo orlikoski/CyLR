@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using CyLR.archive;
 using CyLR.read;
 using Renci.SshNet;
 using ArchiveFile = CyLR.archive.File;
 using File = System.IO.File;
+
 
 namespace CyLR
 {
@@ -35,6 +37,18 @@ namespace CyLR
             {
                 Console.WriteLine(arguments.GetHelp(arguments.HelpTopic));
                 return 0;
+            }
+
+            if (!arguments.ForceNative)
+            {
+                var identity = WindowsIdentity.GetCurrent();
+                var principal = new WindowsPrincipal(identity);
+                if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+                {
+                    Console.WriteLine(
+                        "Error, this program requires admin privliages to run unless --force-native is specified.");
+                    return 1;
+                }
             }
 
             var additionalPaths = new List<string>();
