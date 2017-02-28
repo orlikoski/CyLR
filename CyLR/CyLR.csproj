@@ -83,9 +83,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DeviceIOControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\DeviceIOControlLib.dll</HintPath>
+    <Reference Include="DeviceIOControlLib, Version=0.1.1.0, Culture=neutral, PublicKeyToken=194e86a1dcd77098, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeviceIOControlLib.0.1.1\lib\net40\DeviceIOControlLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DiscUtils, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.dll</HintPath>
@@ -95,9 +95,9 @@
       <HintPath>..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RawDiskLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\RawDiskLib.dll</HintPath>
+    <Reference Include="RawDiskLib, Version=0.1.4.0, Culture=neutral, PublicKeyToken=1e91a7ce501218a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\RawDiskLib.0.1.4\lib\net40\RawDiskLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Renci.SshNet, Version=2016.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.0.0\lib\net40\Renci.SshNet.dll</HintPath>
