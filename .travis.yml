@@ -1,6 +1,4 @@
 language: csharp
-mono:
-    - 3.6.2
 solution: CyLR.sln
 env:
   - PLATFORM=4.0
