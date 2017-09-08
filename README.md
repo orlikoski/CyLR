@@ -11,18 +11,10 @@ The main features are:
 *  Optimized to store the collected artifacts in memory (minimizing or removing entirely the need to write additional artifacts on the host disk)
 *  Built in SFTP capability
 
-## What's New
-
-## Fixes
-
-## Known Bugs
-
-## Important Notes
-
 ## SYNOPSIS
 
 ```
-CyLR.exe [--help] [-od] [-of] [-u] [-p] [-s] [-c]
+CyLR.exe [--help] [-od] [-of] [-u] [-p] [-s] [-c] [-zp]
 ```
 
 ## DESCRIPTION
@@ -45,11 +37,13 @@ The standard list of collected artifacts are:
 * '-\-help' — Show help message and exit.
 * '-od' — Defines the directory that the zip archive will be created in. Defaults to current working directory. (applies to SFTP and local storage options)
 * '-of' — Defines the name of the zip archive will be created. Defaults to host machine's name.
+* '-zp' — If specified, the resulting zip file will be password protected with this password.
 * SFTP Options
     * '-u' — SFTP username
     * '-p' — SFTP password
     * '-s' — SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  The format is <server name>:<port>.  Usage: -s 8.8.8.8:22"
     * '-c' — Optional argument to provide custom list of artifact files and directories (one entry per line). NOTE: Must use full path including drive letter on each line.  MFT can be collected by "C:\$MFT" or "D:\$MFT" and so on.  Usage: -c <path to config file>
+
 
 ## DEPENDENCIES
 
