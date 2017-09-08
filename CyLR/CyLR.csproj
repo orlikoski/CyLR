@@ -95,6 +95,10 @@
       <HintPath>..\packages\Discutils.0.11.0.2\lib\net40\DiscUtils.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RawDiskLib, Version=0.1.4.0, Culture=neutral, PublicKeyToken=1e91a7ce501218a4, processorArchitecture=MSIL">
       <HintPath>..\packages\RawDiskLib.0.1.4\lib\net40\RawDiskLib.dll</HintPath>
     </Reference>
