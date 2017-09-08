@@ -31,7 +31,7 @@ namespace CyLR.archive
             archive.PutNextEntry(entry);
             archive.SetLevel(3);
 
-            StreamUtils.Copy(stream, archive, new byte[4096]);
+            stream.CopyTo(archive);
             archive.CloseEntry();
         }
 
