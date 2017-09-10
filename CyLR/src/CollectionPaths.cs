@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace CyLR
 {
@@ -28,11 +29,78 @@ namespace CyLR
                 defaultPaths = new List<string>
                 {
                     "/root/.bash_history",
-                    "/var/logs"
+                    "/var/log",
+                    "/private/var/log/",
+                    "/.fseventsd",
+                    "/etc/hosts.allow",
+                    "/etc/hosts.deny",
+                    "/etc/hosts",
+                    "/System/Library/StartupItems",
+                    "/System/Library/LaunchAgents",
+                    "/System/Library/LaunchDaemons",
+                    "/Library/LaunchAgents",
+                    "/Library/LaunchDaemons",
+                    "/Library/StartupItems",
+                    "/etc/passwd",
+                    "/etc/group",
+                    ""
+                };
+
+                var proc_plist = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/usr/bin/find",
+                        Arguments = "/ -name *.plist |sort|uniq",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+                while (!proc_plist.StandardOutput.EndOfStream)
+                {
+                    string line = proc_plist.StandardOutput.ReadLine();
+                    defaultPaths.Add(line);
+                };
+
+                var proc_bashshellhistory = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/usr/bin/find",
+                        Arguments = "/ -name .bash_history |sort|uniq",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+                while (!proc_bashshellhistory.StandardOutput.EndOfStream)
+                {
+                    string line = proc_bashshellhistory.StandardOutput.ReadLine();
+                    defaultPaths.Add(line);
+                };
+
+
+
+                var proc_shellhistory = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "/usr/bin/find",
+                        Arguments = "/ -name .sh_history |sort|uniq",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+                while (!proc_shellhistory.StandardOutput.EndOfStream)
+                {
+                    string line = proc_shellhistory.StandardOutput.ReadLine();
+                    defaultPaths.Add(line);
                 };
             }
 
-            var paths = new List<string>(additionalPaths);
+        var paths = new List<string>(additionalPaths);
 
             if (arguments.CollectionFilePath != ".")
             {
