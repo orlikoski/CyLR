@@ -51,12 +51,13 @@ namespace CyLR
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "/usr/bin/find",
-                        Arguments = "/ -name *.plist |sort|uniq",
+                        Arguments = "/ -name \"*.plist\" -print",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     }
                 };
+                proc_plist.Start();
                 while (!proc_plist.StandardOutput.EndOfStream)
                 {
                     string line = proc_plist.StandardOutput.ReadLine();
@@ -68,12 +69,13 @@ namespace CyLR
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "/usr/bin/find",
-                        Arguments = "/ -name .bash_history |sort|uniq",
+                        Arguments = "/ -name \".bash_history\" -print",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     }
                 };
+                proc_bashshellhistory.Start();
                 while (!proc_bashshellhistory.StandardOutput.EndOfStream)
                 {
                     string line = proc_bashshellhistory.StandardOutput.ReadLine();
@@ -87,12 +89,13 @@ namespace CyLR
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "/usr/bin/find",
-                        Arguments = "/ -name .sh_history |sort|uniq",
+                        Arguments = "/ -name \".sh_history\" -print",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         CreateNoWindow = true
                     }
                 };
+                proc_shellhistory.Start();
                 while (!proc_shellhistory.StandardOutput.EndOfStream)
                 {
                     string line = proc_shellhistory.StandardOutput.ReadLine();
