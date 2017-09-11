@@ -8,6 +8,26 @@ namespace CyLR
 {
     internal static class CollectionPaths
     {
+        private static IEnumerable<string> RunCommand(string OSCommand, string CommandArgs)
+        {
+            var newPaths = new List<string> { };
+            var proc = new Process
+            { 
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = OSCommand,
+                    Arguments = CommandArgs,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+            proc.Start();
+            while (!proc.StandardOutput.EndOfStream)
+            {
+                yield return  proc.StandardOutput.ReadLine();
+            };
+        }
         public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths)
         {
             var defaultPaths = new List<string>
@@ -42,68 +62,16 @@ namespace CyLR
                     "/Library/LaunchDaemons",
                     "/Library/StartupItems",
                     "/etc/passwd",
-                    "/etc/group",
-                    ""
+                    "/etc/group"
                 };
-
-                var proc_plist = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "/usr/bin/find",
-                        Arguments = "/ -name \"*.plist\" -print",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    }
-                };
-                proc_plist.Start();
-                while (!proc_plist.StandardOutput.EndOfStream)
-                {
-                    string line = proc_plist.StandardOutput.ReadLine();
-                    defaultPaths.Add(line);
-                };
-
-                var proc_bashshellhistory = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "/usr/bin/find",
-                        Arguments = "/ -name \".bash_history\" -print",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    }
-                };
-                proc_bashshellhistory.Start();
-                while (!proc_bashshellhistory.StandardOutput.EndOfStream)
-                {
-                    string line = proc_bashshellhistory.StandardOutput.ReadLine();
-                    defaultPaths.Add(line);
-                };
-
-
-
-                var proc_shellhistory = new Process
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "/usr/bin/find",
-                        Arguments = "/ -name \".sh_history\" -print",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    }
-                };
-                proc_shellhistory.Start();
-                while (!proc_shellhistory.StandardOutput.EndOfStream)
-                {
-                    string line = proc_shellhistory.StandardOutput.ReadLine();
-                    defaultPaths.Add(line);
-                };
+                // Find all *.plist files
+                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \"*.plist\" -print"));
+                // Find all .bash_history files
+                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \".bash_history\" -print"));
+                // Find all .sh_history files
+                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \".sh_history\" -print"));
             }
-
-        var paths = new List<string>(additionalPaths);
+            var paths = new List<string>(additionalPaths);
 
             if (arguments.CollectionFilePath != ".")
             {
