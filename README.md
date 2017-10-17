@@ -22,6 +22,7 @@ CyLR.exe [--help] [-od] [-of] [-u] [-p] [-s] [-c] [-zp]
 CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly, securely and minimizes impact to the host.
 
 The standard list of collected artifacts are:
+Windows Default
 * "C:\Windows\System32\config"
 * "C:\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
 * "C:\Windows\Prefetch"
@@ -30,6 +31,25 @@ The standard list of collected artifacts are:
 * "C:\Windows\System32\winevt\logs"
 * "C:\Windows\System32\drivers\etc\hosts"
 * "C:$MFT"
+
+Mac and Linux Default
+*  "/var/log",
+*  "/private/var/log/",
+*  "/.fseventsd",
+*  "/etc/hosts.allow",
+*  "/etc/hosts.deny",
+*  "/etc/hosts",
+*  "/System/Library/StartupItems",
+*  "/System/Library/LaunchAgents",
+*  "/System/Library/LaunchDaemons",
+*  "/Library/LaunchAgents",
+*  "/Library/LaunchDaemons",
+*  "/Library/StartupItems",
+*  "/etc/passwd",
+*  "/etc/group"
+*  All plist files
+*  All .bash_history files
+*  All .sh_history files
 
 ## ARGUMENTS
 
