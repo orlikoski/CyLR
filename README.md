@@ -67,17 +67,16 @@ Mac and Linux Default
 
 
 ## DEPENDENCIES
-in general: some kind of administrative rights on the target.
+in general: some kind of administrative rights on the target (root, sudo, administrator,...).
 
-Windows
+### Windows
 1. NTFS file system
-2. Windows Operating System
-3. .NET 4.x
+2. .NET 4.x
 * NOTE: 4.5 works twice as fast as the 4.0 version but may not be supported by older systems
 
-Linux/macOS
-1. mono
-2. .NET
+### Linux/macOS
+mono for [macOS](http://www.mono-project.com/docs/about-mono/supported-platforms/osx/) or [Linux](http://www.mono-project.com/download/#download-lin)
+
 
 ## EXAMPLES
 Standard collection
