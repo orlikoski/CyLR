@@ -86,9 +86,10 @@ Standard collection
     ```
 
 Linux collection
-
+  ```
 mono CyLR.exe
-
+  ```
+  
 Collect artifacts and store data in "C:\Temp\LRData"
     ```
     CyLR.exe -o "C:\Temp\LRData"
