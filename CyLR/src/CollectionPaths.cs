@@ -8,6 +8,9 @@ namespace CyLR
 {
     internal static class CollectionPaths
     {
+        private static List<string> AllFiles;
+        private static List<string> tempPaths;
+
         private static IEnumerable<string> RunCommand(string OSCommand, string CommandArgs)
         {
             var newPaths = new List<string> { };
@@ -46,7 +49,8 @@ namespace CyLR
 
             if (Platform.IsUnixLike())
             {
-                defaultPaths = new List<string>
+                defaultPaths = new List<string> { };
+                tempPaths = new List<string>
                 {
                     "/root/.bash_history",
                     "/var/log",
@@ -64,12 +68,32 @@ namespace CyLR
                     "/etc/passwd",
                     "/etc/group"
                 };
+                // Collect file listing
+                AllFiles = new List<string> { };
+                AllFiles.AddRange(RunCommand("/usr/bin/find", "/ -print"));
+
                 // Find all *.plist files
-                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \"*.plist\" -print"));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("*.plist"))));
                 // Find all .bash_history files
-                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \".bash_history\" -print"));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains(".bash_history"))));
                 // Find all .sh_history files
-                defaultPaths.AddRange(RunCommand("/usr/bin/find", "/ -name \".sh_history\" -print"));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains(".sh_history"))));
+                // Find Chrome Preference files
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/History"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Cookies"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Bookmarks"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Extensions"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Last"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Shortcuts"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Top"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("Support/Google/Chrome/Default/Visited"))));
+
+                // Find FireFox Preference Files
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("places.sqlite"))));
+                tempPaths.AddRange(AllFiles.Where((stringToCheck => stringToCheck.Contains("downloads.sqlite"))));
+
+                // Fix any spaces to work with MacOS naming conventions
+                defaultPaths = tempPaths.ConvertAll(stringToCheck => stringToCheck.Replace(" ", " "));
             }
             var paths = new List<string>(additionalPaths);
 
