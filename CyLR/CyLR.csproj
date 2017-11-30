@@ -157,9 +157,6 @@
   <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
     <PostBuildEvent>mono $(SolutionDir)packages/ILRepack.2.0.14/tools/ILRepack.exe /wildcards /out:$(ProjectDir)bin/merged/$(TargetFileName) $(TargetPath) $(TargetDir)*.dll</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)packages\ILRepack.2.0.14\tools\ILRepack.exe" /wildcards /out:"$(ProjectDir)bin\merged\$(TargetFileName)" "$(TargetPath)" "$(TargetDir)*.dll"</PostBuildEvent>
-  </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
