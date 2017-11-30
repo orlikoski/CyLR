@@ -118,11 +118,7 @@ namespace CyLR
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
         private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
-#if DOT_NET_4_0
             using (var archive = new SharpZipArchive(archiveStream, arguments.ZipPassword))
-#else
-            using (var archive = new NativeArchive(archiveStream))
-#endif
             {
                 var system = arguments.ForceNative ? (IFileSystem) new NativeFileSystem() : new RawFileSystem();
 

@@ -1,7 +1,5 @@
-﻿#if DOT_NET_4_0
-using System;
+﻿using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace CyLR.archive
@@ -44,4 +42,3 @@ namespace CyLR.archive
         }
     }
 }
-#endif
