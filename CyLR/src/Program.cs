@@ -55,7 +55,7 @@ namespace CyLR
             if (Platform.IsInputRedirected)
             {
                 string input = null;
-                while ((input = Console.ReadLine()) != null)
+                while ((input = Console.In.ReadLine()) != null)
                 {
                     input = Environment.ExpandEnvironmentVariables(input);
                     additionalPaths.Add(input);
