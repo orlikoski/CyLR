@@ -1,9 +1,9 @@
 language: csharp
 solution: CyLR.sln
 env:
-  - PLATFORM=4.0
+  - PLATFORM=AnyCPU
 script:
-  - xbuild /p:Configuration=Release /p:Platform="Framework $PLATFORM" CyLR.sln
+  - xbuild /p:Configuration=Release /p:Platform="$PLATFORM" CyLR.sln
   - mono ./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
   - zip -j ./CyLR/bin/merged/CyLR.zip ./CyLR/bin/merged/CyLR.exe
 deploy:

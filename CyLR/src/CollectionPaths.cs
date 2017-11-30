@@ -116,6 +116,13 @@ namespace CyLR
                 paths.AddRange(arguments.CollectionFiles);
             }
 
+            if (paths.Count == 1)
+            {
+                if (paths[0] == "")
+                {
+                    return defaultPaths;
+                }
+            }
             return paths.Any() ? paths : defaultPaths;
         }
     }
