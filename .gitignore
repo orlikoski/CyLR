@@ -5,6 +5,7 @@ packages/
 *.vspx
 *.db
 *.opendb
+*.user
 CyLRTests/obj/
 CyLRTests/bin/
 *.user
