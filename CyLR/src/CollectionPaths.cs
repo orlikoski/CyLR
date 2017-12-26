@@ -66,7 +66,8 @@ namespace CyLR
                     "/Library/LaunchDaemons",
                     "/Library/StartupItems",
                     "/etc/passwd",
-                    "/etc/group"
+                    "/etc/group",
+                    "/etc/rc.d"
                 };
                 // Collect file listing
                 AllFiles = new List<string> { };
