@@ -37,12 +37,12 @@ namespace CyLR
             var defaultPaths = new List<string>
             {
                         @"%SYSTEMROOT%\System32\config",
-						@"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
-						@"%SYSTEMROOT%\Prefetch",
-						@"%SYSTEMROOT%\Tasks",
-						@"%SYSTEMROOT%\SchedLgU.Txt",
-						@"%SYSTEMROOT%\System32\winevt\logs",
-						@"%SYSTEMROOT%\System32\drivers\etc\hosts",
+			@"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
+			@"%SYSTEMROOT%\Prefetch",
+			@"%SYSTEMROOT%\Tasks",
+			@"%SYSTEMROOT%\SchedLgU.Txt",
+			@"%SYSTEMROOT%\System32\winevt\logs",
+			@"%SYSTEMROOT%\System32\drivers\etc\hosts",
                         @"%SystemDrive%\$MFT"
             };
             defaultPaths = defaultPaths.Select(Environment.ExpandEnvironmentVariables).ToList();
