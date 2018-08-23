@@ -41,7 +41,7 @@ namespace CyLR
                 @"%SYSTEMROOT%\Prefetch",
                 @"%SYSTEMROOT%\inf\setupapi.dev.log",
                 @"%SYSTEMROOT%\Appcompat\Programs",
-          			@"%SYSTEMROOT%\System32\drivers\etc\hosts",
+          		@"%SYSTEMROOT%\System32\drivers\etc\hosts",
                 @"%SYSTEMROOT%\System32\sru",
                 @"%SYSTEMROOT%\System32\winevt\logs",
                 @"%SYSTEMROOT%\System32\Tasks",
@@ -59,7 +59,7 @@ namespace CyLR
                 @"%SYSTEMROOT%\System32\config\SOFTWARE.LOG2",
                 @"%SYSTEMROOT%\System32\config\SECURITY.LOG2",
                 @"%PROGRAMDATA%\Microsoft\Search\Data\Applications\Windows",
-          			@"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
+          		@"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
                 @"%SystemDrive%\$Recycle.Bin",
                 @"%SystemDrive%\$LogFile",
                 @"%SystemDrive%\$MFT"
