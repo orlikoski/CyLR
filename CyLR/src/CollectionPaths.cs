@@ -91,6 +91,18 @@ namespace CyLR
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Mozilla\Firefox\Profiles\");
               }
             }
+            //This section will attempt to collect files or folder locations under each users profile by pulling their ProfilePath from the registry and adding it in front.
+            //Add "defaultPaths.Add($@"{user.ProfilePath}" without the quotes in front of the file / path to be collected in each users profile.
+            if (!Platform.IsUnixLike())
+            {
+             var users = FindUsers();
+                   foreach (var user in users)
+                       {
+                            //defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT");
+                          //defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat");
+                        }
+            }
+
             if (Platform.IsUnixLike())
             {
                 defaultPaths = new List<string> { };
