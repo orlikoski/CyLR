@@ -27,14 +27,51 @@ CyLR tool collects forensic artifacts from hosts with NTFS file systems quickly,
 The standard list of collected artifacts are:
 
 Windows Default
-* "C:\Windows\System32\config"
-* "C:\Windows\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
-* "C:\Windows\Prefetch"
-* "C:\Windows\Tasks"
-* "C:\Windows\SchedLgU.Txt"
-* "C:\Windows\System32\winevt\logs"
-* "C:\Windows\System32\drivers\etc\hosts"
-* "C:$MFT"
+* System Level Artifacts
+    * %SYSTEMROOT%\SchedLgU.Txt
+    * %SYSTEMROOT%\Tasks
+    * %SYSTEMROOT%\Prefetch
+    * %SYSTEMROOT%\inf\setupapi.dev.log
+    * %SYSTEMROOT%\Appcompat\Programs
+    * %SYSTEMROOT%\System32\drivers\etc\hosts
+    * %SYSTEMROOT%\System32\sru
+    * %SYSTEMROOT%\System32\winevt\logs
+    * %SYSTEMROOT%\System32\Tasks
+    * %SYSTEMROOT%\System32\LogFiles\W3SVC1
+    * %SYSTEMROOT%\System32\config\SAM
+    * %SYSTEMROOT%\System32\config\SYSTEM
+    * %SYSTEMROOT%\System32\config\SOFTWARE
+    * %SYSTEMROOT%\System32\config\SECURITY
+    * %SYSTEMROOT%\System32\config\SAM.LOG1
+    * %SYSTEMROOT%\System32\config\SYSTEM.LOG1
+    * %SYSTEMROOT%\System32\config\SOFTWARE.LOG1
+    * %SYSTEMROOT%\System32\config\SECURITY.LOG1
+    * %SYSTEMROOT%\System32\config\SAM.LOG2
+    * %SYSTEMROOT%\System32\config\SYSTEM.LOG2
+    * %SYSTEMROOT%\System32\config\SOFTWARE.LOG2
+    * %SYSTEMROOT%\System32\config\SECURITY.LOG2
+    * %PROGRAMDATA%\Microsoft\Search\Data\Applications\Windows
+    * %PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup
+    * %SystemDrive%\$Recycle.Bin
+    * %SystemDrive%\$LogFile
+    * %SystemDrive%\$MFT
+* Artifacts For All Users
+    * {user.ProfilePath}\NTUSER.DAT
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat
+    * {user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent
+    * {user.ProfilePath}\NTUSER.DAT
+    * {user.ProfilePath}\NTUSER.DAT.LOG1
+    * {user.ProfilePath}\NTUSER.DAT.LOG2
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG1
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG2
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\Explorer
+    * {user.ProfilePath}\AppData\Local\Google\Chrome\User Data\Default\History\
+    * {user.ProfilePath}\AppData\Local\Microsoft\Windows\WebCache\
+    * {user.ProfilePath}\AppData\Local\ConnectedDevicesPlatform
+    * {user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\
+    * {user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline
+    * {user.ProfilePath}\AppData\Roaming\Mozilla\Firefox\Profiles\
 
 Mac and Linux Default
 *  "/var/log",
@@ -54,6 +91,8 @@ Mac and Linux Default
 *  All plist files
 *  All .bash_history files
 *  All .sh_history files
+*  Chrome Preference files 
+*  FireFox Preference Files
 
 ## ARGUMENTS
 
