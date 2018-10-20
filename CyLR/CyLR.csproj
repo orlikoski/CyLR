@@ -7,6 +7,9 @@
     <ApplicationIcon>Martin-Berube-Character-Knight.ico</ApplicationIcon>
     <Win32Resource />
     <Version>1.5.0</Version>
+    <RepositoryUrl>https://github.com/orlikoski/CyLR</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/orlikoski/CyLR/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>2018</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
