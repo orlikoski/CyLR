@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.2.0
+dotnet: 2.1.0
 solution: CyLR.sln
 script:
   - dotnet restore
