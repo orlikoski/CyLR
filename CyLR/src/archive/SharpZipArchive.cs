@@ -4,7 +4,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace CyLR.archive
 {
-    class SharpZipArchive : Archive
+    public class SharpZipArchive : Archive
     {
         private readonly ZipOutputStream archive;
 

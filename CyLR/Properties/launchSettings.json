@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CyLR": {
+      "commandName": "Project",
+      "commandLineArgs": "--version"
+    }
+  }
+}

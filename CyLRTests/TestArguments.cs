@@ -1,21 +1,18 @@
 ﻿using System;
 using CyLR;
-using NUnit.Framework;
+using Xunit;
 
 namespace CyLRTests
 {
-    [TestFixture]
     public class TestArguments
     {
-        [Test]
+        [Fact]
         public void TestValidSftp()
         {
-            Assert.DoesNotThrow(
-                ()=>new Arguments(new []{"-s", "test.server.com", "-u", "username", "-p", "password"})
-                );
+            new Arguments(new[] { "-s", "test.server.com", "-u", "username", "-p", "password" });
         }
 
-        [Test]
+        [Fact]
         public void TestSftpMissingParams()
         {
             Assert.Throws<ArgumentException>(
