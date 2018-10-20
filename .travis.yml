@@ -6,7 +6,7 @@ script:
   - dotnet restore
   - dotnet test ./CyLRTests/
   - dotnet build -c Release
-  - zip -j ./CyLR.zip ./CyLR/bin/Debug/netcoreapp2.1
+  - zip -j ./CyLR.zip ./CyLR/bin/Release/netcoreapp2.1/CyLR.dll
 deploy:
   provider: releases
   api_key:
