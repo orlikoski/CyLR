@@ -2,8 +2,6 @@ language: csharp
 mono: none
 dotnet: 2.2
 solution: CyLR.sln
-env:
-  - PLATFORM=AnyCPU
 script:
   - dotnet restore
   - dotnet build -c Release
