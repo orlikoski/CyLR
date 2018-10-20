@@ -1,10 +1,13 @@
 language: csharp
+mono: none
+dotnet: 2.2
 solution: CyLR.sln
 env:
   - PLATFORM=AnyCPU
 script:
-  - xbuild /p:Configuration=Release /p:Platform="$PLATFORM" CyLR.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe CyLRTests/bin/Release/CyLRTests.dll
+  - dotnet restore
+  - dotnet build -c Release
+  - dotnet test .\CyLRTests\
   - zip -j ./CyLR/bin/merged/CyLR.zip ./CyLR/bin/merged/CyLR.exe
 deploy:
   provider: releases
