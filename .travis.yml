@@ -7,9 +7,9 @@ os:
 script:
   - dotnet restore
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-    sudo apt-get install bash coreutils -y ; fi
+    apt-get install bash coreutils -y ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-    bash ./CyLR/build_items/scripts/build_lin.sh ; fi
+    ./CyLR/build_items/scripts/build_lin.sh ; fi
 deploy:
   provider: releases
   api_key:

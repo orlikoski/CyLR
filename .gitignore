@@ -9,3 +9,4 @@ packages/
 CyLRTests/obj/
 CyLRTests/bin/
 *.user
+.travis.yml.bak
