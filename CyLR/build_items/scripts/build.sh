@@ -18,7 +18,7 @@ chmod +x warp-packer
 # Start Build Process
 dotnet restore
 
-platforms_win=( "linux-x64" "osx-x64" )
+platforms=( "linux-x64" "osx-x64" )
 
 # Build and Publish Linux and MacOs Versions
 for platform in "${platforms[@]}"
@@ -34,7 +34,7 @@ done
 
 platforms_win=( "win-x86" "win-x64" )
 # Build and Publish Windows Versions
-for platform in "${platforms[@]}"
+for platform in "${platforms_win[@]}"
 do
   deployments_dir="$deployment_root_dir/$platform"
   mkdir -p $deployments_dir
