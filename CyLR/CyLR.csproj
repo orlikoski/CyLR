@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RuntimeFrameworkVersion>2.1.300</RuntimeFrameworkVersion>
     <StartupObject>CyLR.Program</StartupObject>
     <ApplicationIcon>Martin-Berube-Character-Knight.ico</ApplicationIcon>
     <Win32Resource />
