@@ -11,7 +11,7 @@ matrix:
     #- os: windows
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils ; fi
   # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl ; fi
 
@@ -21,12 +21,14 @@ script:
   - dotnet test ./CyLRTests/
   - mkdir ./deployments
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -Lo ./warp-packer-linux https://github.com/dgiagio/warp/releases/download/v0.2.1/linux-x64.warp-packer ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then chmod +x ./warp-packer-linux ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dotnet build -c release -r linux-x64 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dotnet publish -c release -r linux-x64 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./warp-packer-linux --arch linux-x64 --input_dir bin/release/netcoreapp2.1/linux-x64/publish --exec CyLR --output ./deployments/CyLR ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then zip -j ./CyLR_linux.zip ./deployments/CyLR ; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -Lo ./warp-packer-osx https://github.com/dgiagio/warp/releases/download/v0.2.1/osx-x64.warp-packer ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then chmod +x ./warp-packer-osx ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then  dotnet build -c release -r osx-x64 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then  dotnet publish -c release -r osx-x64 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./warp-packer-osx --arch osx-x64 --input_dir bin/release/netcoreapp2.1/osx-x64/publish --exec CyLR --output ./deployments/CyLR ; fi
