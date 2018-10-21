@@ -24,5 +24,5 @@ mkdir -p $deployments_dir
 dotnet test $test_dir
 dotnet build -c release -r $platform
 dotnet publish -c release -r $platform
-./warp-packer --arch $platform --input_dir bin/release/netcoreapp$netcore_version/linux-x64/publish --exec CyLR --output $deployments_dir/CyLR
+./warp-packer-linux --arch $platform --input_dir bin/release/netcoreapp$netcore_version/linux-x64/publish --exec CyLR --output $deployments_dir/CyLR
 zip -j ./CyLR_linux.zip $deployments_dir/CyLR
