@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -ex
-build_dir="./"
+build_dir="../.."
+#build_dir="./"
+test_dir="../CyLRTests"
+cylr_proj_file="../../CyLR.csproj"
 netcore_version="2.1"
 deployment_root_dir="./deployments"
 
@@ -23,7 +26,8 @@ do
   deployments_dir="$deployment_root_dir/$platform"
   mkdir -p $deployments_dir
 
-  dotnet test ./CyLRTests/
+  dotnet test $test_dir
   dotnet build -c release -r $platform
   dotnet publish -c release -r $platform
   ./warp-packer --arch $platform --input_dir bin/Release/netcoreapp$netcore_version/linux-x64/publish --exec CyLR.exe --output $deployments_dir/CyLR.exe
+done
