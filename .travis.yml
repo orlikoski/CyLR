@@ -6,7 +6,6 @@ os:
   - linux
 script:
   - dotnet restore
-  -
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
     sudo apt-get install bash coreutils -y ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
