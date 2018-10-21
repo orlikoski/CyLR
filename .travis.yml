@@ -8,15 +8,12 @@ matrix:
       dist: trusty
       sudo: required
     - os: osx
+    - os: windows
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-      sudo apt-get update ; \
-      sudo apt-get install -y bash curl ;  fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
-      curl -Lo ./orlikoski/CyLR/warp-packer-linux https://github.com/dgiagio/warp/releases/download/v0.2.1/macos-x64.warp-packer ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then \
-      curl -Lo ./orlikoski/CyLR/warp-packer-linux https://github.com/dgiagio/warp/releases/download/v0.2.1/windows-x64.warp-packer ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl ; fi
 
 script:
   - cd ./orlikoski/CyLR/
@@ -24,18 +21,34 @@ script:
   - dotnet test ./CyLRTests/
   - mkdir ./deployments
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-      curl -Lo warp-packer-linux https://github.com/dgiagio/warp/releases/download/v0.2.1/linux-x64.warp-packer
+      curl -Lo ./warp-packer-osx https://github.com/dgiagio/warp/releases/download/v0.2.1/linux-x64.warp-packer
       dotnet build -c release -r linux-x64 ; \
       dotnet publish -c release -r linux-x64 ; \
       ./warp-packer-linux --arch linux-x64 --input_dir bin/release/netcoreapp2.1/linux-x64/publish --exec CyLR --output ./deployments/CyLR ; \
-      zip -j ./CyLR_linux.zip $deployments_dir/CyLR ; \
+      zip -j ./CyLR_linux.zip ./deployments/CyLR ; \
     fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then \
+        curl -Lo ./warp-packer-osx https://github.com/dgiagio/warp/releases/download/v0.2.1/osx-x64.warp-packer
+        dotnet build -c release -r osx-x64 ; \
+        dotnet publish -c release -r osx-x64 ; \
+        ./warp-packer-osx --arch osx-x64 --input_dir bin/release/netcoreapp2.1/osx-x64/publish --exec CyLR --output ./deployments/CyLR ; \
+        zip -j ./CyLR_osx.zip ./deployments/CyLR ; \
+      fi
+    - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then \
+        curl -Lo ./warp-packer.exe https://github.com/dgiagio/warp/releases/download/v0.2.1/windows-x64.warp-packer
+        dotnet build -c release -r windows-x64 ; \
+        dotnet publish -c release -r windows-x64 ; \
+        ./warp-packer.exe --arch windows-x64 --input_dir bin/release/netcoreapp2.1/windows-x64/publish --exec CyLR.exe --output ./deployments/CyLR.exe ; \
+        zip -j ./CyLR_windows.zip ./deployments/CyLR.exe ; \
+      fi
 deploy:
   provider: releases
   api_key:
     secure: F3vanioKwtxsaSldx+I5mpzeXnAmRu4IK4eun7nk/UXRz+X3eruqhRp1zJoc0zhh34CQ2UqfsQpebjuBTD7ho1wkdlmMLFeuqmV+vFM5Or/qcWiVygI5h/OWXdUJbRCe/XR9fy5BxH8QNWoLQ4qaLzItl4pnMi6DaEvWS4VHP5RNZZ2KvNJq4aAc/5DMONpenyMMJNvgozf0pVXnwN9BF9CiUQIpBTYg71VLOco/4NtMvxgiyKREt/mMS/lbv0v/KizYmrgJDAHincsWqI/Rj5nLaZIZDMcQma+WKldwOy9EPZnWlmXmSwDpQPS+tw+qx6vvOJc0r24rjBUZCpCPeY6pMYnO7VXeHD75HAc7b49Wg+0nHL69EsSY2VdJY6Oka7hGaQB9MmvxSQW9j4/YfoLmXW7Cl++EKm1m6SADVe9BRVnkQ0q5Aw9VD8Q+aJxh75E3yaGW9Uc5kwLHX0kdu5jz+gKd/XswHBqYQp7wO/ziObaCJtFwMiOzK1EpdEdsBqaKiBVKw1HBft1wGusLBAr1oKsowqwan8PhjR2r/3U11MGNECQgbxe6/iLSJ+p7J79kS0M1phsx/HeAuANi3BSmh5i3Dv0FzI9Ny4ViKnAx7eoJXTfIgKSXQx3YmwZwMrUH+djd4RekGRQwzAv744x3HkAz1C0/EYKIGR4xShs=
   file:
-    - ./CyLR_linux.zip
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./orlikoski/CyLR/CyLR_linux.zip ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./orlikoski/CyLR/CyLR_osx.zip ; fi
+    - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then ./orlikoski/CyLR/CyLR_windows.zip ; fi
   skip_cleanup: true
   on:
     tags: true
