@@ -13,6 +13,7 @@ before_install:
 
 script:
   - dotnet restore
+  - cd CyLR
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
     ./CyLR/build_items/scripts/build_lin.sh ; fi
 deploy:
