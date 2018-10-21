@@ -8,7 +8,7 @@ matrix:
       dist: trusty
       sudo: required
     - os: osx
-    - os: windows
+    #- os: windows
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl ; fi
