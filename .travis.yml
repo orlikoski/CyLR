@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.1.3
+dotnet: 2.1.300
 solution: CyLR.sln
 matrix:
   include:
