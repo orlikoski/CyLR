@@ -9,4 +9,7 @@ packages/
 CyLRTests/obj/
 CyLRTests/bin/
 *.user
-.travis.yml.bak
+*.exe
+*.zip
+deployments/
+warp-packer
