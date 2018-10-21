@@ -8,8 +8,8 @@ script:
   - dotnet restore
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
     chmod +x ./CyLR/build_items/build_lin.sh ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-      ./CyLR/build_items/build_lin.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
+    ./CyLR/build_items/build_lin.sh ; fi
 deploy:
   provider: releases
   api_key:
