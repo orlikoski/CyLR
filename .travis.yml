@@ -11,7 +11,7 @@ matrix:
     #- os: windows
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils make libssl libcrypto; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils ; fi
   # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl ; fi
 
