@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
 set -ex
-build_dir="../.."
-#build_dir="./"
+#build_dir="../.."
+build_dir="./"
 test_dir="../CyLRTests"
-cylr_proj_file="../../CyLR.csproj"
 netcore_version="2.1"
 deployment_root_dir="./deployments/"
 
 # Move to Build Directory
 cd $build_dir
 
-# Download Warp
-warp_version="0.2.1"
-curl -Lo warp-packer https://github.com/dgiagio/warp/releases/download/v$warp_version/linux-x64.warp-packer
-chmod +x warp-packer
+# # Download Warp
+# warp_version="0.2.1"
+# curl -Lo warp-packer https://github.com/dgiagio/warp/releases/download/v$warp_version/linux-x64.warp-packer
+# chmod +x warp-packer
 
 # Start Build Process
 dotnet restore
