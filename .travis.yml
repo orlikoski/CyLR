@@ -6,10 +6,11 @@ os:
   - linux
 script:
   - dotnet restore
+  -
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-    chmod +x ./CyLR/build_items/scripts/build_lin.sh ; fi
+    sudo apt-get install bash coreutils -y ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then \
-    ./CyLR/build_items/scripts/build_lin.sh ; fi
+    bash ./CyLR/build_items/scripts/build_lin.sh ; fi
 deploy:
   provider: releases
   api_key:
