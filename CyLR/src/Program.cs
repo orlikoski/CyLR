@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using CyLR.archive;
 using CyLR.read;
+using CyLR.src.read;
 using Renci.SshNet;
 using ArchiveFile = CyLR.archive.File;
 using File = System.IO.File;
@@ -23,12 +24,12 @@ namespace CyLR
             }
             catch (ArgumentException e)
             {
-                Console.WriteLine(e.Message);
+                Console.Error.WriteLine(e.Message);
                 return 1;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Unknown error while parsing arguments: {e.Message}");
+                Console.Error.WriteLine($"Unknown error while parsing arguments: {e.Message}");
                 return 0;
             }
 
@@ -57,7 +58,7 @@ namespace CyLR
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error occured while collecting files:\n{e}");
+                Console.Error.WriteLine($"Error occured while collecting files:\n{e}");
                 return 1;
             }
 
@@ -91,7 +92,7 @@ namespace CyLR
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error occured while collecting files:\n{e}");
+                Console.Error.WriteLine($"Error occured while collecting files:\n{e}");
                 return 1;
             }
             return 0;
@@ -105,18 +106,25 @@ namespace CyLR
         /// <param name="paths">Map of driveLetter->path for all files to collect.</param>
         private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
-            using (var archive = new SharpZipArchive(archiveStream, arguments.ZipPassword))
+            try
             {
-                var system = arguments.ForceNative ? (IFileSystem) new NativeFileSystem() : new RawFileSystem();
-
-                var filePaths = paths.SelectMany(path => system.GetFilesFromPath(path)).ToList();
-                foreach (var filePath in filePaths.Where(path => !system.FileExists(path)))
+                using (var archive = new SharpZipArchive(archiveStream, arguments.ZipPassword))
                 {
-                    Console.WriteLine($"Warning: file or folder '{filePath}' does not exist.");
-                }
-                var fileHandles = OpenFiles(system, filePaths);
+                    var system = arguments.ForceNative ? (IFileSystem)new NativeFileSystem() : new RawFileSystem();
 
-                archive.CollectFilesToArchive(fileHandles);
+                    var filePaths = paths.SelectMany(path => system.GetFilesFromPath(path)).ToList();
+                    foreach (var filePath in filePaths.Where(path => !system.FileExists(path)))
+                    {
+                        Console.Error.WriteLine($"Warning: file or folder '{filePath}' does not exist.");
+                    }
+                    var fileHandles = OpenFiles(system, filePaths);
+
+                    archive.CollectFilesToArchive(fileHandles);
+                }
+            }
+            catch(DiskReadException e)
+            {
+                Console.Error.WriteLine("Failed to read files, this is usually due to lacking admin privilages");
             }
         }
 
@@ -133,7 +141,7 @@ namespace CyLR
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Error: {e.Message}");
+                        Console.Error.WriteLine($"Error: {e.Message}");
                     }
                     if (stream != null)
                     {

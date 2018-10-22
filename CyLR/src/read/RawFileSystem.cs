@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CyLR.src.read;
 using DiscUtils;
 using DiscUtils.Ntfs;
 using RawDiskLib;
@@ -77,10 +78,9 @@ namespace CyLR.read
                 system = new NtfsFileSystem(rawDiskStream);
                 systems.Add(driveLetter, system);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Failed to create a filesystem for drive '{0}'", driveLetter);
-                throw;
+                throw new DiskReadException($"Failed to create a filesystem for drive '{driveLetter}'", e);
             }
             return system;
         }
