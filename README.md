@@ -11,9 +11,15 @@ The CyLR tool collects forensic artifacts from hosts with NTFS file systems quic
 
 The main features are:
 *  Quick collection (it's really fast)
-*  Raw file collection process does not use Windows API 
+*  Raw file collection process does not use Windows API
 *  Optimized to store the collected artifacts in memory (minimizing or removing entirely the need to write additional artifacts on the host disk)
 *  Built in SFTP capability
+
+CyLR uses .NET Core and runs natively on Windows, Linux, and MacOS. Self contained applications for the following are included in releases for version 2.0 and higher.
+ - Windows x86
+ - Windows x64
+ - Linux x64
+ - MacOS x64
 
 ## SYNOPSIS
 
@@ -73,12 +79,17 @@ Mac and Linux Default
 ## DEPENDENCIES
 in general: some kind of administrative rights on the target (root, sudo, administrator,...).
 
+CyLR now uses .NET Core and now runs natively on Windows, Linux, and MacOS. Self contained applications for the following are included in releases version 2.0 and higher.
+ - Windows x86
+ - Windows x64
+ - Linux x64
+ - MacOS x64
+
 ### Windows
-1. NTFS file system
-2. .NET 4.5.2 or higher
+ - None
 
 ### Linux/macOS
-mono for [macOS](http://www.mono-project.com/docs/about-mono/supported-platforms/osx/) or [Linux](http://www.mono-project.com/download/#download-lin)
+ - None
 
 
 ## EXAMPLES
@@ -89,7 +100,7 @@ Standard collection
 
 Linux/macOS collection
     ```
-    mono CyLR.exe
+    ./CyLR
     ```
 
 Collect artifacts and store data in "C:\Temp\LRData"
