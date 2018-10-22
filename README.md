@@ -79,11 +79,7 @@ Mac and Linux Default
 ## DEPENDENCIES
 in general: some kind of administrative rights on the target (root, sudo, administrator,...).
 
-CyLR now uses .NET Core and now runs natively on Windows, Linux, and MacOS. Self contained applications for the following are included in releases version 2.0 and higher.
- - Windows x86
- - Windows x64
- - Linux x64
- - MacOS x64
+CyLR now uses .NET Core and now runs natively on Windows, Linux, and MacOS as a .NET Core app or a self contained executable.
 
 ### Windows
  - None
