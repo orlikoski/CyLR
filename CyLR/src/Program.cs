@@ -124,7 +124,7 @@ namespace CyLR
             }
             catch(DiskReadException e)
             {
-                Console.Error.WriteLine("Failed to read files, this is usually due to lacking admin privilages");
+                Console.Error.WriteLine($"Failed to read files, this is usually due to lacking admin privilages.\nError:\n{e}");
             }
         }
 
