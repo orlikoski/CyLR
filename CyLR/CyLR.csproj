@@ -11,6 +11,7 @@
     <PackageLicenseUrl>https://github.com/orlikoski/CyLR/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>2018</Copyright>
     <PackageIconUrl>Martin-Berube-Character-Knight.ico</PackageIconUrl>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
   </PropertyGroup>
 
   <ItemGroup>
