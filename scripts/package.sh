@@ -5,7 +5,7 @@ BUILD_DIR="." && [[ "$TRAVIS_BUILD_DIR" != "" ]] && BUILD_DIR=$TRAVIS_BUILD_DIR
 
 mkdir $BUILD_DIR/deployments
 
-if USE_WARP = true then
+if [ USE_WARP = true ] then
 
 	curl -Lo $BUILD_DIR/warp-packer https://github.com/dgiagio/warp/releases/download/v0.2.1/$WARP_ARCH.warp-packer \
 		&& chmod +x $BUILD_DIR/warp-packer \
