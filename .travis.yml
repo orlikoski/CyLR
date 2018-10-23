@@ -7,10 +7,25 @@ matrix:
     - os: linux
       dist: xenial
       sudo: required
-      env: BUILD_ARCH=linux-x64
+      env: 
+        - BUILD_ARCH=linux-x64
+        - USE_WARP=true
     - os: osx
       env:
         - BUILD_ARCH=osx-x64
+        - USE_WARP=true
+    - os: linux
+      dist: xenial
+      sudo: required
+      env: 
+        - BUILD_ARCH=win-x64
+        - USE_WARP=false
+    - os: linux
+      dist: xenial
+      sudo: required
+      env:
+        - BUILD_ARCH=win-x86
+        - USE_WARP=false
 #    - os: windows
 
 before_install:
