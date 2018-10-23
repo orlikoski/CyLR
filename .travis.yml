@@ -16,23 +16,12 @@ matrix:
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl ; fi
-jobs:
-  include:
-    - stage: test
-      os:
-        - linux
-        - osx
-      script: scripts/test.sh
-    - stage: build
-      os:
-        - linux
-        - osx
-      script: scripts/build.sh
-    - stage: package
-      os:
-        - linux
-        - osx
-      script: scripts/package.sh
+
+script: 
+  - scripts/test.sh
+  - scripts/build.sh
+  - scripts/package.sh
+
 #   - dotnet restore
 #   - dotnet test ./CyLRTests/
 
