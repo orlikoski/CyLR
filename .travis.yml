@@ -19,10 +19,19 @@ before_install:
 jobs:
   include:
     - stage: test
+      os:
+        - linux
+        - osx
       script: scripts/test.sh
     - stage: build
+      os:
+        - linux
+        - osx
       script: scripts/build.sh
     - stage: package
+      os:
+        - linux
+        - osx
       script: scripts/package.sh
 #   - dotnet restore
 #   - dotnet test ./CyLRTests/
