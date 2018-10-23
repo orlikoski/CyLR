@@ -16,4 +16,4 @@ else
 fi
 echo "Zipping files:"
 ls -R $BUILD_DIR/deployments
-zip -rj $BUILD_DIR/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/*
+zip -rj $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments
