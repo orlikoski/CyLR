@@ -5,7 +5,7 @@ BUILD_DIR="." && [[ "$TRAVIS_BUILD_DIR" != "" ]] && BUILD_DIR=$TRAVIS_BUILD_DIR
 
 mkdir $BUILD_DIR/deployments
 
-if [ $USE_WARP = true ] ; then
+if [ "$USE_WARP" = true ] ; then
 	echo "Packaging build with Warp"
 	curl -Lo $BUILD_DIR/warp-packer https://github.com/dgiagio/warp/releases/download/v0.2.1/$WARP_ARCH.warp-packer \
 		&& chmod +x $BUILD_DIR/warp-packer \
@@ -16,4 +16,4 @@ else
 fi
 echo "Zipping files:"
 ls -R $BUILD_DIR/deployments
-zip -j $BUILD_DIR/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/*
+zip -rj $BUILD_DIR/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/*
