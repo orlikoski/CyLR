@@ -26,10 +26,10 @@ matrix:
       env:
         - BUILD_ARCH=win-x86
         - USE_WARP=false
-    - os: windows
-      env: 
-        - BUILD_ARCH=win-x64
-        - USE_WARP=true
+    # - os: windows
+    #   env: 
+    #     - BUILD_ARCH=win-x64
+    #     - USE_WARP=true
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils ; fi
