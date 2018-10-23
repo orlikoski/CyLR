@@ -14,4 +14,4 @@ else
 	cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp2.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
 fi
 
-zip -j $BUILD_DIR/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/CyLR/*
+zip -j $BUILD_DIR/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/*
