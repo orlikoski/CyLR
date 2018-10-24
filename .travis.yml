@@ -38,10 +38,11 @@ matrix:
       env:
         - BUILD_ARCH=win-x64
         - USE_WARP=true
+        - ZIP_COMMAND="7z a"
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y curl coreutils ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl dotnetcore-sdk ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install curl dotnetcore-sdk 7zip ; fi
 
 script: 
   - scripts/test.sh

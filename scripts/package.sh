@@ -1,5 +1,7 @@
 BUILD_DIR="." && [[ "$TRAVIS_BUILD_DIR" != "" ]] && BUILD_DIR=$TRAVIS_BUILD_DIR
 
+[[ "$ZIP_COMMAND" == "" ]] && ZIP_COMMAND="zip -rj"
+
 [[ "$BUILD_ARCH" == "linux-x64" ]] && WARP_ARCH=linux-x64
 [[ "$BUILD_ARCH" == "osx-x64" ]] && WARP_ARCH=macos-x64
 
@@ -17,4 +19,4 @@ fi
 echo "Zipping files:"
 ls -R $BUILD_DIR/deployments
 mkdir $BUILD_DIR/archive
-zip -rj $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments
+$ZIP_COMMAND $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/
