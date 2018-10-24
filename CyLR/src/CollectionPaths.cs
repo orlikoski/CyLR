@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace CyLR
 {
@@ -15,7 +16,7 @@ namespace CyLR
         {
             var newPaths = new List<string> { };
             var proc = new Process
-            { 
+            {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = OSCommand,
@@ -35,17 +36,61 @@ namespace CyLR
         {
             var defaultPaths = new List<string>
             {
-                        @"%SYSTEMROOT%\System32\drivers\etc\hosts",
-                        @"%SYSTEMROOT%\SchedLgU.Txt",
-                        @"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
-                        @"%SYSTEMROOT%\System32\config",
-                        @"%SYSTEMROOT%\System32\winevt\logs",
-                        @"%SYSTEMROOT%\Prefetch",
-                        @"%SYSTEMROOT%\Tasks",
-                        @"%SYSTEMROOT%\System32\LogFiles\W3SVC1",
-                        @"%SystemDrive%\$MFT"
+                @"%SYSTEMROOT%\SchedLgU.Txt",
+                @"%SYSTEMROOT%\Tasks",
+                @"%SYSTEMROOT%\Prefetch",
+                @"%SYSTEMROOT%\inf\setupapi.dev.log",
+                @"%SYSTEMROOT%\Appcompat\Programs",
+                @"%SYSTEMROOT%\System32\drivers\etc\hosts",
+                @"%SYSTEMROOT%\System32\sru",
+                @"%SYSTEMROOT%\System32\winevt\logs",
+                @"%SYSTEMROOT%\System32\Tasks",
+                @"%SYSTEMROOT%\System32\LogFiles\W3SVC1",
+                @"%SYSTEMROOT%\System32\config\SAM",
+                @"%SYSTEMROOT%\System32\config\SYSTEM",
+                @"%SYSTEMROOT%\System32\config\SOFTWARE",
+                @"%SYSTEMROOT%\System32\config\SECURITY",
+                @"%SYSTEMROOT%\System32\config\SAM.LOG1",
+                @"%SYSTEMROOT%\System32\config\SYSTEM.LOG1",
+                @"%SYSTEMROOT%\System32\config\SOFTWARE.LOG1",
+                @"%SYSTEMROOT%\System32\config\SECURITY.LOG1",
+                @"%SYSTEMROOT%\System32\config\SAM.LOG2",
+                @"%SYSTEMROOT%\System32\config\SYSTEM.LOG2",
+                @"%SYSTEMROOT%\System32\config\SOFTWARE.LOG2",
+                @"%SYSTEMROOT%\System32\config\SECURITY.LOG2",
+                @"%PROGRAMDATA%\Microsoft\Search\Data\Applications\Windows",
+                @"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
+                @"%SystemDrive%\$Recycle.Bin",
+                @"%SystemDrive%\$LogFile",
+                @"%SystemDrive%\$MFT"
             };
             defaultPaths = defaultPaths.Select(Environment.ExpandEnvironmentVariables).ToList();
+
+      			//This section will attempt to collect files or folder locations under each users profile by pulling their ProfilePath from the registry and adding it in front.
+      			//Add "defaultPaths.Add($@"{user.ProfilePath}" without the quotes in front of the file / path to be collected in each users profile.
+            if (!Platform.IsUnixLike())
+            {
+              var users = FindUsers();
+              foreach (var user in users)
+              {
+                  defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent");
+                  defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT");
+                  defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT.LOG1");
+                  defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT.LOG2");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG1");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG2");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\Explorer");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Google\Chrome\User Data\Default\History\");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\WebCache\");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\ConnectedDevicesPlatform");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Mozilla\Firefox\Profiles\");
+              }
+            }
 
             if (Platform.IsUnixLike())
             {
@@ -125,6 +170,35 @@ namespace CyLR
                 }
             }
             return paths.Any() ? paths : defaultPaths;
+        }
+        public static IEnumerable<UserProfile> FindUsers()
+        {
+            var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList");
+            foreach (string name in key.GetSubKeyNames())
+            {
+                var path = $@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\{name}";
+                var profile = Registry.GetValue(path, "FullProfile", string.Empty);
+                if (profile != null)
+                {
+                    var result = new UserProfile
+                    {
+                        UserKey = name,
+                        Path = $@"{path}\ProfileImagePath",
+                        ProfilePath = (string)Registry.GetValue(path, "ProfileImagePath", 0),
+                        FullProfile = (int)Registry.GetValue(path, "FullProfile", 0)
+                    };
+                    if (result.FullProfile != -1) yield return result;
+                }
+            }
+
+        }
+
+        internal class UserProfile
+        {
+            public string UserKey { get; set; }
+            public string Path { get; set; }
+            public string ProfilePath { get; set; }
+            public int FullProfile { get; set; }
         }
     }
 }
