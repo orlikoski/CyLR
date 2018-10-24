@@ -12,12 +12,12 @@ WARP_COMMAND=$WARP_ARCH.warp-packer
 mkdir $BUILD_DIR/deployments
 
 if [ "$USE_WARP" = true ] ; then
-	echo "Packaging build with Warp"
-	curl -sSLo $BUILD_DIR/$WARP_COMMAND https://github.com/dgiagio/warp/releases/download/v0.2.1/$WARP_COMMAND
+	echo "Packaging build with Warp" \
+		&& curl -sSLo $BUILD_DIR/$WARP_COMMAND https://github.com/dgiagio/warp/releases/download/v0.2.1/$WARP_COMMAND \
+		&& chmod +x $BUILD_DIR/$WARP_COMMAND \
+		&& $BUILD_DIR/$WARP_COMMAND --arch $WARP_ARCH --input_dir $BUILD_DIR/CyLR/bin/Release/netcoreapp2.1/$BUILD_ARCH/publish/ --exec CyLR --output $BUILD_DIR/deployments/CyLR \
+		&& echo "Warp complete."
 	sleep 5
-	chmod +x $BUILD_DIR/$WARP_COMMAND
-	$BUILD_DIR/$WARP_COMMAND --arch $WARP_ARCH --input_dir $BUILD_DIR/CyLR/bin/Release/netcoreapp2.1/$BUILD_ARCH/publish/ --exec CyLR --output $BUILD_DIR/deployments/CyLR
-	echo "Warp complete."
 else
 	cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp2.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
 fi
