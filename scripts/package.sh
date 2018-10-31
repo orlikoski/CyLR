@@ -1,6 +1,6 @@
 BUILD_DIR="." && [[ "$TRAVIS_BUILD_DIR" != "" ]] && BUILD_DIR=$TRAVIS_BUILD_DIR
 
-[[ "$ZIP_COMMAND" == "" ]] && ZIP_COMMAND="zip -rj"
+[[ "$ZIP_COMMAND" == "" ]] && ZIP_COMMAND="zip -r"
 
 [[ "$BUILD_ARCH" == "linux-x64" ]] && WARP_ARCH=linux-x64
 [[ "$BUILD_ARCH" == "osx-x64" ]] && WARP_ARCH=macos-x64
