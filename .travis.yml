@@ -7,23 +7,27 @@ matrix:
       language: csharp
       mono: none
       dotnet: 2.1.300
+    - os: osx
+      language: csharp
+      mono: none
+      dotnet: 2.1.300
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y clang-3.9 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install dotnetcore-sdk 7zip ; fi
 
 script: 
-  - BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/test.sh
-  - BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh
-  - BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
-  - BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh
-  - BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/build.sh
-  - BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/package.sh
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/package.sh ; fi
 
-  - BUILD_ARCH=win-x64 scripts/test.sh
-  - BUILD_ARCH=win-x64 scripts/build.sh
-  - BUILD_ARCH=win-x64 scripts/package.sh
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
 deploy:
   provider: releases
