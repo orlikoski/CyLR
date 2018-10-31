@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Discutils" Version="0.13.0-alpha" />
-    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*" />
+    <!--PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*" /-->
     <PackageReference Include="RawDiskLib" Version="0.1.4" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
