@@ -28,7 +28,7 @@ ls -R $BUILD_DIR/deployments
 mkdir -p "$BUILD_DIR/archive"
 
 if [ $BUILD_ARCH = "linux-x64" ] || [ $BUILD_ARCH = "osx-x64" ] ; then
-	$ZIP_COMMAND $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/CyLR/publish/CyLR
+	$ZIP_COMMAND $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/CyLR/CyLR
 else
 	$ZIP_COMMAND $BUILD_DIR/archive/CyLR_$BUILD_ARCH.zip $BUILD_DIR/deployments/CyLR/publish/*
 fi
