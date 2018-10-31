@@ -9,35 +9,19 @@ matrix:
       dotnet: 2.1.300
       env: 
         - BUILD_ARCH=linux-x64
-        - USE_WARP=true
+        - USE_WARP=false
     - os: osx
       language: csharp
       mono: none
       dotnet: 2.1.300
       env:
         - BUILD_ARCH=osx-x64
-        - USE_WARP=true
-    # - os: linux
-    #   dist: xenial
-    #   sudo: required
-    #   env: 
-    #     - BUILD_ARCH=win-x64
-    #     - USE_WARP=false
-    # - os: linux
-    #   dist: xenial
-    #   sudo: required
-    #   env:
-    #     - BUILD_ARCH=win-x86
-    #     - USE_WARP=false
-    # - os: windows
-    #   env: 
-    #     - BUILD_ARCH=win-x64
-    #     - USE_WARP=true
+        - USE_WARP=false
     - os: windows
       language: shell
       env:
         - BUILD_ARCH=win-x64
-        - USE_WARP=true
+        - USE_WARP=false
         - ZIP_COMMAND="7z a"
 
 before_install:
