@@ -4,7 +4,7 @@ using System.IO;
 
 namespace CyLR.archive
 {
-    internal abstract class Archive : IDisposable
+    public abstract class Archive : IDisposable
     {
         private readonly Stream destination;
         protected Archive(Stream destination)

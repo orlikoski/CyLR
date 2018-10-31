@@ -5,6 +5,11 @@ packages/
 *.vspx
 *.db
 *.opendb
+*.user
 CyLRTests/obj/
 CyLRTests/bin/
 *.user
+*.exe
+*.zip
+deployments/
+warp-packer

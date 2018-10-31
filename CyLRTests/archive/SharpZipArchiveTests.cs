@@ -1,6 +1,6 @@
 using System;
 using CyLR;
-using NUnit.Framework;
+using Xunit;
 using System.IO;
 using CyLR.archive;
 using System.Text;
@@ -9,10 +9,9 @@ using System.Collections.Generic;
 
 namespace CyLRTests.archive
 {
-    [TestFixture]
     public class SharpZipArchiveTests
     {
-        [Test]
+        [Fact]
         public void TestRoundtripArchive()
         {
             string entryName = "TestFile";
@@ -27,15 +26,15 @@ namespace CyLRTests.archive
             var unzippedData = new MemoryStream();
             var unzippedFile = new ZipFile(zipFile);
             var unzipEntry = unzippedFile.GetEntry(entryName);
-            Assert.IsTrue(unzipEntry.IsFile);
+            Assert.True(unzipEntry.IsFile);
 
             var unzipStream = unzippedFile.GetInputStream(unzipEntry);
             unzipStream.CopyTo(unzippedData);
 
-            Assert.AreEqual(testData, unzippedData.ToArray());
+            Assert.Equal(testData, unzippedData.ToArray());
         }
 
-        [Test]
+        [Fact]
         public void TestRoundtripPasswordProtectedArchive()
         {
             string entryName = "TestFile";
@@ -51,7 +50,7 @@ namespace CyLRTests.archive
             var unzippedData = new MemoryStream();
             var unzippedFile = new ZipFile(zipFile);
             var unzipEntry = unzippedFile.GetEntry(entryName);
-            Assert.IsTrue(unzipEntry.IsFile);
+            Assert.True(unzipEntry.IsFile);
 
             Assert.Throws<ZipException>(() =>
             {
@@ -63,7 +62,7 @@ namespace CyLRTests.archive
             var unzipStream = unzippedFile.GetInputStream(unzipEntry);
             unzipStream.CopyTo(unzippedData);
 
-            Assert.AreEqual(testData, unzippedData.ToArray());
+            Assert.Equal(testData, unzippedData.ToArray());
         }
 
         private static MemoryStream CreateZipArchive(IEnumerable<CyLR.archive.File> testData, string password)

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace CyLR.archive
 {
-    internal struct File
+    public struct File
     {
         public readonly string Name;
         public readonly Stream Stream;
