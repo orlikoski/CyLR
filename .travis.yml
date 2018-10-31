@@ -30,7 +30,7 @@ deploy:
   api_key:
     secure: F3vanioKwtxsaSldx+I5mpzeXnAmRu4IK4eun7nk/UXRz+X3eruqhRp1zJoc0zhh34CQ2UqfsQpebjuBTD7ho1wkdlmMLFeuqmV+vFM5Or/qcWiVygI5h/OWXdUJbRCe/XR9fy5BxH8QNWoLQ4qaLzItl4pnMi6DaEvWS4VHP5RNZZ2KvNJq4aAc/5DMONpenyMMJNvgozf0pVXnwN9BF9CiUQIpBTYg71VLOco/4NtMvxgiyKREt/mMS/lbv0v/KizYmrgJDAHincsWqI/Rj5nLaZIZDMcQma+WKldwOy9EPZnWlmXmSwDpQPS+tw+qx6vvOJc0r24rjBUZCpCPeY6pMYnO7VXeHD75HAc7b49Wg+0nHL69EsSY2VdJY6Oka7hGaQB9MmvxSQW9j4/YfoLmXW7Cl++EKm1m6SADVe9BRVnkQ0q5Aw9VD8Q+aJxh75E3yaGW9Uc5kwLHX0kdu5jz+gKd/XswHBqYQp7wO/ziObaCJtFwMiOzK1EpdEdsBqaKiBVKw1HBft1wGusLBAr1oKsowqwan8PhjR2r/3U11MGNECQgbxe6/iLSJ+p7J79kS0M1phsx/HeAuANi3BSmh5i3Dv0FzI9Ny4ViKnAx7eoJXTfIgKSXQx3YmwZwMrUH+djd4RekGRQwzAv744x3HkAz1C0/EYKIGR4xShs=
   file_glob: true
-  file: archive/*
+  file: archive/**/*
   name: Draft Release
   draft: true
   skip_cleanup: true
