@@ -32,7 +32,7 @@ namespace CyLR
                 yield return  proc.StandardOutput.ReadLine();
             };
         }
-        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths)
+        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths, bool Usnjrnl)
         {
             var defaultPaths = new List<string>
             {
@@ -60,10 +60,14 @@ namespace CyLR
                 @"%SYSTEMROOT%\System32\config\SECURITY.LOG2",
                 @"%PROGRAMDATA%\Microsoft\Search\Data\Applications\Windows",
                 @"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
-                @"%SystemDrive%\$Recycle.Bin",
+                @"%SystemDrive%\$Recycle.Bin\",
                 @"%SystemDrive%\$LogFile",
                 @"%SystemDrive%\$MFT"
             };
+            if (Usnjrnl)
+            {
+                defaultPaths.Add(@"%SystemDrive%\$Extend\$UsnJrnl:$J");
+            }
             defaultPaths = defaultPaths.Select(Environment.ExpandEnvironmentVariables).ToList();
 
       			//This section will attempt to collect files or folder locations under each users profile by pulling their ProfilePath from the registry and adding it in front.
@@ -89,7 +93,7 @@ namespace CyLR
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Mozilla\Firefox\Profiles\");
-              }
+                }
             }
 
             if (Platform.IsUnixLike())
