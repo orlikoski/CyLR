@@ -93,7 +93,7 @@ namespace CyLR
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Mozilla\Firefox\Profiles\");
-                }
+              }
             }
 
             if (Platform.IsUnixLike())
