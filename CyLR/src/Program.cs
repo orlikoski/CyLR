@@ -54,7 +54,7 @@ namespace CyLR
             List<string> paths;
             try
             {
-                paths = CollectionPaths.GetPaths(arguments, additionalPaths);
+                paths = CollectionPaths.GetPaths(arguments, additionalPaths, arguments.Usnjrnl);
             }
             catch (Exception e)
             {

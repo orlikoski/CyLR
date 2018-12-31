@@ -45,6 +45,10 @@ namespace CyLR
             {
                 "-zp",
                 "Uses a password to encrypt the archive file"
+            },
+            {
+                "--no-usnjrnl",
+                "Skips collecting $UsnJrnl"
             }
         };
 
@@ -63,6 +67,7 @@ namespace CyLR
         public readonly bool DryRun;
         public readonly bool ForceNative;
         public readonly string ZipPassword;
+        public readonly bool Usnjrnl = true;
 
         public Arguments(IEnumerable<string> args)
         {
@@ -105,6 +110,10 @@ namespace CyLR
                         ZipPassword = argEnum.GetArgumentParameter();
                         break;
 
+                    case "--no-usnjrnl":
+                        Usnjrnl = false;
+                        break;
+                       
                     case "--force-native":
                         if (ForceNative)
                         {

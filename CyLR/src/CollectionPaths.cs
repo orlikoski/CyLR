@@ -32,7 +32,7 @@ namespace CyLR
                 yield return  proc.StandardOutput.ReadLine();
             };
         }
-        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths)
+        public static List<string> GetPaths(Arguments arguments, List<string> additionalPaths, bool Usnjrnl)
         {
             var defaultPaths = new List<string>
             {
@@ -64,6 +64,10 @@ namespace CyLR
                 @"%SystemDrive%\$LogFile",
                 @"%SystemDrive%\$MFT"
             };
+            if (Usnjrnl)
+            {
+                defaultPaths.Add(@"%SystemDrive%\$Extend\$UsnJrnl:$J");
+            }
             defaultPaths = defaultPaths.Select(Environment.ExpandEnvironmentVariables).ToList();
 
       			//This section will attempt to collect files or folder locations under each users profile by pulling their ProfilePath from the registry and adding it in front.
