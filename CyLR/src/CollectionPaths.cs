@@ -60,7 +60,7 @@ namespace CyLR
                 @"%SYSTEMROOT%\System32\config\SECURITY.LOG2",
                 @"%PROGRAMDATA%\Microsoft\Search\Data\Applications\Windows",
                 @"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup",
-                @"%SystemDrive%\$Recycle.Bin\",
+                @"%SystemDrive%\$Recycle.Bin",
                 @"%SystemDrive%\$LogFile",
                 @"%SystemDrive%\$MFT"
             };
