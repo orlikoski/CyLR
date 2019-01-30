@@ -77,7 +77,6 @@ namespace CyLR
               var users = FindUsers();
               foreach (var user in users)
               {
-                  defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent");
                   defaultPaths.Add($@"{user.ProfilePath}\NTUSER.DAT");
