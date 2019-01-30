@@ -87,7 +87,7 @@ namespace CyLR
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG1");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG2");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\Explorer");
-                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Google\Chrome\User Data\Default\History\");
+                  defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Google\Chrome\User Data\Default\History");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\WebCache\");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Local\ConnectedDevicesPlatform");
                   defaultPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations\");
