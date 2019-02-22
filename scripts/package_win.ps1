@@ -4,11 +4,12 @@ if (Test-Path env:TRAVIS_BUILD_DIR) {
 	$BUILD_DIR = "."
 }
 
-if ($env:BUILD_ARCH -eq "win-x86") {
-	$WARP_ARCH = "windows-x86"
-}else {
-	$WARP_ARCH = "windows-x64"
-}
+# if ($env:BUILD_ARCH -eq "win-x86") {
+# 	$WARP_ARCH = "windows-x86"
+# }else {
+# 	$WARP_ARCH = "windows-x64"
+# }
+$WARP_ARCH = "windows-x64"
 
 mkdir -p $BUILD_DIR/deployments/$env:BUILD_ARCH/
 
