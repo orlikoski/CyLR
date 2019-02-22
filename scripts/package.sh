@@ -12,9 +12,9 @@ WARP_COMMAND=$WARP_ARCH.warp-packer
 
 CYLR_EXE="CyLR" && [[ "$BUILD_ARCH" == "win-x64" ]] && CYLR_EXE="CyLR.exe"
 
-mkdir $BUILD_DIR/deployments
+mkdir -p $BUILD_DIR/deployments
 
-if [ "$USE_WARP" = true ] ; then
+if [ "$USE_WARP" = TRUE ] ; then
 	echo "Packaging build with Warp" \
 		&& curl -sSLo $BUILD_DIR/$WARP_COMMAND https://github.com/dgiagio/warp/releases/download/v0.3.0/$WARP_COMMAND \
 		&& chmod +x $BUILD_DIR/$WARP_COMMAND \
