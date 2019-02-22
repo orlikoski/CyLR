@@ -4,4 +4,5 @@ if (Test-Path env:TRAVIS_BUILD_DIR) {
 	$BUILD_DIR = "."
 }
 
-dotnet publish -f netcoreapp2.1 -c release -r $env:BUILD_ARCH
+dotnet restore
+dotnet test CyLRTests
