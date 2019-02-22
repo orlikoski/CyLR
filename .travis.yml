@@ -14,7 +14,7 @@ matrix:
     - os: windows
       language: csharp
       mono: none
-      dotnet: 2.2.104
+      dotnet: none
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y clang-3.9 ; fi
