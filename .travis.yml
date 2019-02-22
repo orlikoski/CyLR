@@ -6,11 +6,15 @@ matrix:
       #sudo: required
       language: csharp
       mono: none
-      dotnet: 2.1.300
+      dotnet: 2.2.104
     - os: osx
       language: csharp
       mono: none
-      dotnet: 2.1.300
+      dotnet: 2.2.104
+    - os: windows
+      language: csharp
+      mono: none
+      dotnet: 2.2.104
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y clang-3.9 ; fi
@@ -21,9 +25,9 @@ script:
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/test.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/build.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/package.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then BUILD_ARCH=win-x64 scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then BUILD_ARCH=win-x64 scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then USE_WARP=TRUE BUILD_ARCH=win-x64 scripts/package.sh ; fi
 
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x86 scripts/test.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x86 scripts/build.sh ; fi
