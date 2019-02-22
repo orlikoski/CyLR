@@ -26,9 +26,9 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then $env:BUILD_ARCH="win-x64" PowerShell -File ./scripts/test_win.ps1 ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then $env:BUILD_ARCH="win-x64" PowerShell -File ./scripts/build_win.ps1 ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then $env:BUILD_ARCH="win-x64" PowerShell -File ./scripts/package_win.ps1 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/test_win.ps1 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/build_win.ps1 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/package_win.ps1 ; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/test.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/build.sh ; fi
