@@ -6,28 +6,33 @@ matrix:
       #sudo: required
       language: csharp
       mono: none
-      dotnet: 2.1.300
+      dotnet: 2.2.104
     - os: osx
       language: csharp
       mono: none
-      dotnet: 2.1.300
+      dotnet: 2.2.104
+    - os: windows
+      language: csharp
+      mono: none
+      dotnet: none
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y clang-3.9 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then choco install dotnetcore-sdk 7zip ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned' ; fi
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/test.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=linux-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/test.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/build.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x64 scripts/package.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/test_win.ps1 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/build_win.ps1 ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/package_win.ps1 ; fi
 
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x86 scripts/test.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x86 scripts/build.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then BUILD_ARCH=win-x86 scripts/package.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/test.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/build.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/package.sh ; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/build.sh ; fi
