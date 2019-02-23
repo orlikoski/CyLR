@@ -3,10 +3,9 @@ if (Test-Path env:TRAVIS_BUILD_DIR) {
 }else {
 	$BUILD_DIR = "."
 }
-$env:BUILD_ARCH=win-x64
-
+$env:BUILD_ARCH="win-x64"
 $WARP_ARCH = "windows-x64"
-$env:BUILD_ARCH = "win-x64"
+
 mkdir -p $BUILD_DIR/deployments/$env:BUILD_ARCH/
 
 echo "Packaging build with Warp"
