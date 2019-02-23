@@ -13,6 +13,7 @@ echo "Packaging build with Warp"
 .\warp-packer.exe --arch $WARP_ARCH --input_dir $env:BUILD_DIR/CyLR/bin/release/netcoreapp2.1/$env:BUILD_ARCH/publish --exec CyLR.exe --output $env:BUILD_DIR/deployments/$env:BUILD_ARCH/CyLR.exe
 
 echo "Zipping files:"
+echo  "$BUILD_DIR/archive/$env:BUILD_ARCH"
 mkdir -p "$BUILD_DIR/archive/$env:BUILD_ARCH"
 if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {throw "$env:ProgramFiles\7-Zip\7z.exe needed"}
 set-alias sz "$env:ProgramFiles\7-Zip\7z.exe"
@@ -20,4 +21,5 @@ set-alias sz "$env:ProgramFiles\7-Zip\7z.exe"
 $Source = "$env:BUILD_DIR/deployments/$env:BUILD_ARCH/CyLR.exe"
 $Target = "$BUILD_DIR/archive/$env:BUILD_ARCH/CyLR-$env:BUILD_ARCH.zip"
 
+echo "sz a -tzip -mx=9 $Target $Source"
 sz a -tzip -mx=9 $Target $Source
