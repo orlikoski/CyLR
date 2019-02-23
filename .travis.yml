@@ -1,16 +1,16 @@
 solution: CyLR.sln
 matrix:
   include:
-    - os: linux
-      dist: xenial
-      #sudo: required
-      language: csharp
-      mono: none
-      dotnet: 2.2.104
-    - os: osx
-      language: csharp
-      mono: none
-      dotnet: 2.2.104
+    # - os: linux
+    #   dist: xenial
+    #   #sudo: required
+    #   language: csharp
+    #   mono: none
+    #   dotnet: 2.2.104
+    # - os: osx
+    #   language: csharp
+    #   mono: none
+    #   dotnet: 2.2.104
     - os: windows
       language: csharp
       mono: none
