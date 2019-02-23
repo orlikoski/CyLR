@@ -18,7 +18,7 @@ if (-not (test-path "$env:ProgramFiles\7-Zip\7z.exe")) {throw "$env:ProgramFiles
 set-alias sz "$env:ProgramFiles\7-Zip\7z.exe"
 
 $Source = "$BUILD_DIR/deployments/$env:BUILD_ARCH/CyLR.exe"
-$Target = "$BUILD_DIR/archive/CyLR-$env:BUILD_ARCH.zip"
+$Target = "$BUILD_DIR/archive/CyLR_$env:BUILD_ARCH.zip"
 
 echo "sz a -tzip -mx=9 $Target $Source"
 sz a -tzip -mx=9 $Target $Source
