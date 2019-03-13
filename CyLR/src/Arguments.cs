@@ -47,6 +47,10 @@ namespace CyLR
                 "Uses a password to encrypt the archive file"
             },
             {
+                "-zl",
+                "Uses a number between 1-9 to change the compression level of the archive file"
+            },
+            {
                 "--no-usnjrnl",
                 "Skips collecting $UsnJrnl"
             }
@@ -67,12 +71,12 @@ namespace CyLR
         public readonly bool DryRun;
         public readonly bool ForceNative;
         public readonly string ZipPassword;
+        public readonly string ZipLevel;
         public readonly bool Usnjrnl = true;
 
         public Arguments(IEnumerable<string> args)
         {
             ForceNative = !Platform.SupportsRawAccess(); //default this to whether or not the platform supports raw access
-
             var argEnum = args.GetEnumerator();
             while (!HelpRequested && argEnum.MoveNext())
             {
@@ -109,6 +113,10 @@ namespace CyLR
                     case "-zp":
                         ZipPassword = argEnum.GetArgumentParameter();
                         break;
+
+                    case "-zl":
+                        ZipLevel = argEnum.GetArgumentParameter();
+                        break; 
 
                     case "--no-usnjrnl":
                         Usnjrnl = false;

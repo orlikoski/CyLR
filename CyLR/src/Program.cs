@@ -107,8 +107,13 @@ namespace CyLR
         private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
             try
-            {
-                using (var archive = new SharpZipArchive(archiveStream, arguments.ZipPassword))
+            {   
+                string ZipLevel = "3";
+                if (!String.IsNullOrEmpty(arguments.ZipLevel))
+                {
+                   ZipLevel = arguments.ZipLevel;
+                }
+                using (var archive = new SharpZipArchive(archiveStream, arguments.ZipPassword, ZipLevel ))
                 {
                     var system = arguments.ForceNative ? (IFileSystem)new NativeFileSystem() : new RawFileSystem();
 

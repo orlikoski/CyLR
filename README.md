@@ -24,7 +24,7 @@ CyLR uses .NET Core and runs natively on Windows, Linux, and MacOS. Self contain
 ## SYNOPSIS
 
 ```
-CyLR.exe [--help] [-od] [-of] [-u] [-p] [-s] [-c] [-zp]
+CyLR.exe [--help] [-od] [-of] [-u] [-p] [-s] [-c] [-zp] [-zl]
 ```
 
 ## DESCRIPTION
@@ -108,6 +108,7 @@ Mac and Linux Default
 * '-od' — Defines the directory that the zip archive will be created in. Defaults to current working directory. (applies to SFTP and local storage options)
 * '-of' — Defines the name of the zip archive will be created. Defaults to host machine's name.
 * '-zp' — If specified, the resulting zip file will be password protected with this password.
+* '-zl [1-9]' - If specified with an integer it will change the compression level. If the flag is not passed it defaults to 3.  
 * SFTP Options
     * '-u' — SFTP username
     * '-p' — SFTP password
