@@ -20,7 +20,7 @@ namespace CyLRTests.archive
             var testData = Encoding.Unicode.GetBytes(entryData);
             var testFileData = new MemoryStream(testData);
             CyLR.archive.File file = new CyLR.archive.File(entryName, testFileData, new DateTime());
-            var zipFile = CreateZipArchive(new[] { file }, "");
+            var zipFile = CreateZipArchive(new[] { file }, "","3");
 
             //Unzip that data
             var unzippedData = new MemoryStream();
@@ -40,11 +40,12 @@ namespace CyLRTests.archive
             string entryName = "TestFile";
             string entryData = "TestData";
             string archivePassword = "TestPassword";
+            string archiveCompressionLevel = "3";
             //Zip up some data
             var testData = Encoding.Unicode.GetBytes(entryData);
             var testFileData = new MemoryStream(testData);
             CyLR.archive.File file = new CyLR.archive.File(entryName, testFileData, new DateTime());
-            var zipFile = CreateZipArchive(new[] { file }, archivePassword);
+            var zipFile = CreateZipArchive(new[] { file }, archivePassword, archiveCompressionLevel);
 
             //Unzip that data
             var unzippedData = new MemoryStream();
@@ -65,10 +66,10 @@ namespace CyLRTests.archive
             Assert.Equal(testData, unzippedData.ToArray());
         }
 
-        private static MemoryStream CreateZipArchive(IEnumerable<CyLR.archive.File> testData, string password)
+        private static MemoryStream CreateZipArchive(IEnumerable<CyLR.archive.File> testData, string password, string level)
         {
             var zipFile = new MemoryStream();
-            var archive = new SharpZipArchive(zipFile, password);
+            var archive = new SharpZipArchive(zipFile, password, level);
             using (archive)
             {
                 archive.CollectFilesToArchive(testData);
