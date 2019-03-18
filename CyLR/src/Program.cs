@@ -10,7 +10,6 @@ using Renci.SshNet;
 using ArchiveFile = CyLR.archive.File;
 using File = System.IO.File;
 
-
 namespace CyLR
 {
     internal static class Program
@@ -50,7 +49,6 @@ namespace CyLR
                 }
             }
 
-
             List<string> paths;
             try
             {
@@ -61,7 +59,6 @@ namespace CyLR
                 Console.Error.WriteLine($"Error occured while collecting files:\n{e}");
                 return 1;
             }
-
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -107,7 +104,7 @@ namespace CyLR
         private static void CreateArchive(Arguments arguments, Stream archiveStream, IEnumerable<string> paths)
         {
             try
-            {   
+            {
                 string ZipLevel = "3";
                 if (!String.IsNullOrEmpty(arguments.ZipLevel))
                 {

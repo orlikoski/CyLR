@@ -69,7 +69,6 @@ namespace CyLR.read
             IEnumerable<FileInfo> fileList;
             try
             {
-
                 fileList = directory.GetFiles();
             }
             catch (UnauthorizedAccessException)

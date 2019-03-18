@@ -31,6 +31,7 @@ namespace CyLR.archive
         protected abstract void WriteStreamToArchive(string entryName, Stream stream, DateTimeOffset timestamp);
 
         #region IDisposable Support
+
         protected abstract void Dispose(bool disposing);
 
         // This code added to correctly implement the disposable pattern.
@@ -39,6 +40,7 @@ namespace CyLR.archive
             Dispose(true);
             destination.Seek(0, SeekOrigin.Begin); //rewind the stream
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }
