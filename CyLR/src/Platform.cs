@@ -19,7 +19,7 @@ namespace CyLR
         {
             return !IsUnixLike();
         }
-        
+
         public static bool IsInputRedirected
         {
             get

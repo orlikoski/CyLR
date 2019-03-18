@@ -61,7 +61,7 @@ namespace CyLR
         public readonly string HelpTopic;
 
         public readonly string CollectionFilePath = ".";
-        public readonly List<string> CollectionFiles = null; 
+        public readonly List<string> CollectionFiles = null;
         public readonly string OutputPath = ".";
         public readonly string OutputFileName = $"{Environment.MachineName}.zip";
         public readonly bool UseSftp;
@@ -93,15 +93,19 @@ namespace CyLR
                     case "-od":
                         OutputPath = argEnum.GetArgumentParameter();
                         break;
+
                     case "-of":
                         OutputFileName = argEnum.GetArgumentParameter();
                         break;
+
                     case "-u":
                         UserName = argEnum.GetArgumentParameter();
                         break;
+
                     case "-p":
                         UserPassword = argEnum.GetArgumentParameter();
                         break;
+
                     case "-s":
                         SFTPServer = argEnum.GetArgumentParameter();
                         break;
@@ -116,12 +120,12 @@ namespace CyLR
 
                     case "-zl":
                         ZipLevel = argEnum.GetArgumentParameter();
-                        break; 
+                        break;
 
                     case "--no-usnjrnl":
                         Usnjrnl = false;
                         break;
-                       
+
                     case "--force-native":
                         if (ForceNative)
                         {
@@ -129,6 +133,7 @@ namespace CyLR
                         }
                         ForceNative = true;
                         break;
+
                     case "--dry-run":
                         DryRun = true;
                         break;
@@ -151,7 +156,7 @@ namespace CyLR
                 {
                     throw new ArgumentException("The flags -u, -p, and -s must all have values to continue.  Please try again.");
                 }
-                
+
                 if (DryRun)
                 {
                     //Disable SFTP in a dry run.

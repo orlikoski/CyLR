@@ -21,7 +21,6 @@ namespace CyLR.archive
             {
                 archive.SetLevel(Convert.ToInt32(level));
             }
-                
         }
 
         protected override void WriteStreamToArchive(string entryName, Stream stream, DateTimeOffset timestamp)

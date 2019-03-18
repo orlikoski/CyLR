@@ -192,7 +192,6 @@ namespace CyLR
                     if (result.FullProfile != -1) yield return result;
                 }
             }
-
         }
 
         internal class UserProfile
