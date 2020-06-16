@@ -116,7 +116,7 @@ Mac and Linux Default
     * '-u' — SFTP username
     * '-p' — SFTP password
     * '-s' — SFTP Server resolvable hostname or IP address and port. If no port is given then 22 is used by default.  The format is <server name>:<port>.  Usage: -s 8.8.8.8:22"
-* '-c' — Optional argument to provide custom list of artifact files and directories (one entry per line). NOTE: Must use full path including drive letter on each line.  MFT can be collected by "C:\$MFT" or "D:\$MFT" and so on.  Usage: -c <path to config file>
+* '-c' — Optional argument to provide custom list of artifact files and directories (one entry per line). NOTE: Must use full path including drive letter on each line.  MFT can be collected by "C:\\$MFT" or "D:\\$MFT" and so on.  Usage: -c <path to config file>
 
 
 ## DEPENDENCIES
