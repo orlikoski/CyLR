@@ -20,7 +20,7 @@ namespace CyLR
             },
             {
                 "-c",
-                "Optional argument to provide custom list of artifact files and directories (one entry per line).\nNOTE: Must use full path including drive letter on each line.  MFT can be collected by \"C:$MFT\" or \"D:$MFT\" and so on.\nUsage: -c <path to config file>"
+                "Optional argument to provide custom list of artifact files and directories (one entry per line).\nNOTE: Must use full path including drive letter on each line.  MFT can be collected by \"C:\\$MFT\" or \"D:\\$MFT\" and so on.\nUsage: -c <path to config file>"
             },
             {
                 "-u",
