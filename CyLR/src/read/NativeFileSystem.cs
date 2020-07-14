@@ -29,7 +29,7 @@ namespace CyLR.read
 
         public Stream OpenFile(string path)
         {
-            return File.OpenRead(path);
+            return File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
 
         public DateTime GetLastWriteTimeUtc(string path)
