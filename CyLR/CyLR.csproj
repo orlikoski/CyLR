@@ -5,7 +5,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>CyLR.Program</StartupObject>
     <ApplicationIcon></ApplicationIcon>
-    <UseAppHost>true</UseAppHost>
     <PublishTrimmed>true</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishReadyToRun>true</PublishReadyToRun>
