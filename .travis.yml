@@ -2,15 +2,14 @@ solution: CyLR.sln
 matrix:
   include:
     - os: linux
-      dist: xenial
-      #sudo: required
+      dist: bionic
       language: csharp
       mono: none
-      dotnet: 2.2.104
+      dotnet: 3.1.302
     - os: osx
       language: csharp
       mono: none
-      dotnet: 2.2.104
+      dotnet: 3.1.302
     - os: windows
       language: csharp
       mono: none
@@ -29,10 +28,6 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/test_win.ps1 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/build_win.ps1 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/package_win.ps1 ; fi
-
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/test.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/build.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then BUILD_ARCH=win-x86 scripts/package.sh ; fi
 
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/build.sh ; fi

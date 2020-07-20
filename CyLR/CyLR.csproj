@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>CyLR.Program</StartupObject>
     <ApplicationIcon></ApplicationIcon>
+    <PublishTrimmed>true</PublishTrimmed>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
     <Win32Resource />
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <RepositoryUrl>https://github.com/orlikoski/CyLR</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/orlikoski/CyLR/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>2018</Copyright>
@@ -16,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Discutils" Version="0.13.0-alpha" />
-    <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*" Condition="'$(USE_CORERT)' == 'TRUE'" />
+    <!--<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*" Condition="'$(USE_CORERT)' == 'TRUE'" />-->
     <PackageReference Include="RawDiskLib" Version="0.1.4" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
