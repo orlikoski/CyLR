@@ -8,7 +8,7 @@
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
     <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRunShowWarnings>true<PublishReadyToRunShowWarnings>
+    <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
     <Win32Resource />
     <Version>2.2.0</Version>
     <RepositoryUrl>https://github.com/orlikoski/CyLR</RepositoryUrl>
