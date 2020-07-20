@@ -6,11 +6,11 @@ matrix:
       #sudo: required
       language: csharp
       mono: none
-      dotnet: 3.1.6
+      dotnet: 3.1
     - os: osx
       language: csharp
       mono: none
-      dotnet: 3.1.6
+      dotnet: 3.1
     - os: windows
       language: csharp
       mono: none
