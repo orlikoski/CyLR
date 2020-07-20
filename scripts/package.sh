@@ -6,7 +6,7 @@ CYLR_EXE="CyLR" && [[ "$BUILD_ARCH" == "win-x64" ]] && CYLR_EXE="CyLR.exe"
 
 mkdir -p $BUILD_DIR/deployments
 
-cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp2.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
+cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp3.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
 
 echo "Zipping files:"
 mkdir -p "$BUILD_DIR/archive"
