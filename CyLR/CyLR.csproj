@@ -5,10 +5,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>CyLR.Program</StartupObject>
     <ApplicationIcon></ApplicationIcon>
+    <UseAppHost>true</UseAppHost>
     <PublishTrimmed>true</PublishTrimmed>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PublishReadyToRun>true</PublishReadyToRun>
     <PublishSingleFile>true</PublishSingleFile>
-    <!--<PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>-->
+    <PublishReadyToRunShowWarnings>false</PublishReadyToRunShowWarnings>
     <Win32Resource />
     <Version>2.2.0</Version>
     <RepositoryUrl>https://github.com/orlikoski/CyLR</RepositoryUrl>
