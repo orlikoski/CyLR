@@ -8,7 +8,7 @@ mkdir -p $BUILD_DIR/deployments
 
 cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp3.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
 
-echo "Zipping files:"
+Write-Output "Zipping files:"
 mkdir -p "$BUILD_DIR/archive"
 
 if [ $BUILD_ARCH = "linux-x64" ] || [ $BUILD_ARCH = "osx-x64" ] ; then

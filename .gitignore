@@ -1,6 +1,8 @@
 CyLR/bin/
 CyLR/obj/
+.DS_Store
 .vs/
+.vscode/
 packages/
 *.vspx
 *.db
@@ -13,3 +15,5 @@ CyLRTests/bin/
 *.zip
 deployments/
 warp-packer
+lcov.info
+*.log

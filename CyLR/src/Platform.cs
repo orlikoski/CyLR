@@ -24,7 +24,11 @@ namespace CyLR
         {
             get
             {
-                return Console.IsInputRedirected;
+                #if DEBUG
+                    return false;
+                #else
+                    return Console.IsInputRedirected;
+                #endif
             }
         }
     }
