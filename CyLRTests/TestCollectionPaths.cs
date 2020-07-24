@@ -19,6 +19,7 @@ namespace CyLRTests
             var userProfile = Environment.ExpandEnvironmentVariables("%HOME%");
             var logger = new CyLR.Logger();
             logger.LoggingOptions["output_file_path"] = "1.log";
+            logger.LoggingOptions["output_console_min_level"] = "error";
             logger.Setup();
 
             // Set platform specific variables.
@@ -69,6 +70,7 @@ namespace CyLRTests
             var userProfile = Environment.ExpandEnvironmentVariables("%HOME%");
             var logger = new CyLR.Logger();
             logger.LoggingOptions["output_file_path"] = "2.log";
+            logger.LoggingOptions["output_console_min_level"] = "error";
             logger.Setup();
 
             if (!Platform.IsUnixLike())
@@ -112,6 +114,7 @@ namespace CyLRTests
             var userProfile = Environment.ExpandEnvironmentVariables("%HOME%");
             var logger = new CyLR.Logger();
             logger.LoggingOptions["output_file_path"] = "3.log";
+            logger.LoggingOptions["output_console_min_level"] = "error";
             logger.Setup();
 
             if (!Platform.IsUnixLike())
@@ -141,6 +144,7 @@ namespace CyLRTests
             var userProfile = Environment.ExpandEnvironmentVariables("%HOME%");
             var logger = new CyLR.Logger();
             logger.LoggingOptions["output_file_path"] = "4.log";
+            logger.LoggingOptions["output_console_min_level"] = "error";
             logger.Setup();
 
             if (!Platform.IsUnixLike())
