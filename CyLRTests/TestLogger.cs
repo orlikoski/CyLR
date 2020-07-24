@@ -74,10 +74,10 @@ namespace CyLRTests
             logger.Setup();
 
             logger.logger(CyLR.Logger.Level.warn, "This is a warning!");
-            var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            var expected = $"{now} [warn] This is a warning!\n";
+            var expected = "[warn] This is a warning!\n";
+            var actual = logger.logMessages.Split(" ", 2)[1];
 
-            Assert.Equal(expected, logger.logMessages);
+            Assert.Equal(expected, actual);
             
             logger.TearDown();
         }
@@ -85,51 +85,51 @@ namespace CyLRTests
         [Fact]
         public void TestLoggerLevelMessages(){
             var logger = new CyLR.Logger();
-            var now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
             string expected;
+            string actual;
 
             logger.Setup();
 
             logger.trace("This is a trace!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [trace] This is a trace!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[trace] This is a trace!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.debug("This is a debug!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [debug] This is a debug!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[debug] This is a debug!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.info("This is a info!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [info] This is a info!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[info] This is a info!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.warn("This is a warning!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [warn] This is a warning!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[warn] This is a warning!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.error("This is a error!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [error] This is a error!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[error] This is a error!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.critical("This is a critical!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [critical] This is a critical!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[critical] This is a critical!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
             logger.logMessages = "";
 
             logger.none("This is a none!");
-            now = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
-            expected = $"{now} [none] This is a none!\n";
-            Assert.Equal(expected, logger.logMessages);
+            expected = "[none] This is a none!\n";
+            actual = logger.logMessages.Split(" ", 2)[1];
+            Assert.Equal(expected, actual);
 
             logger.TearDown();
         }
