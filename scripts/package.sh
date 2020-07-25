@@ -1,5 +1,7 @@
 BUILD_DIR="." && [[ "$TRAVIS_BUILD_DIR" != "" ]] && BUILD_DIR=$TRAVIS_BUILD_DIR
 
+$ZIP_COMMAND="zip"
+
 unameOut="$(uname -s)"
 
 case "${unameOut}" in
@@ -15,12 +17,6 @@ esac
 
 if [ ! -d $BUILD_DIR/deployments/CyLR/$BUILD_ARCH ]; then
 	mkdir -p $BUILD_DIR/deployments/CyLR/$BUILD_ARCH
-fi
-
-if [ ! -f "./warp-packer" ] ; then
-
-	curl -Lo warp-packer "https://github.com/dgiagio/warp/releases/download/v0.3.0/$PACKER_ARCH.warp-packer"
-	chmod +x warp-packer
 fi
 
 cp -r $BUILD_DIR/CyLR/bin/Release/netcoreapp3.1/$BUILD_ARCH/publish/ $BUILD_DIR/deployments/CyLR
