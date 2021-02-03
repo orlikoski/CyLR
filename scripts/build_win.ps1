@@ -1,5 +1,5 @@
-echo "dotnet publish -f netcoreapp3.1 -c release -r win-x86"
+Write-Output "dotnet publish -c release -r win-x86"
 dotnet publish -c release -r win-x86
 
-echo "dotnet publish -f netcoreapp3.1 -c release -r win-x64"
+Write-Output "dotnet publish -c release -r  winx64"
 dotnet publish -c release -r win-x64

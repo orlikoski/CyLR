@@ -1,0 +1,177 @@
+#===========================================#
+# CyLR Custom File Path Collection Template #
+#===========================================#
+#
+# This file contains example methods for specifying file or folder paths to 
+# collect with CyLR.
+#
+
+#################
+# General Usage #
+#################
+#
+# CyLR contains default paths per-operating system that it will collect if you
+# do not specify this file. This file allows you to replace or extend the 
+# default collection capability of CyLR.
+#
+# To configure CyLR to only collect the paths specified in this file, you can 
+# provide this file at execution time as `CyLR.exe -c custom.txt` (where 
+# custom.txt is this file's name and relative location). If you would like to
+# collect both default and custom items, you can accomplish this with `-d` in 
+# place of `-c`. If you only want to collect default items, you can omit either
+# argument.
+#
+
+###################################
+# Specifying custom path patterns #
+###################################
+#
+# This configuration file supports comments, meaning lines with a leading `#`
+# are ignored and not evaluated further; this is for the purpose of custom file 
+# documentation, such as in this file, and for your own documentation as you 
+# build out custom configurations for collections.
+#
+# When specifying a file or folder path to collect, you will want to use the 
+# format of:
+#   {pattern_type}	{file_or_folder_path}
+#
+# This format specifies the pattern type and target folder or file path, 
+# delimited by a tab character. *Please be sure to validate that the delimiter 
+# is a tab character and not a series of space characters.*
+#
+# *Please note distinction between file and folder pattern support.*
+#
+# There are four supported pattern types:
+# * static -> Full path specification to a specific file 
+# * glob -> Supports glob patterns for collection, such as `/path/**` or 
+#           `/Users/*/.*history`. Where possible, this should be used in place
+#           of regex due to performance. Most common use case is to recursively
+#           collect a path with a pattern such as `/path/**`.
+# * regex -> Support regular expressions in paths.
+# * force -> Try to collect a static path even if the path is not found during
+#            the file system enumeration.
+#
+# There is no requirements for the file path specified so long as it is tab 
+# delimited from the pattern type. The file path can contain spaces and special
+# characters so long as the dotnet file system library is able to interpret it.
+#
+# Please note that in order to collect all items in a folder, or recursively on
+# a path, you will need to use glob paths. We will dive into more details for 
+# each of these pattern types below.
+#
+
+#***************************#
+# * IMPORTANT INFORMATION * #
+#***************************#
+#
+# All patterns (except force) will attempt to match against an enumeration of 
+# files on a system. This enumeration is performed by an internal function and
+# is subject to the permissions granted at runtime. If a discovered path is 
+# responsive to a pattern, it is added to the collection queue.
+#
+# The `force` pattern type specifies to attempt collection regardless of 
+# whether the file is available through enumeration. For this reason, it must
+# be a static full path for collection. 
+#
+# All pattern matching is case insensitive.
+#
+# Please specify the path delimiter for the system targeted. This means "/" for
+# UNIX-like systems and "\" for Windows systems.
+#
+
+#+++++++++++++++++#
+# Static patterns #
+#+++++++++++++++++#
+# 
+# This pattern format is the most basic and can be used to collect a single
+# file at a known location. This path must be discovered during file system 
+# enumeration to queue for collection.
+#
+# Examples:
+static	C:\Windows\System32\Config\SOFTWARE
+static	/etc/group
+
+#++++++++++++++++#
+# Force patterns #
+#++++++++++++++++#
+# 
+# This pattern format is the the same as static, but will add the file to the 
+# collection queue regardless of whether the file is present in the file system
+# enumeration operation. 
+# 
+# This is useful for collecting hidden/hard to access artifacts such as 
+# alternate data streams. 
+#
+# Examples:
+force	C:\$Extend\$UsnJrnl:$J
+
+
+#++++++++++++++++#
+# Glob patterns #
+#++++++++++++++++#
+# 
+# This pattern format is useful for when a basic pattern is needed to collect
+# responsive files. 
+#
+# Recursive collections
+#
+# The most common use case is for collecting files recursively. This is
+# achieved through using two sequential asterisk characters at the tail end of 
+# the path.
+#
+# Examples:
+glob	/var/log/**
+
+# Wildcards
+#
+# Another common use case is the wildcard, specified as a single asterisk 
+# character within a path segment. This Wildcard will match any character 
+# except a path delimiter. This means we can specify patterns that match a 
+# particular file name within any sub directory. 
+#
+# We can also use wildcards to match on parts of a file name within a path 
+# segment. Some use cases include collecting all files with a particular 
+# extension or all files with the same name but differing extensions.
+#
+# Examples:
+glob	C:\Users\*\NTUser.dat
+glob	/home/*/.bash_history
+glob	C:\Users\*\Appdata\Roaming\Microsoft\Windows\Recent\*.lnk
+glob	/root/.*_history
+
+# Other patterns
+# 
+# Globbing supports more patterns specified here: 
+#  * https://github.com/dazinator/DotNet.Glob/blob/a21476b1078a3b49070bdb4bfde07030739e641d/README.md
+#
+# You can also combine the patterns into a single line, allowing you to specify
+# patterns like those below. While regex may provide a more succinct manner 
+# to specify the pattern, glob should be favored for performance reasons.
+#
+# Examples:
+glob	C:\Windows\Temp\[A-Z][A-Z][A-Z][A-Z]\*.exe
+glob	C:\ProgramData\[A-Z][A-Z][A-Z][A-Z].exe
+glob	C:\**\*.docm
+glob	C:\**\r*.exe
+
+#++++++++++++++++#
+# Regex patterns #
+#++++++++++++++++#
+#
+# Allows the specification of advanced patterns for detection. This is the 
+# slowest method and should be leveraged if pattern functionality available 
+# through the other options is insufficient.
+#
+# This supports patterns specified by dotnet's regex implementation, documented
+# here: 
+# 
+#
+# Please note that the patterns are matched as a substring across a full path. 
+# This means a pattern of `[0-9]{8}` would match on any file system path 
+# containing eight numbers sequentially. You can leverage `^` to indicate the 
+# start of a file path, and `$` to denote the end. 
+#
+# Examples:
+regex	^C:\ProgramData\[A-Za-z]{8}\[A-Za-z]{5}.exe$
+regex	[0-9]+.exe
+

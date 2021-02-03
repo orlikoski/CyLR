@@ -29,7 +29,7 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/build_win.ps1 ; fi
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then PowerShell -File scripts/package_win.ps1 ; fi
 
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh ; fi
+  #- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/test.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/build.sh ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then BUILD_ARCH=osx-x64 USE_CORERT=TRUE scripts/package.sh ; fi
 
