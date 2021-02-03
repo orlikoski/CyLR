@@ -1,6 +1,6 @@
 # CyLR
 
-[![Build Status](https://travis-ci.org/orlikoski/CyLR.svg?branch=master)](https://travis-ci.org/orlikoski/CyLR)
+[![Build Status](https://travis-ci.com/orlikoski/CyLR.svg?branch=main)](https://travis-ci.com/orlikoski/CyLR)
 
 CyLR — Live Response Collection tool by Alan Orlikoski and Jason Yegge
 
@@ -186,6 +186,7 @@ User Profiles (ie `C:\Users\*`):
 * `C:\Users\*\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG2`
 * `C:\Users\*\AppData\Local\ConnectedDevicesPlatform\**`
 * `C:\Users\*\AppData\Local\Google\Chrome\User Data\Default\History\**`
+* `C:\Users\*\AppData\Local\Microsoft\Edge\User Data\Default\History\**`
 
 ### macOS
 
