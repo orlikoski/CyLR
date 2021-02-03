@@ -555,7 +555,7 @@ Runners cache location:
 These caches are only created on first execution or when the packed binary is
 updated.
 
-## AUTHORS
+## ORIGINAL AUTHORS
 
 * [Jason Yegge](https://github.com/Lansatac)
 * [Alan Orlikoski](https://github.com/rough007)
