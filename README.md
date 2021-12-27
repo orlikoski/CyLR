@@ -177,6 +177,7 @@ User Profiles (ie `C:\Users\*`):
 * `C:\Users\*\NTUser.DAT.LOG1`
 * `C:\Users\*\NTUser.DAT.LOG2`
 * `C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent\**`
+* `C:\Users\*\AppData\Local\Microsoft\Terminal Server Client\Cache\**`
 * `C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt`
 * `C:\Users\*\AppData\Roaming\Mozilla\Firefox\Profiles\**`
 * `C:\Users\*\AppData\Local\Microsoft\Windows\WebCache\**`
