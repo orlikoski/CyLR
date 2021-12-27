@@ -215,7 +215,8 @@ namespace CyLR
                         staticPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Windows\UsrClass.dat.LOG2");
                         staticPaths.Add($@"{user.ProfilePath}\AppData\Local\Google\Chrome\User Data\Default\History");
                         staticPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Edge\User Data\Default\History");
-                        staticPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt");
+                        staticPaths.Add($@"{user.ProfilePath}\AppData\Local\Microsoft\Terminal Server Client\Cache");
+                        staticPaths.Add($@"{user.ProfilePath}\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt")
                     }
                 }
                 // Handle macOS platforms
